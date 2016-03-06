@@ -70,6 +70,11 @@ namespace RoboUtil.dto
             else
                 return UserName.Equals(userDto.UserName);
         }
- 
+
+        public override int GetHashCode()
+        {
+            return Pk.GetHashCode();
+        }
+
     }
 }
