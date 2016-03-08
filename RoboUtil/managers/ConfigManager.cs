@@ -59,36 +59,28 @@ namespace RoboUtil.managers
             _configCache = new ConcurrentDictionary<string, string>();
         }
 
-        #region Loading Configurations
+        #region Loading Configurations 
+        public void LoadConfiguration(NameValueCollection nameValueCollection)
+        {
+            NameValueCollection nv = nameValueCollection;
+
+            foreach (string key in nv)
+            {
+                _configCache.TryAdd(key, nv[key]);
+            }
+        }
         public void LoadConfiguration(FileInfo configFileInfo)
         {
             if (configFileInfo.IsNullOrEmpty()) throw new FileNotFoundException("configFileInfo does not exist!");
             if (configFileInfo.Exists) throw new FileNotFoundException("configFileInfo path does not exist!");
 
             NameValueCollection nvc = XmlUtil.ReadNameValueXml("configuration", configFileInfo.FullName);
-
-            foreach (string key in nvc.Keys)
-            {
-                _configCache.TryAdd(key, nvc[key]);
-            }
-        }
-        public void LoadConfiguration(NameValueCollection nameValueCollection)
-        {
-            NameValueCollection nv = nameValueCollection;
-            foreach (string key in nv)
-            {
-                _configCache.TryAdd(key, nv[key]);
-            }
-
+            LoadConfiguration(nvc);
         }
         public void LoadConfiguration(string sectionNameInAppConfigurationFile)
         {
             NameValueCollection nv = (NameValueCollection)ConfigurationManager.GetSection(sectionNameInAppConfigurationFile);
-
-            foreach (string key in nv)
-            {
-                _configCache.TryAdd(key, nv[key]);
-            }
+            LoadConfiguration(nv);
 
         }
         #endregion
@@ -96,77 +88,28 @@ namespace RoboUtil.managers
         #region Get generic config
         public T GetConfig<T>(string key, T defaultVal)
         {
-            return _configCache.ContainsKey(key) ? _configCache[key].Convert<T>() : (T)defaultVal;
+            return _configCache.ContainsKey(key) ? _configCache[key].Convert<T>() : defaultVal;
         }
 
-        public object GetConfig(string key)
+        public T GetConfig<T>(string key) where T : class
         {
-            return _configCache.ContainsKey(key) ? _configCache[key] : null;
-        }
-        #endregion
-
-        #region Get String Config
-        public string GetStringConfig(string key)
-        {
-            return GetStringConfig(key, "");
-        }
-        public string GetStringConfig(string key, string defaultValue)
-        {
-            string result = defaultValue;
             if (_configCache.ContainsKey(key))
             {
-                result = _configCache[key];
-                if (result.Equals(string.Empty))
-                    result = defaultValue;
+                return _configCache[key].Convert<T>();
             }
-            return result;
-        }
-        #endregion
-
-        #region Get Integer Config
-        public int? GetIntConfig(string key)
-        {
-            return GetIntConfig(key, null);
-        }
-
-        private int? GetIntConfig(string key, int? defaultValue)
-        {
-            int? result = defaultValue;
-            try
-            {
-                result = int.Parse(_configCache[key]);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Parse Exception", ex);
-            }
-            return result;
-        }
-
-        #endregion
-
-        #region Get Boolen Config
-        public bool GetBooleanConfig(string masterJobmanager, bool b)
-        {
-            bool result = b;
-            try
-            {
-                result = bool.Parse(_configCache[masterJobmanager]);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Parse Exception", ex);
-            }
-            return result;
+            return null;
         }
         #endregion
 
         #region All Configurations
-        public string APP_NAME { get { return GetStringConfig("app.name", "ROBOUTIL"); } }
-        public string APP_DOMAIN { get { return GetStringConfig("app.domain", "RoboUtil"); } }
-        public string MASTER_JOBMANAGER { get { return GetStringConfig("master.jobmanager","N/A"); } }
+        public string APP_NAME { get { return GetConfig<string>("app.name", "ROBOUTIL"); } }
+        public string APP_DOMAIN { get { return GetConfig<string>("app.domain", "RoboUtil"); } }
+        public string MASTER_JOBMANAGER { get { return GetConfig<string>("master.jobmanager", "N/A"); } }
+        #endregion
 
-
+        #region File reload monitor
+        //TODO: atilla when configuration loading, it gets file modified date
+        //every one minute one thread compare filemodification date, and decide reloading
         #endregion
     }
 }
