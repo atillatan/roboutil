@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboUtil", "RoboUtil\RoboUt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboUtil.Tests", "RoboUtil.Tests\RoboUtil.Tests.csproj", "{22763638-0430-49A0-B82C-05A2ACEDE10F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboUtil.Examples", "RoboUtil.Examples\RoboUtil.Examples.csproj", "{33602E45-9455-41BE-84E3-CFE4969BACDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{22763638-0430-49A0-B82C-05A2ACEDE10F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22763638-0430-49A0-B82C-05A2ACEDE10F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22763638-0430-49A0-B82C-05A2ACEDE10F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33602E45-9455-41BE-84E3-CFE4969BACDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33602E45-9455-41BE-84E3-CFE4969BACDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33602E45-9455-41BE-84E3-CFE4969BACDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33602E45-9455-41BE-84E3-CFE4969BACDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
