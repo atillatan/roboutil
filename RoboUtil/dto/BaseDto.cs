@@ -19,7 +19,7 @@ namespace RoboUtil.dto
         {
             IsActive = true;
         }
-        public int Pk { get; set; }
+        public int Id { get; set; }
         public DateTime? DtCreated { get; set; }
         public int CreatedBy { get; set; }
         public DateTime? DtUpdated { get; set; }
@@ -37,7 +37,7 @@ namespace RoboUtil.dto
 
         protected T BaseCopy<T>(BaseDto dto) where T : class
         {
-            dto.Pk = this.Pk;
+            dto.Id = this.Id;
             dto.DtCreated = this.DtCreated;
             dto.CreatedBy = this.CreatedBy;
             dto.DtUpdated = this.DtUpdated;
@@ -52,7 +52,7 @@ namespace RoboUtil.dto
 
             BaseDto baseDto = obj as BaseDto;
             if (baseDto != null)
-                return this.Pk.CompareTo(baseDto.Pk);
+                return this.Id.CompareTo(baseDto.Id);
             else
                 throw new ArgumentException("Object is not a BaseDto");
         }
@@ -63,11 +63,11 @@ namespace RoboUtil.dto
             if (baseDto == null)
                 return false;
             else
-                return Pk.Equals(baseDto.Pk);
+                return Id.Equals(baseDto.Id);
         }
         public override int GetHashCode()
         {
-            return this.Pk.GetHashCode();
+            return this.Id.GetHashCode();
         }
 
         public  T CreateInstance<T>()

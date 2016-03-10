@@ -73,7 +73,7 @@ namespace RoboUtil.dto
 
         public override int GetHashCode()
         {
-            return Pk.GetHashCode();
+            return UserName.GetHashCode();
         }
 
     }
