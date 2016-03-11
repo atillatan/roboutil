@@ -102,6 +102,7 @@
     <Compile Include="utils\HtmlUtil.cs" />
     <Compile Include="utils\MailUtil.cs" />
     <Compile Include="utils\NetworkUtil.cs" />
+    <Compile Include="utils\ReflectionUtil.cs" />
     <Compile Include="utils\RegExUtil.cs" />
     <Compile Include="utils\ValidationUtil.cs" />
     <Compile Include="utils\WebServiceUtil.cs" />

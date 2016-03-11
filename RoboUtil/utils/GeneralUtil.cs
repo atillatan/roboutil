@@ -283,5 +283,13 @@ namespace RoboUtil.utils
             }
         }
 
+        private static void Loop<T>(T item, Action<T> action, int iterations = 1000000)
+        {
+            for (int i = 0; i < iterations; i++)
+            {
+                action(item);
+            }
+        }
+
     }
 }
