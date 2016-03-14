@@ -35,9 +35,9 @@ namespace RoboUtil.Examples
             //UserDto dto2 = dto1.Copy<UserDto
 
             
-            SqlConnection Connection = new SqlConnection("Data Source=80.251.41.233;Initial Catalog=campus;Persist Security Info=True;User ID=sa;Password=Au2014*-;MultipleActiveResultSets=True;");
+            SqlConnection Connection = new SqlConnection("***;");
 
-            using (SqlConnection readConnection = new SqlConnection("Data Source=80.251.41.233;Initial Catalog=campus;Persist Security Info=True;User ID=sa;Password=Au2014*-;MultipleActiveResultSets=True;"))
+            using (SqlConnection readConnection = new SqlConnection("***"))
             {
 
 
