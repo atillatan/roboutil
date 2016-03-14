@@ -8,7 +8,7 @@ using System.Dynamic;
 
 namespace RoboUtil.utils
 {
-    public static class ExpandoObjectMapper
+    public static class ExpandoObjectMapperUtil
     {
         public static T Map<T>(dynamic obj)
         {

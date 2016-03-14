@@ -96,7 +96,7 @@
     <Compile Include="utils\CryptoUtil.cs" />
     <Compile Include="utils\CSVUtil.cs" />
     <Compile Include="utils\DateTimeUtil.cs" />
-    <Compile Include="utils\ExpandoObjectMapper.cs" />
+    <Compile Include="utils\ExpandoObjectMapperUtil.cs" />
     <Compile Include="utils\ExpressionExtensionUtil.cs" />
     <Compile Include="utils\ExtensionUtil.cs" />
     <Compile Include="utils\FileUtil.cs" />
