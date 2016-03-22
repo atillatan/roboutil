@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace RoboUtil.utils
 {
-    public static class ExpressionExtensionUtil
+    public static class ExpressionUtil
     {
         public static IEnumerable<object> ExtractConstants<T>(this Expression<Action<T>> expression)
         {
