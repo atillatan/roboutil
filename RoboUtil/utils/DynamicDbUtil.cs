@@ -79,15 +79,15 @@ namespace RoboUtil.Utils
         #region extended methods
         public static T Get<T>(SqlConnection connection, string commandText, params object[] args)
         {
-            return ExpandoObjectMapper.Map<T>(Get(connection, commandText, args));
+            return ExpandoObjectMapperUtil.Map<T>(Get(connection, commandText, args));
         }
         public static List<T> List<T>(SqlConnection connection, string commandText, params object[] args)
         {
-            return ExpandoObjectMapper.ToMap<T>(List(connection, commandText, args));
+            return ExpandoObjectMapperUtil.ToMap<T>(List(connection, commandText, args));
         }
         public static List<T> List<T>(SqlConnection connection, string commandText, int pageIndex, int PageCount, string sortExpression, params object[] args)
         {
-            return ExpandoObjectMapper.ToMap<T>(List(connection, commandText, pageIndex, PageCount, args));
+            return ExpandoObjectMapperUtil.ToMap<T>(List(connection, commandText, pageIndex, PageCount, args));
         }
         public static int Execute(SqlConnection connection, SqlTransaction transaction, string commandText,CommandType commandType, params object[] args)
         {

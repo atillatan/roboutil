@@ -210,13 +210,13 @@ namespace RoboUtil.utils
     {
         class DbReaderMappingConfig : IMappingConfigurator
         {
-            class ReaderValuesExtrator<T>
+            class ReaderValuesExtrator<Ty>
             {
-                public Func<int, DbDataReader, T> valueExtractor;
+                public Func<int, DbDataReader, Ty> valueExtractor;
                 public int fieldNum;
                 public string fieldName;
 
-                public ReaderValuesExtrator(string fieldName, Func<int, DbDataReader, T> valueExtractor)
+                public ReaderValuesExtrator(string fieldName, Func<int, DbDataReader, Ty> valueExtractor)
                 {
                     fieldNum = -1;
                     this.fieldName = fieldName;
@@ -227,23 +227,23 @@ namespace RoboUtil.utils
                 {
                     get
                     {
-                        return (ValueGetter<T>)
+                        return (ValueGetter<Ty>)
                             (
                                 (value, state) =>
                                 {
-                                    return ValueToWrite<T>.ReturnValue(GetValue((DbDataReader)state));
+                                    return ValueToWrite<Ty>.ReturnValue(GetValue((DbDataReader)state));
                                 }
                             );
                     }
                 }
 
-                private T GetValue(DbDataReader reader)
+                private Ty GetValue(DbDataReader reader)
                 {
                     if (fieldNum == -1)
                     {
                         fieldNum = reader.GetOrdinal(fieldName);
                     }
-                    return reader.IsDBNull(fieldNum) ? default(T) : valueExtractor(fieldNum, reader);
+                    return reader.IsDBNull(fieldNum) ? default(Ty) : valueExtractor(fieldNum, reader);
                 }
             }
 
