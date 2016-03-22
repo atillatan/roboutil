@@ -17,7 +17,7 @@ namespace RoboUtil.Utils
     public class DynamicDbUtil
     {
         public static SqlConnection CreateConnection(string connectionString)
-        {             
+        {
             return new SqlConnection(connectionString);
         }
         #region base methods
@@ -28,7 +28,10 @@ namespace RoboUtil.Utils
             using (SqlCommand sqlCommand = CreateSqlCommand(connection, null, CommandType.Text, commandText, args))
             {
                 SqlDataReader reader = sqlCommand.ExecuteReader();
-                result = MapToExpandoObject(reader);
+                if (reader.HasRows && reader.Read())
+                {
+                    result = MapToExpandoObject(reader);
+                }
                 reader.Close();
             }
             return result;
@@ -40,9 +43,12 @@ namespace RoboUtil.Utils
             using (SqlCommand sqlCommand = CreateSqlCommand(connection, null, CommandType.Text, commandText, args))
             {
                 SqlDataReader reader = sqlCommand.ExecuteReader();
-                while (reader.HasRows)
+                if (reader.HasRows)
                 {
-                    result.Add(MapToExpandoObject(reader));
+                    while (reader.Read())
+                    {
+                        result.Add(MapToExpandoObject(reader));
+                    }
                 }
                 reader.Close();
             }
@@ -89,7 +95,7 @@ namespace RoboUtil.Utils
         {
             return ExpandoObjectMapperUtil.ToMap<T>(List(connection, commandText, pageIndex, PageCount, args));
         }
-        public static int Execute(SqlConnection connection, SqlTransaction transaction, string commandText,CommandType commandType, params object[] args)
+        public static int Execute(SqlConnection connection, SqlTransaction transaction, string commandText, CommandType commandType, params object[] args)
         {
             using (SqlCommand sqlCommand = CreateSqlCommand(connection, transaction, commandType, commandText, args))
             {
@@ -102,37 +108,37 @@ namespace RoboUtil.Utils
         #region private methods
         private static dynamic MapToExpandoObject(SqlDataReader reader)
         {
-            dynamic result = null;
+            dynamic result = new ExpandoObject();
 
-            if (reader.HasRows) result = new ExpandoObject();
+            //if (reader.HasRows) result = new ExpandoObject();
 
-            if (reader.Read())
+            //if (reader.Read())
+            //{
+            if (reader.FieldCount == 1)
             {
-                if (reader.FieldCount == 1)
+                result = (!(reader[0] is DBNull) ? reader[0] : null);
+            }
+            else
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
                 {
-                    result = (!(reader[0] is DBNull) ? reader[0] : null);
-                }
-                else
-                {
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        string[] fields = reader.GetName(i).Split('.');
+                    string[] fields = reader.GetName(i).Split('.');
 
-                        if (fields.Length == 1)
+                    if (fields.Length == 1)
+                    {
+                        (result as IDictionary<string, object>)[fields[0]] = (!(reader[i] is DBNull) ? reader[i] : null);
+                    }
+                    else
+                    {
+                        if ((!(reader[i] is DBNull) ? reader[i] : null) != null)
                         {
-                            (result as IDictionary<string, object>)[fields[0]] = (!(reader[i] is DBNull) ? reader[i] : null);
-                        }
-                        else
-                        {
-                            if ((!(reader[i] is DBNull) ? reader[i] : null) != null)
-                            {
-                                (result as IDictionary<string, object>)[fields[0]] = MapToExpandoObject(fields.Where(f => f != fields[0]).ToArray(), (!(reader[i] is DBNull) ? reader[i] : null),
-                                    (result as IDictionary<string, object>).Keys.Contains(fields[0]) ? (result as IDictionary<string, object>)[fields[0]] : new ExpandoObject());
-                            }
+                            (result as IDictionary<string, object>)[fields[0]] = MapToExpandoObject(fields.Where(f => f != fields[0]).ToArray(), (!(reader[i] is DBNull) ? reader[i] : null),
+                                (result as IDictionary<string, object>).Keys.Contains(fields[0]) ? (result as IDictionary<string, object>)[fields[0]] : new ExpandoObject());
                         }
                     }
                 }
             }
+            //}
 
             return result;
         }

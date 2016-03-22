@@ -35,30 +35,15 @@ namespace RoboUtil.Examples
             //UserDto dto2 = dto1.Copy<UserDto
 
 
-            SqlConnection Connection = new SqlConnection("Data Source=80.251.41.233;Initial Catalog=campus;Persist Security Info=True;User ID=sa;Password=Au2014*-;MultipleActiveResultSets=True;");
+          
+            SqlConnection Connection = new SqlConnection(@"Data Source=.\SQLEXPRESS; Initial Catalog=EXA;Integrated Security=True;Pooling=True");
 
-            using (SqlConnection readConnection = new SqlConnection("Data Source=80.251.41.233;Initial Catalog=campus;Persist Security Info=True;User ID=sa;Password=Au2014*-;MultipleActiveResultSets=True;"))
+            using (SqlConnection readConnection = new SqlConnection(@"Data Source=.\SQLEXPRESS; Initial Catalog=EXA;Integrated Security=True;Pooling=True"))
             {
-
-
-
-                dynamic x = DynamicDbUtil.Get(readConnection, @"
-                SELECT 
-                       Ad [Adi]
-                      ,Soyad [Soyadi]
-                      ,KullaniciAd [UserName]
-                      ,Sifre [Password]
-                      ,kd.AnneAdi [KullaniciDetay.AnneAdi]                   
-                  FROM campus.dbo.Kullanici k
-                  join dbo.KullaniciDetay kd on k.No=kd.No
-                  where k.No={0}
-                ", 124);
-
+                dynamic x = DynamicDbUtil.List(readConnection, "select Id,StringVar,IntVar,DateTimeVar from Example");
+                dynamic x21 = DynamicDbUtil.List(readConnection, "select Id,StringVar,IntVar,DateTimeVar from Example where Id={0}",1);
 
                 UserDto y = ExpandoObjectMapperUtil.Map<UserDto>(x);
-
-
-
 
                 UserDto xy = DynamicDbUtil.Get<UserDto>(readConnection, @"
                 SELECT 
@@ -133,7 +118,7 @@ namespace RoboUtil.Examples
                   FROM campus.dbo.Kullanici k               
                   where k.No<{0}
                 ", 124);
-                }
+            }
 
 
             //GeneralUtil.Clone<string>("asdfadsf");
