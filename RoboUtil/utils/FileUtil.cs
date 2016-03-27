@@ -626,7 +626,7 @@ namespace RoboUtil.utils
 
         //public static string GetCurrentDir()
         //{
-        //    return AtiUtil.AtiUtilManager.Instance.AUtilConfig.CurrentDir;
+        //    return AtiUtil.AtiUtilManager.Current.AUtilConfig.CurrentDir;
         //}
 
     }

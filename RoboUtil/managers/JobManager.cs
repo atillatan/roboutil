@@ -6,10 +6,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using log4net.Repository.Hierarchy;
-using Quartz;
-using Quartz.Impl;
-using Quartz.Impl.Calendar;
+//using log4net.Repository.Hierarchy;
+//using Quartz;
+//using Quartz.Impl;
+//using Quartz.Impl.Calendar;
 
 namespace RoboUtil.managers
 {
@@ -25,7 +25,7 @@ namespace RoboUtil.managers
             //isMasterScheduleJobManager = true;//Atilla, production da değişecek false olacak;
             //#endif
 
-            string hostName = ConfigManager.Instance.MASTER_JOBMANAGER;
+            string hostName = ConfigManager.Current.MASTER_JOBMANAGER;
 
             if (System.Net.Dns.GetHostName().Equals(hostName, System.StringComparison.CurrentCultureIgnoreCase))
             {
@@ -58,23 +58,23 @@ namespace RoboUtil.managers
                 return;
             }
 
-            NameValueCollection properties = new NameValueCollection();
-            properties["quartz.scheduler.instanceName"] = "UsisScheduler";
-            properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
-            properties["quartz.threadPool.threadCount"] = "10";
-            properties["quartz.threadPool.threadPriority"] = "Normal";
-            properties["quartz.jobStore.type"] = "Quartz.Simpl.RAMJobStore, Quartz";
-            properties["quartz.plugin.xml.type"] = "Quartz.Plugin.Xml.XMLSchedulingDataProcessorPlugin, Quartz";
-            properties["quartz.plugin.xml.fileNames"] = System.Web.HttpContext.Current != null ?
-                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheduler.xml") :
-                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Scheduler.xml");
-            ISchedulerFactory sf = new StdSchedulerFactory(properties);
-            IScheduler sched = sf.GetScheduler();
-            var dailyCalendar = new DailyCalendar("00:01", "23:59");
-            dailyCalendar.InvertTimeRange = true;
-            sched.AddCalendar("cal1", dailyCalendar, false, false);
-            //Logger.Info("Quartz Scheduler Initialization Complete");
-            sched.Start();
+            //NameValueCollection properties = new NameValueCollection();
+            //properties["quartz.scheduler.instanceName"] = "UsisScheduler";
+            //properties["quartz.threadPool.type"] = "Quartz.Simpl.SimpleThreadPool, Quartz";
+            //properties["quartz.threadPool.threadCount"] = "10";
+            //properties["quartz.threadPool.threadPriority"] = "Normal";
+            //properties["quartz.jobStore.type"] = "Quartz.Simpl.RAMJobStore, Quartz";
+            //properties["quartz.plugin.xml.type"] = "Quartz.Plugin.Xml.XMLSchedulingDataProcessorPlugin, Quartz";
+            //properties["quartz.plugin.xml.fileNames"] = System.Web.HttpContext.Current != null ?
+            //     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scheduler.xml") :
+            //     Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Scheduler.xml");
+            //ISchedulerFactory sf = new StdSchedulerFactory(properties);
+            //IScheduler sched = sf.GetScheduler();
+            //var dailyCalendar = new DailyCalendar("00:01", "23:59");
+            //dailyCalendar.InvertTimeRange = true;
+            //sched.AddCalendar("cal1", dailyCalendar, false, false);
+            ////Logger.Info("Quartz Scheduler Initialization Complete");
+            //sched.Start();
             //Logger.Info("Quartz Scheduler Started");
             //Logger.Info("Quartz Scheduler Shutdown");
             //sched.Shutdown(true);

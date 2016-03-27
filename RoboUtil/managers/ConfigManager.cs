@@ -12,23 +12,21 @@ using RoboUtil.utils;
 
 namespace RoboUtil.managers
 {
+
+
     /// <summary>
-    /// bu class configPath deki dosyayi monitor edecek ve degisiklik olursa direk reload edecek
+    /// this class will be monitor configFile info
     /// </summary>
     public class ConfigManager
     {
         #region Singleton Implementation
-
         private static ConfigManager _configManager = null;
-
         private static readonly object SyncRoot = new Object();
-
         private ConfigManager()
         {
             Initialize();
         }
-
-        public static ConfigManager Instance
+        public static ConfigManager Current
         {
             get
             {
@@ -43,20 +41,14 @@ namespace RoboUtil.managers
                 return _configManager;
             }
         }
-
         #endregion Singleton Implementation
-        public static string ConfigurationPath { get; set; }
-        private ConcurrentDictionary<string, string> _configCache;
-        public ConcurrentDictionary<string, string> Configurations
-        {
-            get
-            {
-                return _configCache;
-            }
-        }
+
+        public static FileInfo ConfigFileInfo { get;   }
+        private ConcurrentDictionary<string, string> _configurations;
+        public ConcurrentDictionary<string, string> Configurations{get{return _configurations; }}
         private void Initialize()
         {
-            _configCache = new ConcurrentDictionary<string, string>();
+            _configurations = new ConcurrentDictionary<string, string>();
         }
 
         #region Loading Configurations 
@@ -66,10 +58,10 @@ namespace RoboUtil.managers
 
             foreach (string key in nv)
             {
-                _configCache.TryAdd(key, nv[key]);
+                _configurations.TryAdd(key, nv[key]);
             }
         }
-        public void LoadConfiguration(FileInfo configFileInfo)
+        public void Configure(FileInfo configFileInfo)
         {
             if (configFileInfo.IsNullOrEmpty()) throw new FileNotFoundException("configFileInfo does not exist!");
             if (configFileInfo.Exists) throw new FileNotFoundException("configFileInfo path does not exist!");
@@ -81,21 +73,20 @@ namespace RoboUtil.managers
         {
             NameValueCollection nv = (NameValueCollection)ConfigurationManager.GetSection(sectionNameInAppConfigurationFile);
             LoadConfiguration(nv);
-
         }
         #endregion
 
         #region Get generic config
         public T GetConfig<T>(string key, T defaultVal)
         {
-            return _configCache.ContainsKey(key) ? _configCache[key].Convert<T>() : defaultVal;
+            return _configurations.ContainsKey(key) ? _configurations[key].Convert<T>() : defaultVal;
         }
 
         public T GetConfig<T>(string key) where T : class
         {
-            if (_configCache.ContainsKey(key))
+            if (_configurations.ContainsKey(key))
             {
-                return _configCache[key].Convert<T>();
+                return _configurations[key].Convert<T>();
             }
             return null;
         }
@@ -111,5 +102,8 @@ namespace RoboUtil.managers
         //TODO: atilla when configuration loading, it gets file modified date
         //every one minute one thread compare filemodification date, and decide reloading
         #endregion
+
+   
     }
+  
 }
