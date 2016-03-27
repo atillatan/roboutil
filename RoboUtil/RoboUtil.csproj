@@ -71,6 +71,7 @@
     <Compile Include="managers\cache\MemoryCacheHandler.cs" />
     <Compile Include="managers\cache\ThreadState.cs" />
     <Compile Include="managers\ConfigManager.cs" />
+    <Compile Include="managers\FileChangeMonitor.cs" />
     <Compile Include="utils\DatabaseUtil.cs" />
     <Compile Include="utils\DynamicDbUtil.cs" />
     <Compile Include="managers\JobManager.cs" />
