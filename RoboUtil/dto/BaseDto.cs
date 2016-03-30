@@ -19,12 +19,19 @@ namespace RoboUtil.dto
         {
             IsActive = true;
         }
+        [DataMember]
         public int Id { get; set; }
+        [DataMember]
         public DateTime? DtCreated { get; set; }
+        [DataMember]
         public int CreatedBy { get; set; }
+        [DataMember]
         public DateTime? DtUpdated { get; set; }
+        [DataMember]
         public int? UpdatedBy { get; set; }
+        [DataMember]
         public bool? IsActive { get; set; }
+       
         public abstract string ToDescription();
         public void OnDeserialization(Object o)
         {

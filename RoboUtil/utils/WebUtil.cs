@@ -101,7 +101,7 @@ namespace RoboUtil.utils
             catch (Exception e)
             {
                 Console.WriteLine("Hata: " + request.Address.ToString());
-                throw e;
+                throw;
             }
             finally
             {
@@ -174,7 +174,7 @@ namespace RoboUtil.utils
                 {
                     staticResponse = new StaticResponse(HttpStatusCode.NotFound);
                 }
-                //throw e;
+                //throw;
             }
             finally
             {

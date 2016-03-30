@@ -63,8 +63,8 @@ namespace RoboUtil.managers
         }
         public void Configure(FileInfo configFileInfo)
         {
-            if (configFileInfo.IsNullOrEmpty()) throw new FileNotFoundException("configFileInfo does not exist!");
-            if (configFileInfo.Exists) throw new FileNotFoundException("configFileInfo path does not exist!");
+            if (configFileInfo==null) throw new FileNotFoundException("configFileInfo does not exist!");
+            if (!configFileInfo.Exists) throw new FileNotFoundException("configFileInfo path does not exist!");
 
             NameValueCollection nvc = XmlUtil.ReadNameValueXml("configuration", configFileInfo.FullName);
             LoadConfiguration(nvc);
@@ -93,9 +93,9 @@ namespace RoboUtil.managers
         #endregion
 
         #region All Configurations
-        public string APP_NAME { get { return GetConfig<string>("app.name", "ROBOUTIL"); } }
-        public string APP_DOMAIN { get { return GetConfig<string>("app.domain", "RoboUtil"); } }
-        public string MASTER_JOBMANAGER { get { return GetConfig<string>("master.jobmanager", "N/A"); } }
+        //public string APP_NAME { get { return GetConfig<string>("app.name", "ROBOUTIL"); } }
+        //public string APP_DOMAIN { get { return GetConfig<string>("app.domain", "RoboUtil"); } }
+        //public string MASTER_JOBMANAGER { get { return GetConfig<string>("master.jobmanager", "N/A"); } }
         #endregion
 
         #region File reload monitor

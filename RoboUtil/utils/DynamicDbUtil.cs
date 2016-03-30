@@ -12,7 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace RoboUtil.Utils
+namespace RoboUtil.utils
 {
     public class DynamicDbUtil
     {

@@ -142,10 +142,10 @@ namespace RoboUtil.utils
                         catch (Exception exx)
                         {
                             System.Diagnostics.Debug.WriteLine(exx.Message + exx.StackTrace);
-                            throw exx;
+                            throw;
                         }
                         System.Diagnostics.Debug.WriteLine(ex2.Message + ex2.StackTrace);
-                        throw ex2;
+                        throw;
                     }
                 }
                 else
@@ -157,7 +157,7 @@ namespace RoboUtil.utils
                     catch (Exception ex3)
                     {
                         System.Diagnostics.Debug.WriteLine(ex3.Message + ex3.StackTrace);
-                        throw ex3;
+                        throw;
                     }
                 }
                 isDeleted = true;
@@ -278,7 +278,7 @@ namespace RoboUtil.utils
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex.Message + ex.StackTrace);
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -295,7 +295,7 @@ namespace RoboUtil.utils
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex.Message + ex.StackTrace);
-                    throw ex;
+                    throw;
                 }
             }
             // copy directories
@@ -323,7 +323,7 @@ namespace RoboUtil.utils
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex.Message + ex.StackTrace);
-                    throw ex;
+                    throw;
                 }
             }
             else
@@ -335,7 +335,7 @@ namespace RoboUtil.utils
                 catch (Exception ex2)
                 {
                     System.Diagnostics.Debug.WriteLine(ex2.Message + ex2.StackTrace);
-                    throw ex2;
+                    throw;
                 }
             }
         }
@@ -541,23 +541,7 @@ namespace RoboUtil.utils
             return result;
         }
 
-        /// <summary>
-        /// Get FileInfo
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static FileInfo GetFileInfo(string path)
-        {
-            if (FileUtil.isExist(path))
-            {
-                return new FileInfo(path);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
+ 
         public static string TryFixFilePath(string path)
         {
             string currentDir = System.AppDomain.CurrentDomain.BaseDirectory;

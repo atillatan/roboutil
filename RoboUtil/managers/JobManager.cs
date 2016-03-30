@@ -25,7 +25,7 @@ namespace RoboUtil.managers
             //isMasterScheduleJobManager = true;//Atilla, production da değişecek false olacak;
             //#endif
 
-            string hostName = ConfigManager.Current.MASTER_JOBMANAGER;
+            string hostName = ConfigManager.Current.GetConfig<string>("master.schedule.job.servername");
 
             if (System.Net.Dns.GetHostName().Equals(hostName, System.StringComparison.CurrentCultureIgnoreCase))
             {

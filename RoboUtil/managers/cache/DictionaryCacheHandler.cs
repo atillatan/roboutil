@@ -294,7 +294,7 @@ namespace RoboUtil.managers.cache
             catch (Exception ex1)
             {
                 Console.WriteLine(ex1.Message, ex1);
-                throw ex1;
+                throw;
             }
         }
         private void TimerTask(object stateObj)

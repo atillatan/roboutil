@@ -30,12 +30,12 @@
 //            catch (UsisException ex)
 //            {
 //                Logger.Error(ex.Message);
-//                throw ex;
+//                throw;
 //            }
 //            catch (Exception ex)
 //            {
 //                Logger.Error("hata:", ex);
-//                throw ex;
+//                throw;
 //            }
 //            return message;
 //        }
@@ -58,12 +58,12 @@
 //            catch (UsisException ex)
 //            {
 //                Logger.Error(ex.Message);
-//                throw ex;
+//                throw;
 //            }
 //            catch (Exception ex)
 //            {
 //                Logger.Error("hata:", ex);
-//                throw ex;
+//                throw;
 //            }
 //            return message;
 //        }
@@ -86,12 +86,12 @@
 //            catch (UsisException ex)
 //            {
 //                Logger.Error(ex.Message);
-//                throw ex;
+//                throw;
 //            }
 //            catch (Exception ex)
 //            {
 //                Logger.Error("hata:", ex);
-//                throw ex;
+//                throw;
 //            }
 //            return message;
 //        }
@@ -114,12 +114,12 @@
 //            catch (UsisException ex)
 //            {
 //                Logger.Error(ex.Message);
-//                throw ex;
+//                throw;
 //            }
 //            catch (Exception ex)
 //            {
 //                Logger.Error("hata:", ex);
-//                throw ex;
+//                throw;
 //            }
 //            return message;
 //        }
@@ -137,12 +137,12 @@
 //            catch (UsisException ex)
 //            {
 //                Logger.Error(ex.Message);
-//                throw ex;
+//                throw;
 //            }
 //            catch (Exception ex)
 //            {
 //                Logger.Error("hata:", ex);
-//                throw ex;
+//                throw;
 //            }
 //            return message;
 //        }
@@ -165,12 +165,12 @@
 //            catch (UsisException ex)
 //            {
 //                Logger.Error(ex.Message);
-//                throw ex;
+//                throw;
 //            }
 //            catch (Exception ex)
 //            {
 //                Logger.Error("hata:", ex);
-//                throw ex;
+//                throw;
 //            }
 //            return message;
 //        }
