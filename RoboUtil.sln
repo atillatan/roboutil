@@ -3,31 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboUtil", "RoboUtil\RoboUtil.csproj", "{C5979A19-782B-46F7-83EE-F59B0399FBEF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboUtil.Examples", "RoboUtil.Examples\RoboUtil.Examples.csproj", "{33602E45-9455-41BE-84E3-CFE4969BACDA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboUtil.Tests", "RoboUtil.Tests\RoboUtil.Tests.csproj", "{22763638-0430-49A0-B82C-05A2ACEDE10F}"
-EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C5979A19-782B-46F7-83EE-F59B0399FBEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5979A19-782B-46F7-83EE-F59B0399FBEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5979A19-782B-46F7-83EE-F59B0399FBEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5979A19-782B-46F7-83EE-F59B0399FBEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33602E45-9455-41BE-84E3-CFE4969BACDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33602E45-9455-41BE-84E3-CFE4969BACDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33602E45-9455-41BE-84E3-CFE4969BACDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33602E45-9455-41BE-84E3-CFE4969BACDA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22763638-0430-49A0-B82C-05A2ACEDE10F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22763638-0430-49A0-B82C-05A2ACEDE10F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22763638-0430-49A0-B82C-05A2ACEDE10F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22763638-0430-49A0-B82C-05A2ACEDE10F}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

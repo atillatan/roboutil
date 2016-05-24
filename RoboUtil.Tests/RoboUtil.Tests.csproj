@@ -59,12 +59,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RoboUtil\RoboUtil.csproj">
-      <Project>{c5979a19-782b-46f7-83ee-f59b0399fbef}</Project>
-      <Name>RoboUtil</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
