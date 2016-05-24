@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net461": {
+      "wrappedProject": "../../RoboUtil/RoboUtil.csproj",
+      "bin": {
+        "assembly": "../../RoboUtil/obj/{configuration}/RoboUtil.dll",
+        "pdb": "../../RoboUtil/obj/{configuration}/RoboUtil.pdb"
+      },
+      "dependencies": {
+        "Common.Logging": "3.3.1",
+        "Common.Logging.Core": "3.3.1",
+        "EmitMapper": "1.0.0",
+        "log4net": "2.0.5",
+        "Quartz": "2.3.3"
+      }
+    },
+    "net46": {
+      "wrappedProject": "../../RoboUtil/RoboUtil.csproj",
+      "bin": {
+        "assembly": "../../RoboUtil/obj/{configuration}/RoboUtil.dll",
+        "pdb": "../../RoboUtil/obj/{configuration}/RoboUtil.pdb"
+      },
+      "dependencies": {
+        "Common.Logging": "3.3.1",
+        "Common.Logging.Core": "3.3.1",
+        "EmitMapper": "1.0.0",
+        "log4net": "2.0.5",
+        "Quartz": "2.3.3"
+      }
+    }
+  }
+}

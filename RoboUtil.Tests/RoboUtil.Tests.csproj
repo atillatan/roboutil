@@ -57,12 +57,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="TestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThreadPoolManagerTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RoboUtil\RoboUtil.csproj">

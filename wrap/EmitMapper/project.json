@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net461": {
+      "bin": {
+        "assembly": "../../../au/packages/EmitMapper.1.0.0/lib/EmitMapper.dll"
+      }
+    },
+    "net46": {
+      "bin": {
+        "assembly": "../../../USIS/Usis/Usis/packages/lib/EmitMapper.dll",
+        "pdb": "../../../USIS/Usis/Usis/packages/lib/EmitMapper.pdb"
+      }
+    }
+  }
+}

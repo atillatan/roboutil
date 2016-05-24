@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EmitMapper">
-      <HintPath>..\..\USIS\Usis\Usis\packages\lib\EmitMapper.dll</HintPath>
+      <HintPath>..\..\USIS\Usis\Main\packages\lib\EmitMapper.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\USIS\Usis\Usis\packages\lib\log4net.dll</HintPath>
@@ -52,61 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dto\BaseDto.cs" />
-    <Compile Include="dto\UserDto.cs" />
-    <Compile Include="managers\AuditLogManager.cs" />
-    <Compile Include="managers\AuthenticationManager.cs" />
-    <Compile Include="managers\AuthorizationManager.cs" />
-    <Compile Include="managers\CacheManager.cs" />
-    <Compile Include="managers\cache\CacheItem.cs" />
-    <Compile Include="managers\cache\CacheProperties.cs" />
-    <Compile Include="managers\cache\DictionaryCacheHandler.cs" />
-    <Compile Include="managers\cache\ICache.cs" />
-    <Compile Include="managers\cache\MemoryCacheHandler.cs" />
-    <Compile Include="managers\cache\ThreadState.cs" />
-    <Compile Include="managers\ConfigManager.cs" />
-    <Compile Include="managers\FileChangeMonitor.cs" />
-    <Compile Include="utils\DatabaseUtil.cs" />
-    <Compile Include="utils\DynamicDbUtil.cs" />
-    <Compile Include="managers\JobManager.cs" />
-    <Compile Include="managers\LocalizationManager.cs" />
-    <Compile Include="managers\LogManager.cs" />
-    <Compile Include="managers\MailManager.cs" />
-    <Compile Include="managers\NoSqlManager.cs" />
-    <Compile Include="managers\RedisManager.cs" />
-    <Compile Include="managers\SessionManager.cs" />
-    <Compile Include="managers\ThreadManager.cs" />
-    <Compile Include="managers\ThreadPoolManager.cs" />
-    <Compile Include="managers\thread\Dispatcher.cs" />
-    <Compile Include="managers\thread\ThreadSafe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="utils\CryptoUtil.cs" />
-    <Compile Include="utils\CSVUtil.cs" />
-    <Compile Include="utils\DateTimeUtil.cs" />
-    <Compile Include="utils\ExpandoObjectMapperUtil.cs" />
-    <Compile Include="utils\ExpressionUtil.cs" />
-    <Compile Include="utils\ExtensionUtil.cs" />
-    <Compile Include="utils\FileUtil.cs" />
-    <Compile Include="utils\GeneralUtil.cs" />
-    <Compile Include="utils\HtmlUtil.cs" />
-    <Compile Include="utils\MailUtil.cs" />
-    <Compile Include="utils\NetworkUtil.cs" />
-    <Compile Include="utils\ReflectionUtil.cs" />
-    <Compile Include="utils\RegExUtil.cs" />
-    <Compile Include="utils\ValidationUtil.cs" />
-    <Compile Include="utils\WebServiceUtil.cs" />
-    <Compile Include="utils\WebUtil.cs" />
-    <Compile Include="utils\XmlUtil.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="managers\db\" />
-    <Folder Include="managers\nosql\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)PostBuild.cmd $(SolutionDir) $(ProjectDir)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
