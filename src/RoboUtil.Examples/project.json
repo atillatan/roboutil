@@ -1,0 +1,35 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "RoboUtil.Examples Console Application",
+  "authors": [ "Atilla" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+  },
+
+  "commands": {
+    "RoboUtil.Examples": "RoboUtil.Examples"
+  },
+
+  "frameworks": {
+    "dnx46": {
+      "dependencies": {
+        "RoboUtil": "1.0.0-*"
+      },
+      "frameworkAssemblies": {
+        "System.ServiceModel": "4.0.0.0",
+        "System.Runtime.Serialization": "4.0.0.0",
+        "System.Data": "4.0.0.0",
+        "System.Configuration": "4.0.0.0",
+        "System.Runtime.Caching": "4.0.0.0",
+        "System.Web": "4.0.0.0"
+      }
+    }
+  }
+}

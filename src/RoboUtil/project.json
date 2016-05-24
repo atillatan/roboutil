@@ -1,0 +1,28 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "RoboUtil Class Library",
+  "authors": [ "Atilla" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "dnx46": {
+      "dependencies": {
+        "Microsoft.AspNet.Mvc": "6.0.0-rc1-final"
+      },
+      "frameworkAssemblies": {
+        "System.ServiceModel": "4.0.0.0",
+        "System.Runtime.Serialization": "4.0.0.0",
+        "System.Data": "4.0.0.0",
+        "System.Configuration": "4.0.0.0",
+        "System.Runtime.Caching": "4.0.0.0",
+        "System.Web": "4.0.0.0"
+      }
+    }
+  },
+  "dependencies": {
+    "EmitMapper": "1.0.0",
+    "log4net": "2.0.5",
+    "Newtonsoft.Json": "8.0.3"
+  }
+}

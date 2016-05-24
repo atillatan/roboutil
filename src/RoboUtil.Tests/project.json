@@ -1,0 +1,20 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "RoboUtil.Tests Class Library",
+  "authors": [ "Atilla" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "dependencies": {
+    "RoboUtil": "1.0.0-*",
+    "xunit": "2.1.0-rc2-build3176"
+  },
+  "commands": {
+    "test": "xunit.runner.dnx"
+  },
+  "frameworks": {
+    "dnx46": {
+      
+    }
+  }
+}
