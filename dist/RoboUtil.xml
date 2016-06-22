@@ -1,0 +1,528 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RoboUtil</name>
+    </assembly>
+    <members>
+        <member name="F:RoboUtil.managers.CacheManager._cache">
+            <summary>
+            Thread Safe collection
+            </summary>
+        </member>
+        <member name="P:RoboUtil.managers.CacheManager.Caches">
+            <summary>
+            you must add only thread safe collection, into Caches
+            using Add methods in CacheManager more safe then using Caches.Add()...
+            </summary>
+        </member>
+        <member name="T:RoboUtil.managers.ConfigManager">
+            <summary>
+            this class will be monitor configFile info
+            </summary>
+        </member>
+        <member name="T:RoboUtil.managers.RedisManager">
+            <summary>
+            Takes RedisConf class from constructor, or
+            takes xml  configuration filepath
+            RedisManager alwasy connectin to redis server
+            RedisManager handle all operation with redis
+            </summary>
+        </member>
+        <member name="M:RoboUtil.managers.ThreadPoolManager.CreatePool(System.String,System.Int32,System.Threading.WaitCallback)">
+            <summary>
+            ThreadPoolManager makes easy to use ThreadPools
+            </summary>
+            <param name="poolName">define pool for same jobs</param>
+            <param name="poolSize">define how many Thread will run in pool</param>
+            <param name="callbackMethod">which method will run from every Thread</param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.managers.ThreadPoolHandler.Start">
+            <summary>
+            it start all threads in yout ThreadPool
+            </summary>
+        </member>
+        <member name="M:RoboUtil.managers.ThreadPoolHandler.addJob(System.Object)">
+            <summary>
+            add any type of objects, its will come to your  callback method input
+            </summary>
+            <param name="job">you can use this object, in your callback method</param>
+        </member>
+        <member name="T:RoboUtil.managers.thread.ThreadSafe">
+            <summary>
+            bir isi yapan bir thread yap icindeki method ise yonelik listesini alsin 
+            ve bitirene kadar available olmasin icini bitirince available olsun
+            ana thread, therad leri tarasin available olana elindeki listeden versin
+            
+            </summary>
+        </member>
+        <member name="M:RoboUtil.managers.thread.DoWork.ThreadPoolCallback(System.Object)">
+            <summary>
+            Bu methodun ThreadPool tarafindan cagrilabilmesi icin object parametresi almasi ve void donmesi lazim
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="P:RoboUtil.managers.cache.CacheProperties.CacheItemExpireDuration">
+            <summary>
+            Expire duration for every CacheItem
+            </summary>
+        </member>
+        <member name="P:RoboUtil.managers.cache.CacheProperties.ControlPeriod">
+            <summary>
+            Period for checking item expiration
+            ControlPeriod type:milisecond
+            </summary>
+        </member>
+        <member name="P:RoboUtil.managers.cache.CacheProperties.Capacity">
+            <summary>
+            MemoryCache Capacity(MB) parameter: 100MB
+            DictionaryCache Capacity(maxitem) parameter: maxitem in cache
+            </summary>
+        </member>
+        <member name="P:RoboUtil.managers.cache.CacheProperties.IsSlidingExpiration">
+            <summary>
+            default value is true
+            used only CacheItemExpiration
+            cacheitem expiration reset, every lastusedtime
+            </summary>
+        </member>
+        <member name="T:RoboUtil.managers.cache.DictionaryCacheHandler">
+            <summary>
+            System.Collections.Concurrent.ConcurrentDictionary is threadsafe. Multiple concurrent threads can read and write a ConcurrentDictionary instance. 
+            Internally thread-safety is automatically handled to ensure the cache is updated in a consistent manner.
+            What this might be referring to is that data stored within the cache may itself not be threadsafe.
+            For example if a List is placed in the cache, and two separate threads both get a reference to the cached List, 
+            the two threads will end up stepping on each other if they both attempt to update the list simultaneously.
+            </summary>
+        </member>
+        <member name="M:RoboUtil.managers.cache.DictionaryCacheHandler.Add``1(System.String,``0)">
+            <summary>
+            Insert value into the cacheHandler using
+            appropriate name/value pairs
+            </summary>
+            <typeparam name="T">Type of cached item</typeparam>
+            <param name="value">Item to be cached</param>
+            <param name="key">Name of item</param>
+        </member>
+        <member name="M:RoboUtil.managers.cache.DictionaryCacheHandler.GetValue``1(System.String)">
+            <summary>
+            Retrieve cached item with type of cached item
+            </summary>
+            <typeparam name="T">Type of cached item</typeparam>
+            <param name="key">Name of cached item</param>
+            <returns>Cached item as type</returns>
+        </member>
+        <member name="T:RoboUtil.managers.cache.MemoryCacheHandler">
+            <summary>
+            System.Runtime.Caching.MemoryCache is threadsafe. Multiple concurrent threads can read and write a MemoryCache instance. 
+            Internally thread-safety is automatically handled to ensure the cache is updated in a consistent manner.
+            What this might be referring to is that data stored within the cache may itself not be threadsafe.
+            For example if a List is placed in the cache, and two separate threads both get a reference to the cached List, 
+            the two threads will end up stepping on each other if they both attempt to update the list simultaneously.
+            </summary>
+        </member>
+        <member name="M:RoboUtil.managers.cache.MemoryCacheHandler.Add``1(System.String,``0)">
+            <summary>
+            Insert value into the cacheHandler using
+            appropriate name/value pairs
+            </summary>
+            <typeparam name="T">Type of cached item</typeparam>
+            <param name="value">Item to be cached</param>
+            <param name="key">Name of item</param>
+        </member>
+        <member name="M:RoboUtil.managers.cache.MemoryCacheHandler.GetValue``1(System.String)">
+            <summary>
+            Retrieve cached item
+            </summary>
+            <typeparam name="T">Type of cached item</typeparam>
+            <param name="key">Name of cached item</param>
+            <returns>Cached item as type</returns>
+        </member>
+        <member name="M:RoboUtil.utils.CryptoUtil.Encrypt(System.String)">
+            <summary>
+            Encrypts any string using the Rijndael algorithm.
+            </summary>
+            <param name="inputText">The string to encrypt.</param>
+            <returns>A Base64 encrypted string.</returns>
+        </member>
+        <member name="M:RoboUtil.utils.CryptoUtil.Decrypt(System.String)">
+            <summary>
+            Decrypts a previously encrypted Rijndael algorithm string.
+            </summary>
+            <param name="inputText">The encrypted string to decrypt.</param>
+            <returns>A decrypted string.</returns>
+        </member>
+        <member name="M:RoboUtil.utils.CryptoUtil.GetDecrypted(System.String)">
+            <summary>
+            RSACryptoServiceProvider
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.CryptoUtil.GetEncripted(System.String)">
+            <summary>
+            RSACryptoServiceProvider
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.CryptoUtil.MD5Hash(System.String)">
+            <summary>
+            Encrypts a string using the MD5 hash encryption algorithm.
+            Message Digest is 128-bit and is commonly used to verify data, by checking
+            the 'MD5 checksum' of the data. Information on MD5 can be found at:
+            </summary>
+            <param name="Data">A string containing the data to encrypt.</param>
+            <returns>A string containing the string, encrypted with the MD5 hash.</returns>
+        </member>
+        <member name="M:RoboUtil.utils.CryptoUtil.MD5FileHash(System.String)">
+            <summary>
+            Computes an MD5 hash for the provided file.
+            </summary>
+            <param name="filename">The full path to the file</param>
+            <returns>A hexadecimal encoded MD5 hash for the file.</returns>
+        </member>
+        <member name="M:RoboUtil.utils.CryptoUtil.SHA256Hash(System.String)">
+            <summary>
+            Encrypts a string using the SHA256 (Secure Hash Algorithm) algorithm.
+            Details:
+            This works in the same manner as MD5, providing however 256bit encryption.
+            </summary>
+            <param name="Data">A string containing the data to encrypt.</param>
+            <returns>A string containing the string, encrypted with the SHA256 algorithm.</returns>
+        </member>
+        <member name="M:RoboUtil.utils.CryptoUtil.SHA384Hash(System.String)">
+            <summary>
+            Encrypts a string using the SHA384(Secure Hash Algorithm) algorithm.
+            This works in the same manner as MD5, providing 384bit encryption.
+            </summary>
+            <param name="Data">A string containing the data to encrypt.</param>
+            <returns>A string containing the string, encrypted with the SHA384 algorithm.</returns>
+        </member>
+        <member name="M:RoboUtil.utils.CryptoUtil.SHA512Hash(System.String)">
+            <summary>
+            Encrypts a string using the SHA512 (Secure Hash Algorithm) algorithm.
+            This works in the same manner as MD5, providing 512bit encryption.
+            </summary>
+            <param name="Data">A string containing the data to encrypt.</param>
+            <returns>A string containing the string, encrypted with the SHA512 algorithm.</returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.Create(System.String,System.String)">
+            <summary>
+            Create file or folder
+            </summary>
+            <param name="objectId">file or folder path, folder path must have on endof /, </param>
+            <param name="param">for file ;value: file text content, for folder; must be null</param>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.Read(System.String)">
+            <summary>
+            <para>Read full file text</para>
+            <para></para>
+            </summary>
+            <param name="path">file path</param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.Update(System.String,System.String,System.Boolean)">
+            <summary>
+            Update File Content
+            </summary>
+            <param name="path"></param>
+            <param name="fileText"></param>
+            <param name="append"></param>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.Delete(System.String)">
+            <summary>
+            <para>Delete file or folder</para>
+            </summary>
+            <param name="objectId">Path</param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.List(System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            <para>List all file or folder</para>
+            </summary>
+            <param name="enableFiles">enable get File list</param>
+            <param name="enableFolders">enable get Folder list</param>
+            <param name="enableSubFolders">enable get SubFolder list</param>
+            <returns>return file path list</returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.Count(System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            List file,folder,subfolder and calculate counts
+            </summary>
+            <param name="path"></param>
+            <param name="enableFiles"></param>
+            <param name="enableFolders"></param>
+            <param name="enableSubFolders"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.Copy(System.String,System.String,System.Boolean)">
+            <summary>
+            Copy all files, folders and subfolders to dest directory
+            </summary>
+            <param name="source">source folder</param>
+            <param name="dest">dest folder</param>
+            <param name="isReplace">Is replace override</param>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.Move(System.String,System.String)">
+            <summary>
+            Move file or folder
+            </summary>
+            <param name="source"></param>
+            <param name="dest"></param>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.Append(System.String,System.String)">
+            <summary>
+            <para>Append file content.</para>
+            </summary>
+            <param name="path"></param>
+            <param name="fileText"></param>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.ReadSeperated(System.Int32,System.Int32,System.Char,System.String)">
+            <summary>
+            <para>Read all content, from seperatped text file.</para>
+            <para>User method for little file</para>
+            <para>If your file is bigger, you must to use filestream, no buffer, no memery overload problem</para>
+            </summary>
+            <param name="keyIndex"></param>
+            <param name="sep"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.WriteText(System.String,System.String)">
+            <summary>
+            <para>Write text to file</para>
+            <para></para>
+            </summary>
+            <param name="path">text file path</param>
+            <param name="text">file text</param>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.isFilePath(System.String)">
+            <summary>
+            <para>Check path is file path</para>
+            <para></para>
+            </summary>
+            <param name="path">file or folder path</param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.isFolderPath(System.String)">
+            <summary>
+            <para>Check path is folder path</para>
+            <para></para>
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.isFolder(System.String)">
+            <summary>
+            <para>Chack existed path is folder path</para>
+            <para>path must be exist</para>
+            </summary>
+            <param name="path">folder path</param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.isFile(System.String)">
+            <summary>
+            <para>Check existed path is file path</para>
+            <para>path must be exist</para>
+            </summary>
+            <param name="path">file path</param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.FileUtil.isExist(System.String)">
+            <summary>
+            <para>Check file or directory exist</para>s
+            </summary>
+            <param name="path">file path</param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.GeneralUtil.Wordify(System.String)">
+            <summary>
+            seperate to words from compsed string
+            </summary>
+            <param name="camelCaseWord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.GeneralUtil.Capitalize(System.String)">
+            <summary>
+            Convert to upper first letter
+            </summary>
+            <param name="word"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.GeneralUtil.XmlSerialize``1(``0)">
+            <summary>Serializes an object of type T in to an xml string</summary>
+            <typeparam name="T">Any class type</typeparam>
+            <param name="obj">Object to serialize</param>
+            <returns>A string that represents Xml, empty otherwise</returns>
+        </member>
+        <member name="M:RoboUtil.utils.GeneralUtil.XmlDeserialize``1(System.String)">
+            <summary>Deserializes an xml string in to an object of Type T</summary>
+            <typeparam name="T">Any class type</typeparam>
+            <param name="xml">Xml as string to deserialize from</param>
+            <returns>A new object of type T is successful, null if failed</returns>
+        </member>
+        <member name="M:RoboUtil.utils.RegExUtil.GetRegEx(System.Int32)">
+            <summary>
+            Get a predefined regular expression
+            </summary>
+            <param name="regularExpressionId">Id of the regular expression to return
+            </param>
+            <returns>RegEx</returns>
+        </member>
+        <member name="M:RoboUtil.utils.RegExUtil.GetMatchRegEx(System.Int32,System.String)">
+            <summary>
+            Get a match object based on a predefined regular expression
+            </summary>
+            <param name="regularExpressionId">Id of the regular expression to return</param>
+            <param name="text">Text to match on</param>
+            <returns>Match</returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetHtmlPage(System.String,System.Boolean)">
+             <summary>
+            
+             </summary>
+             <param name="strURL"></param>
+             <param name="isTextHtml"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetHtmlPage(System.Uri,System.Boolean)">
+             <summary>
+            
+             </summary>
+             <param name="strURL"></param>
+             <param name="isTextHtml"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetHtmlPage(System.Uri,System.Boolean,System.Net.WebProxy)">
+             <summary>
+            
+             </summary>
+             <param name="strURL"></param>
+             <param name="proxy"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetHtmlPage(System.Net.HttpWebRequest,System.Boolean)">
+             <summary>
+            
+             </summary>
+             <param name="request"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetResponse(System.String)">
+             <summary>
+            
+             </summary>
+             <param name="strURL"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetResponse(System.Net.HttpWebRequest)">
+             <summary>
+            
+             </summary>
+             <param name="request"></param>
+             <param name="isTextHtml"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.BuildRequestWithHeader(System.Uri,System.Net.WebProxy)">
+             <summary>
+            
+             </summary>
+             <param name="strURL"></param>
+             <param name="proxy"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.BuildRequestWithHeader(System.Uri)">
+            <summary>
+            Genarate request, BuildRequestWithHeader with object url
+            </summary>
+            <param name="strURL"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.BuildRequestWithHeader(System.String)">
+            <summary>
+            BuildRequestWithHeader with string url
+            </summary>
+            <param name="strURL"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.BuildRequestWithHeader(System.Net.HttpWebRequest)">
+             <summary>
+            
+             </summary>
+             <param name="httpRequest"></param>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetPageLastModified(System.Uri)">
+             <summary>
+            
+             </summary>
+             <param name="uri"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetLinksFromHtml(System.String,System.Uri)">
+            <summary>
+            Get Fixed links according weburl, from html
+            </summary>
+            <param name="html"></param>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetLinksFromHtml(System.String)">
+            <summary>
+            Get Raw links from html
+            </summary>
+            <param name="html"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetPageImages(System.String)">
+            <summary>
+            get page page image according src
+            </summary>
+            <param name="html"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.SaveHtmlResponseToFolder(System.String,System.String,System.String)">
+             <summary>
+            
+             </summary>
+             <param name="dataString"></param>
+             <param name="pageUrl"></param>
+             <param name="folder"></param>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.GetResponseCode(System.String)">
+             <summary>
+            
+             </summary>
+             <param name="link"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.isBrokenLink(System.String)">
+             <summary>
+            
+             </summary>
+             <param name="link"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.WebUtil.isBrokenDonwloadLink(System.String)">
+             <summary>
+            
+             </summary>
+             <param name="link"></param>
+             <returns></returns>
+        </member>
+        <member name="M:RoboUtil.utils.XmlUtil.ReadNameValueXml(System.String,System.String)">
+            <summary>
+            this function select rootnode in xml after read all childs
+            you must define 2 attribute in childs, first is name and second is Value
+            </summary>
+            <param name="rootNodeName">root node name for namevalue child nodes</param>
+            <param name="xmlPath">xml file path or file name </param>
+            <returns>NameValueCollection</returns>
+        </member>
+        <member name="T:RoboUtil.ExtensionUtil">
+            <summary>
+            usefull extension methods are composed in this class
+            </summary>
+        </member>
+    </members>
+</doc>

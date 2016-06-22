@@ -44,6 +44,7 @@ namespace RoboUtil.managers
         #endregion Singleton Implementation
 
         public static FileInfo ConfigFileInfo { get;   }
+
         private ConcurrentDictionary<string, string> _configurations;
         public ConcurrentDictionary<string, string> Configurations{get{return _configurations; }}
         private void Initialize()

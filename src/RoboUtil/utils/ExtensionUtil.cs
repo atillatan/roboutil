@@ -31,6 +31,10 @@ namespace RoboUtil
         {
             return string.Format(format, args);
         }
+        public static bool HasValue(this string s)
+        {
+            return !string.IsNullOrEmpty(s);
+        }
         #endregion
 
         #region Converting util

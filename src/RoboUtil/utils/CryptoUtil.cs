@@ -281,31 +281,13 @@ namespace RoboUtil.utils
         public static string GetConnectionString()
         {
             return ConfigurationManager.ConnectionStrings["UsisConnectionString"].ConnectionString;
-            //return @"data source=80.251.40.230;initial catalog=USIS;persist security info=True;user id=obv2;password=ObsV2*-15;MultipleActiveResultSets=True;App=EntityFramework;";
-            //return @"Data Source=80.251.40.167;initial catalog=USIS;persist security info=True;user id=sa;Password=Au2014*-;MultipleActiveResultSets=True;App=EntityFramework;";
-            //return @"data source=80.251.40.229;initial catalog=USIS;persist security info=True;user id=sa;password=Co3İ3xbx@çIsXXy;MultipleActiveResultSets=True;App=EntityFramework;";
-#if DEBUG
-            //return @"data source=80.251.40.167;initial catalog=USIS;persist security info=True;user id=sa;password=Au2014*-;MultipleActiveResultSets=True;App=EntityFramework;";
-#endif
-
-            //var rootKey = Registry.LocalMachine.OpenSubKey(_rootKeyPath);
-            //if (rootKey == null) throw new ConfigurationErrorsException("Connection strings are not present in the registry");
-            //return Encoding.ASCII.GetString(System.Security.Cryptography.ProtectedData.Unprotect(Convert.FromBase64String((string)rootKey.GetValue("ProviderConnectionString")), Encoding.ASCII.GetBytes(_secretEntropy), DataProtectionScope.LocalMachine));
+ 
         }
 
         public static string GetLogConnectionString()
         {
             return ConfigurationManager.ConnectionStrings["UsisLogConnectionString"].ConnectionString;
-            //return @"Data Source=80.251.40.230;initial catalog=USISLog;persist security info=True;user id=usislog;Password=AU15dbusis*-;MultipleActiveResultSets=True;App=EntityFramework;";
-            //return @"Data Source=80.251.40.167;initial catalog=USISLog;persist security info=True;user id=sa;Password=Au2014*-;MultipleActiveResultSets=True;App=EntityFramework;";
-            // return @"data source=80.251.41.229;initial catalog=USISLog;persist security info=True;user id=sa;password=Co3İ3xbx@çIsXXy;MultipleActiveResultSets=True;App=EntityFramework;";
-#if DEBUG
-            //return @"Data Source=80.251.40.167;initial catalog=USISLog;persist security info=True;user id=sa;Password=Au2014*-;MultipleActiveResultSets=True;App=EntityFramework;";
-            //return @"Data Source=80.251.41.233;initial catalog=USIS;persist security info=True;user id=sa;Password=y/l2xNm4m+n@45b;MultipleActiveResultSets=True;App=EntityFramework;";
-#endif
-            //var rootKey = Registry.LocalMachine.OpenSubKey(_rootKeyPath);
-            //if (rootKey == null) throw new ConfigurationErrorsException("Connection strings are not present in the registry");
-            //return Encoding.ASCII.GetString(System.Security.Cryptography.ProtectedData.Unprotect(Convert.FromBase64String((string)rootKey.GetValue("ProviderConnectionString")), Encoding.ASCII.GetBytes(_secretEntropy), DataProtectionScope.LocalMachine));
+ 
         }
     }
 }
