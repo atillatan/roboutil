@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNet.Http;
+using ProtoBuf;
 using RoboUtil.managers;
 using RoboUtil.managers.cache;
 
@@ -9,8 +12,6 @@ namespace RoboUtil.utils
 {
     public static class AuthenticationUtil
     {
-
-
         public static AesCryptoServiceProvider AesProvider;
         public static readonly string UserCookieName = "usr";
         public static readonly string AnonymousCookieName = "anon";
@@ -37,6 +38,66 @@ namespace RoboUtil.utils
             {
                 KillCookie(context, UserCookieName);
             }
+        }
+
+        public static Guid? XSRFToken(HttpContext context)
+        {
+
+            var user = context.Request.Cookies.FirstOrDefault(a => a.Key.Equals(UserCookieName)).Value.ToString();
+
+            string toHash;
+
+            if (user.HasValue())
+            {
+                toHash = user;
+            }
+            else
+            {
+                var anon = context.Request.Cookies.FirstOrDefault(a => a.Key.Equals(AnonymousCookieName)).Value.ToString();
+
+                if (anon == null) return null;
+
+                toHash = anon;
+            }
+
+            if (toHash == null) return null;
+
+            var hash = WeakHash(toHash);
+
+            var retStr = GetFromCache<string>("xsrf-" + hash);
+
+            // If the user is logged in and *needs* an XSRF, we should just create one if there isn't already one
+            if (retStr == null && user != null)
+                return GenerateXSRFToken(user);
+
+            // Things got a little wonky, need to clean up
+            if (retStr == null)
+            {
+                KillCookie(context, AnonymousCookieName);
+                throw new Exception("Bad cookie keyed XSRF token");
+            }
+
+            return Guid.Parse(retStr);
+
+        }
+
+        private static Guid GenerateXSRFToken(string userCookieValue)
+        {
+            if (userCookieValue == null) throw new Exception("Cannot generated an XSRF token this way for an anonymous user.");
+
+            var ret = UniqueId();
+
+            var newToken =
+                new
+                {
+                    CookieHash = WeakHash(userCookieValue),
+                    CreationDate = DateTime.UtcNow,
+                    Token = ret
+                };
+
+            AddToCache("xsrf-" + newToken.CookieHash, ret.ToString(), TimeSpan.FromDays(1));
+
+            return ret;
         }
 
         public static void AddCookie(HttpContext context, string cookieName, string value, TimeSpan expiresIn)
@@ -108,37 +169,105 @@ namespace RoboUtil.utils
 
             if (o != null)
             {
-                //var redis = Redis;
+                var redis = RedisUtil.Connection;
 
-                //if (redis == null)
-                //{
+                if (redis == null)
+                {
 
-                ICache cache = CacheManager.Instance.CreateOrGetCache("CookieCache",
-                     new CacheProperties()
-                     {
-                         CacheCollectionType = CacheCollectionType.DictionaryCache,
-                         CacheItemExpireDuration = 15,//minutes
-                         IsSlidingExpiration = false
-                     });
+                    ICache cache = CacheManager.Instance.CreateOrGetCache("AuthenticationCache",
+                         new CacheProperties()
+                         {
+                             CacheCollectionType = CacheCollectionType.DictionaryCache,
+                             CacheItemExpireDuration = expiresIn.Minutes,//minutes
+                             IsSlidingExpiration = false
+                         });
 
-                cache.Add(name, o);
+                    cache.Add(name, o);
 
-                //HttpRuntime.Cache.Insert(name, o, null, Current.Now + expiresIn, Cache.NoSlidingExpiration);
-                //}
-                //else
-                //{
-                //    byte[] bytes;
-                //    using (var stream = new MemoryStream())
-                //    {
-                //        Serializer.Serialize<T>(stream, o);
-                //        bytes = stream.ToArray();
-                //    }
+                    //HttpRuntime.Cache.Insert(name, o, null, Current.Now + expiresIn, Cache.NoSlidingExpiration);
+                }
+                else
+                {
+                    byte[] bytes;
+                    using (var stream = new MemoryStream())
+                    {
+                        Serializer.Serialize<T>(stream, o);
+                        bytes = stream.ToArray();
+                    }
 
-                //    var task = redis.SetWithExpiry(RedisDB.Value.Value, "oid-" + name, (int)expiresIn.TotalSeconds, bytes, true);
-                //    redis.Wait(task);
-                //}
+                    int db = ConfigManager.Current.GetConfig<int>("redis.db.authentication", 1);
+
+                    var task = redis.SetWithExpiry(db, "oid-" + name, (int)expiresIn.TotalSeconds, bytes, true);
+                    redis.Wait(task);
+                }
             }
         }
 
+        public static T GetFromCache<T>(string name) where T : class
+        {
+            var redis = RedisUtil.Connection;
+
+            if (redis == null)
+            {
+                ICache cache = CacheManager.Instance.GetCache("AuthenticationCache");
+                return cache.GetValue<T>(name);
+                //return HttpRuntime.Cache[name] as T;
+            }
+            else
+            {
+                int db = ConfigManager.Current.GetConfig<int>("redis.db.authentication", 1);
+
+                var reps = redis.Get(db, "oid-" + name, false);
+                var bytes = reps.Result;
+
+                if (bytes == null) return null;
+
+                using (var stream = new MemoryStream(bytes))
+                {
+                    return Serializer.Deserialize<T>(stream);
+                }
+            }
+        }
+
+        public static void Login(HttpContext context, DateTime now)
+        {
+            //Validate login model
+
+            //Getuser from database
+
+            //check for IPBlock
+
+            // Kill the anonymous cookie
+            KillCookie(context, AnonymousCookieName);
+
+            // Write a login event
+
+            // Generate and write a session
+            var session = Convert.ToBase64String(Random(32));
+            var sessionHash = WeakHash(session);
+
+            //set sessioncreation date, and lastactivitydate
+          
+
+            // Add the user session cookie
+            AddCookie(context,UserCookieName, session, TimeSpan.FromDays(7));
+
+            // writeuser to database
+        }
+
+        public static void Logout(HttpContext context, string returnUrl)
+        {
+            // Delete this users session cookie
+            KillCookie(context, UserCookieName);
+
+            //logout from external providers
+
+            //write user history event
+             
+            //set user object to null
+
+          
+            //redirect
+        }
     }
 }

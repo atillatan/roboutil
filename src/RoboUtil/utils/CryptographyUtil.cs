@@ -10,14 +10,20 @@ using System.Threading.Tasks;
 
 namespace RoboUtil.utils
 {
-    public class CryptographyUtil
+    public static class CryptographyUtil
     {
 
         private const string _secretEntropy = @"&&&////// ANKARA ////// PROJECT ENTROPY IDENTITY! &&&";
         private const string _rootKeyPath = @"Software\Usis\ConnectionStrings";
         private const string ENCRYPTION_KEY = "key";
+        private static AesCryptoServiceProvider AesProvider;
 
         private readonly static byte[] SALT = Encoding.ASCII.GetBytes(ENCRYPTION_KEY.Length.ToString());
+
+        static CryptographyUtil()
+        {
+            AesProvider = new AesCryptoServiceProvider();
+        }
 
         /// <summary>
         /// Encrypts any string using the Rijndael algorithm.
@@ -75,7 +81,7 @@ namespace RoboUtil.utils
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public string GetDecrypted(string str)
+        public static string GetDecrypted(string str)
         {
             string keyContainerName = "SAFAKSDKE4R32W43242J342K34@2016";
             CspParameters paramCSP = new CspParameters();
@@ -92,7 +98,7 @@ namespace RoboUtil.utils
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public string GetEncripted(string str)
+        public static string GetEncripted(string str)
         {
             string keyContainerName = "SAFAKSDKE4R32W43242J342K34@2016";
             CspParameters paramCSP = new CspParameters();
@@ -268,6 +274,32 @@ namespace RoboUtil.utils
             }
         }
 
+        //public static string EncryptWithAES(string value, out string iv, out byte version, out string hmac)
+        //{
+                
+            //    var ivBytes = Random(16);
+            //    iv = Convert.ToBase64String(ivBytes);
+
+            //    ICryptoTransform encryptor;
+
+            //    lock (AesProvider)
+            //        encryptor = AesProvider.CreateEncryptor("yourkey", ivBytes);
+
+            //    byte[] output;
+
+            //    using (encryptor)
+            //    {
+            //        var input = Encoding.UTF8.GetBytes(value);
+            //        output = encryptor.TransformFinalBlock(input, 0, input.Length);
+            //    }
+
+             
+
+            //return output;
+
+            //return "";
+
+        //}
         public static string GetConnectinStringMetadata()
         {
 

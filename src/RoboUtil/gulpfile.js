@@ -14,7 +14,7 @@ gulp.task('copy2dist', function () {
 
 gulp.task('copy2usis', function () {
     gulp.src([
-        'bin/Debug/dnx46/**'
+        '../../artifacts/bin/RoboUtil/Release/dnx46/**'
     ]).pipe(gulp.dest('../../../USIS/Usis/Main/packages/lib'));
 });
 

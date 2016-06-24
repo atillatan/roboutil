@@ -20,14 +20,6 @@
             this class will be monitor configFile info
             </summary>
         </member>
-        <member name="T:RoboUtil.managers.RedisManager">
-            <summary>
-            Takes RedisConf class from constructor, or
-            takes xml  configuration filepath
-            RedisManager alwasy connectin to redis server
-            RedisManager handle all operation with redis
-            </summary>
-        </member>
         <member name="M:RoboUtil.managers.ThreadPoolManager.CreatePool(System.String,System.Int32,System.Threading.WaitCallback)">
             <summary>
             ThreadPoolManager makes easy to use ThreadPools
@@ -138,35 +130,35 @@
             <param name="key">Name of cached item</param>
             <returns>Cached item as type</returns>
         </member>
-        <member name="M:RoboUtil.utils.CryptoUtil.Encrypt(System.String)">
+        <member name="M:RoboUtil.utils.CryptographyUtil.Encrypt(System.String)">
             <summary>
             Encrypts any string using the Rijndael algorithm.
             </summary>
             <param name="inputText">The string to encrypt.</param>
             <returns>A Base64 encrypted string.</returns>
         </member>
-        <member name="M:RoboUtil.utils.CryptoUtil.Decrypt(System.String)">
+        <member name="M:RoboUtil.utils.CryptographyUtil.Decrypt(System.String)">
             <summary>
             Decrypts a previously encrypted Rijndael algorithm string.
             </summary>
             <param name="inputText">The encrypted string to decrypt.</param>
             <returns>A decrypted string.</returns>
         </member>
-        <member name="M:RoboUtil.utils.CryptoUtil.GetDecrypted(System.String)">
+        <member name="M:RoboUtil.utils.CryptographyUtil.GetDecrypted(System.String)">
             <summary>
             RSACryptoServiceProvider
             </summary>
             <param name="str"></param>
             <returns></returns>
         </member>
-        <member name="M:RoboUtil.utils.CryptoUtil.GetEncripted(System.String)">
+        <member name="M:RoboUtil.utils.CryptographyUtil.GetEncripted(System.String)">
             <summary>
             RSACryptoServiceProvider
             </summary>
             <param name="str"></param>
             <returns></returns>
         </member>
-        <member name="M:RoboUtil.utils.CryptoUtil.MD5Hash(System.String)">
+        <member name="M:RoboUtil.utils.CryptographyUtil.MD5Hash(System.String)">
             <summary>
             Encrypts a string using the MD5 hash encryption algorithm.
             Message Digest is 128-bit and is commonly used to verify data, by checking
@@ -175,14 +167,14 @@
             <param name="Data">A string containing the data to encrypt.</param>
             <returns>A string containing the string, encrypted with the MD5 hash.</returns>
         </member>
-        <member name="M:RoboUtil.utils.CryptoUtil.MD5FileHash(System.String)">
+        <member name="M:RoboUtil.utils.CryptographyUtil.MD5FileHash(System.String)">
             <summary>
             Computes an MD5 hash for the provided file.
             </summary>
             <param name="filename">The full path to the file</param>
             <returns>A hexadecimal encoded MD5 hash for the file.</returns>
         </member>
-        <member name="M:RoboUtil.utils.CryptoUtil.SHA256Hash(System.String)">
+        <member name="M:RoboUtil.utils.CryptographyUtil.SHA256Hash(System.String)">
             <summary>
             Encrypts a string using the SHA256 (Secure Hash Algorithm) algorithm.
             Details:
@@ -191,7 +183,7 @@
             <param name="Data">A string containing the data to encrypt.</param>
             <returns>A string containing the string, encrypted with the SHA256 algorithm.</returns>
         </member>
-        <member name="M:RoboUtil.utils.CryptoUtil.SHA384Hash(System.String)">
+        <member name="M:RoboUtil.utils.CryptographyUtil.SHA384Hash(System.String)">
             <summary>
             Encrypts a string using the SHA384(Secure Hash Algorithm) algorithm.
             This works in the same manner as MD5, providing 384bit encryption.
@@ -199,7 +191,7 @@
             <param name="Data">A string containing the data to encrypt.</param>
             <returns>A string containing the string, encrypted with the SHA384 algorithm.</returns>
         </member>
-        <member name="M:RoboUtil.utils.CryptoUtil.SHA512Hash(System.String)">
+        <member name="M:RoboUtil.utils.CryptographyUtil.SHA512Hash(System.String)">
             <summary>
             Encrypts a string using the SHA512 (Secure Hash Algorithm) algorithm.
             This works in the same manner as MD5, providing 512bit encryption.
@@ -361,6 +353,14 @@
             <typeparam name="T">Any class type</typeparam>
             <param name="xml">Xml as string to deserialize from</param>
             <returns>A new object of type T is successful, null if failed</returns>
+        </member>
+        <member name="T:RoboUtil.utils.RedisUtil">
+            <summary>
+            Takes RedisConf class from constructor, or
+            takes xml  configuration filepath
+            RedisUtil alwasy connectin to redis server
+            RedisUtil handle all operation with redis
+            </summary>
         </member>
         <member name="M:RoboUtil.utils.RegExUtil.GetRegEx(System.Int32)">
             <summary>
