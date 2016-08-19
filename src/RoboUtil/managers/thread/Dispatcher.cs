@@ -47,7 +47,7 @@ namespace RoboUtil.managers.thread
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
             
         }

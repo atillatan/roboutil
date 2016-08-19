@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Web.Configuration;
+ 
 using BookSleeve;
 using RoboUtil.managers;
 using RoboUtil.managers.cache;
@@ -30,7 +30,7 @@ namespace RoboUtil.utils
                 {
                     if (_redisConnection != null) return _redisConnection;
 
-                    var server = ConfigManager.Current.GetConfig<string>("redis.address.cluster1", "localhost,abortConnect=false,ssl=false");
+                    var server = ConfigManager.Current.GetConfig<string>("redis.server.address1", "localhost:6379");
 
                     if (server == null) return null;
 
@@ -38,7 +38,19 @@ namespace RoboUtil.utils
                     if (i == -1) throw new Exception("Misconfigured RedisServerAddress, expected [host]:[port]");
 
                     var host = server.Substring(0, i);
-                    var port = Int32.Parse(server.Substring(i + 1));
+
+                    var portStr = server.Substring(i + 1);
+
+                    //var connectionOptions = "";
+
+                    //if (portStr.Contains(","))
+                    //{
+                    //int j = portStr.IndexOf(',');
+                    //connectionOptions = portStr.Substring(j);
+                    //portStr = portStr.Substring(0, j);
+                    //}
+
+                    var port = Int32.Parse(portStr);
 
                     _redisConnection = new RedisConnection(host, port);
                     _redisConnection.Open();
@@ -69,7 +81,7 @@ namespace RoboUtil.utils
                 bytes = stream.ToArray();
             }
 
-            var task = Connection.Set(redisDBNo, name, bytes, true);
+            var task = Connection.Strings.Set(redisDBNo, name, bytes, true);
             Connection.Wait(task);
         }
 
@@ -82,13 +94,13 @@ namespace RoboUtil.utils
                 bytes = stream.ToArray();
             }
 
-            var task = Connection.SetWithExpiry(redisDBNo, name, (int)expiresIn.TotalSeconds, bytes, true);
+            var task = Connection.Strings.Set(redisDBNo, name, (int)expiresIn.TotalSeconds, bytes, true);
             Connection.Wait(task);
         }
 
         public static T GetValue<T>(string name, int redisDBNo) where T : class
         {
-            var reps = Connection.Get(redisDBNo, name, false);
+            var reps = Connection.Strings.Get(redisDBNo, name, false);
             var bytes = reps.Result;
 
             if (bytes == null) return null;

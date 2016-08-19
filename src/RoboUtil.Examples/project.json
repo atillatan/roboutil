@@ -1,38 +1,44 @@
 ﻿{
+  "name": "RoboUtil.Examples",
   "version": "1.0.0-*",
   "description": "RoboUtil.Examples Console Application",
+  "copyright": "Atilla Tanrikulu 2016",
+  "title": "RoboUtil.Examples",
+  "language": "en-US", 
   "authors": [ "Atilla" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
-
-  "compilationOptions": {
-    "emitEntryPoint": true
+ 
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "warningsAsErrors": true,
+    "platform": "anycpu",
+    "exclude": "node_modules"
   },
-
-  "dependencies": {
-  },
-
-  "commands": {
-    "RoboUtil.Examples": "RoboUtil.Examples"
-  },
-
+  
   "frameworks": {
-    "dnx46": {
-      "dependencies": {
-        "RoboUtil": "1.0.0-*",
-        "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
-        "System.Runtime.Serialization.Primitives": "4.1.1-rc2-24027",
-        "System.Data.Common": "4.0.0-beta-22605",
-        "System.Configuration.Abstractions": "2.0.2.26",
-        "System.Runtime.Caching.Generic": "1.0.5"
+    "net46": {
+      "dependencies": {                 
+        
       },
-      "frameworkAssemblies": {
-        "System.Runtime.Serialization": "4.0.0.0",
-        "System.Runtime.Caching": "4.0.0.0",
-        "System.Web": "4.0.0.0",
-        "System.Data": "4.0.0.0"
+      "frameworkAssemblies": {        
+        "System.Runtime.Caching": "4.0.0.0"        
       }
     }
+  },
+  "dependencies": {
+    "NETStandard.Library": {
+      "type": "default",
+      "version": "1.6.0"
+    },
+    "System.Private.DataContractSerialization": "4.1.1",
+    "System.Runtime.Serialization.Primitives": "4.1.1",
+    "System.Runtime.Serialization.Json": "4.0.0",
+    "System.Runtime.Serialization.Xml": "4.1.1",
+    "System.Runtime.Serialization.Formatters": "4.0.0-rc3-24212-01",
+    "System.Runtime.InteropServices.Analyzers": "1.1.0",
+    "System.Runtime.InteropServices.RuntimeInformation": "4.0.0",
+    "System.Runtime.InteropServices": "4.1.0",    
+    "RoboUtil": "1.0.0-*"
+
   }
+  
 }

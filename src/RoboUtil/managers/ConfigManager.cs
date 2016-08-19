@@ -43,10 +43,10 @@ namespace RoboUtil.managers
         }
         #endregion Singleton Implementation
 
-        public static FileInfo ConfigFileInfo { get;   }
+        public static FileInfo ConfigFileInfo { get; }
 
         private ConcurrentDictionary<string, string> _configurations;
-        public ConcurrentDictionary<string, string> Configurations{get{return _configurations; }}
+        public ConcurrentDictionary<string, string> Configurations { get { return _configurations; } }
         private void Initialize()
         {
             _configurations = new ConcurrentDictionary<string, string>();
@@ -64,8 +64,20 @@ namespace RoboUtil.managers
         }
         public void Configure(FileInfo configFileInfo)
         {
-            if (configFileInfo==null) throw new FileNotFoundException("configFileInfo does not exist!");
-            if (!configFileInfo.Exists) throw new FileNotFoundException("configFileInfo path does not exist!");
+            if (configFileInfo == null)
+            {
+                Console.WriteLine("configFileInfo does not exist!");
+                System.Diagnostics.Debug.WriteLine("configFileInfo does not exist!");
+                //return;
+                throw new Exception("configFileInfo does not exist!");
+            }
+            if (!configFileInfo.Exists)
+            {
+                Console.WriteLine("configFileInfo path does not exist!");
+                System.Diagnostics.Debug.WriteLine("configFileInfo path does not exist!");
+                //return;
+                throw new Exception("configFileInfo path does not exist!");
+            }
 
             NameValueCollection nvc = XmlUtil.ReadNameValueXml("configuration", configFileInfo.FullName);
             LoadConfiguration(nvc);
@@ -104,7 +116,7 @@ namespace RoboUtil.managers
         //every one minute one thread compare filemodification date, and decide reloading
         #endregion
 
-   
+
     }
-  
+
 }

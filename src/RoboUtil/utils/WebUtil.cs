@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
+using Microsoft.Extensions.WebEncoders;
 
 namespace RoboUtil.utils
 {
@@ -101,7 +98,7 @@ namespace RoboUtil.utils
             catch (Exception e)
             {
                 Console.WriteLine("Hata: " + request.Address.ToString());
-                throw;
+                throw e;
             }
             finally
             {
@@ -461,7 +458,8 @@ namespace RoboUtil.utils
                 {
                     absolute = "default";
                 }
-                FileUtil.Create(folder + HttpUtility.UrlEncode(url.ToString()) + ".htm", dataString);
+               
+                FileUtil.Create(folder + UrlEncoder.Default.Encode(url.ToString()) + ".htm", dataString);
             }
             catch (Exception e)
             {

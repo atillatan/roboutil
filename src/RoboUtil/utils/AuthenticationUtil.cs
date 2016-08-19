@@ -3,7 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNet.Http;
+using BookSleeve;
+using Microsoft.AspNetCore.Http;
 using ProtoBuf;
 using RoboUtil.managers;
 using RoboUtil.managers.cache;
@@ -169,7 +170,7 @@ namespace RoboUtil.utils
 
             if (o != null)
             {
-                var redis = RedisUtil.Connection;
+                RedisConnection redis = RedisUtil.Connection;
 
                 if (redis == null)
                 {
@@ -195,9 +196,9 @@ namespace RoboUtil.utils
                         bytes = stream.ToArray();
                     }
 
-                    int db = ConfigManager.Current.GetConfig<int>("redis.db.authentication", 1);
+                    int db = ConfigManager.Current.GetConfig<int>("redis.authenticationdb.number", 1);
 
-                    var task = redis.SetWithExpiry(db, "oid-" + name, (int)expiresIn.TotalSeconds, bytes, true);
+                    var task = redis.Strings.Set(db, "oid-" + name, (int)expiresIn.TotalSeconds, bytes, true);
                     redis.Wait(task);
                 }
             }
@@ -205,7 +206,7 @@ namespace RoboUtil.utils
 
         public static T GetFromCache<T>(string name) where T : class
         {
-            var redis = RedisUtil.Connection;
+            RedisConnection redis = RedisUtil.Connection;
 
             if (redis == null)
             {
@@ -215,9 +216,9 @@ namespace RoboUtil.utils
             }
             else
             {
-                int db = ConfigManager.Current.GetConfig<int>("redis.db.authentication", 1);
+                int db = ConfigManager.Current.GetConfig<int>("redis.authenticationdb.number", 1);
 
-                var reps = redis.Get(db, "oid-" + name, false);
+                var reps = redis.Strings.Get(db, "oid-" + name, false);
                 var bytes = reps.Result;
 
                 if (bytes == null) return null;
