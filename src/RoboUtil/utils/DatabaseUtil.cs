@@ -1,18 +1,15 @@
-﻿using EmitMapper;
-using EmitMapper.Mappers;
-using EmitMapper.MappingConfiguration;
-using EmitMapper.MappingConfiguration.MappingOperations;
-using EmitMapper.Utils;
+﻿//TODO: Mapper will change
+//using EmitMapper;
+//using EmitMapper.Mappers;
+//using EmitMapper.MappingConfiguration;
+//using EmitMapper.MappingConfiguration.MappingOperations;
+//using EmitMapper.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Dynamic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RoboUtil.utils
 {
@@ -28,19 +25,20 @@ namespace RoboUtil.utils
             connection.ConnectionString = connectionString;
             return connection;
         }
-        public static DbConnection CreateConnection(string configurationName)
-        {
-            var connectionSetting = System.Configuration.ConfigurationManager.ConnectionStrings[configurationName];
-            if (connectionSetting == null)
-                return null;
+        //netstandart1.6
+        //public static DbConnection CreateConnection(string configurationName)
+        //{
+        //    var connectionSetting = System.Configuration.ConfigurationManager.ConnectionStrings[configurationName];
+        //    if (connectionSetting == null)
+        //        return null;
 
-            var factory = DbProviderFactories.GetFactory(connectionSetting.ProviderName);
-            if (factory == null)
-                return null;
-            var connection = factory.CreateConnection();
-            connection.ConnectionString = connectionSetting.ConnectionString;
-            return connection;
-        }
+        //    var factory = DbProviderFactories.GetFactory(connectionSetting.ProviderName);
+        //    if (factory == null)
+        //        return null;
+        //    var connection = factory.CreateConnection();
+        //    connection.ConnectionString = connectionSetting.ConnectionString;
+        //    return connection;
+        //}
         public static int ExecuteNonQuery(DbConnection conn, CommandType commandType, string commandText, params object[] args)
         {
             using (var cmd = CreateCommand(conn, null, commandType, commandText, args))
@@ -48,58 +46,62 @@ namespace RoboUtil.utils
                 return cmd.ExecuteNonQuery();
             }
         }
-        public static T Get<T>(DbConnection connection, string commandText, params object[] args)
-        {
-            T result;
+        //TODO: Mapper will change
+        //public static T Get<T>(DbConnection connection, string commandText, params object[] args)
+        //{
+        //    T result;
 
-            using (DbCommand cmd = CreateCommand(connection, null, CommandType.Text, commandText, args))
-            {
-                EmitMapper<T> dd = new EmitMapper<T>();
-                DbDataReader reader = cmd.ExecuteReader();
-                result = dd.ReadSingle(reader);
-                reader.Close();
-            }
+        //    using (DbCommand cmd = CreateCommand(connection, null, CommandType.Text, commandText, args))
+        //    {
+        //        EmitMapper<T> dd = new EmitMapper<T>();
+        //        DbDataReader reader = cmd.ExecuteReader();
+        //        result = dd.ReadSingle(reader);
+        //        reader.Close();
+        //    }
 
-            return result;
-        }
-        public static dynamic Get(DbConnection connection, string commandText, params object[] args)
-        {
-            dynamic result = null;
+        //    return result;
+        //}
+        //TODO: Mapper will change
+        //public static dynamic Get(DbConnection connection, string commandText, params object[] args)
+        //{
+        //    dynamic result = null;
 
-            using (DbCommand cmd = CreateCommand(connection, null, CommandType.Text, commandText, args))
-            {
-                EmitMapper<dynamic> dd = new EmitMapper<dynamic>();
-                DbDataReader reader = cmd.ExecuteReader();
-                result = dd.ReadSingle(reader);
-                reader.Close();
-            }
+        //    using (DbCommand cmd = CreateCommand(connection, null, CommandType.Text, commandText, args))
+        //    {
+        //        EmitMapper<dynamic> dd = new EmitMapper<dynamic>();
+        //        DbDataReader reader = cmd.ExecuteReader();
+        //        result = dd.ReadSingle(reader);
+        //        reader.Close();
+        //    }
 
-            return result;
-        }
-        public static List<T> List<T>(DbConnection connection, string commandText, params object[] args)
-        {
-            List<T> result = new List<T>();
+        //    return result;
+        //}
+        //TODO: Mapper will change
+        //public static List<T> List<T>(DbConnection connection, string commandText, params object[] args)
+        //{
+        //    List<T> result = new List<T>();
 
-            using (DbCommand cmd = CreateCommand(connection, null, CommandType.Text, commandText, args))
-            {
-                EmitMapper<T> dd = new EmitMapper<T>();
-                DbDataReader reader = cmd.ExecuteReader();
-                result = dd.ReadCollection(reader).ToList();
-                reader.Close();
-            }
-            return result;
-        }
-        public static List<T> List<T>(DbConnection connection, string commandText, int pageNumber, int rowsPage, params object[] args)
-        {
-            if (!commandText.ToUpper(System.Globalization.CultureInfo.CurrentCulture).Contains("ORDER BY")) throw new Exception("commandText must contains ORDER BY expression!");
+        //    using (DbCommand cmd = CreateCommand(connection, null, CommandType.Text, commandText, args))
+        //    {
+        //        EmitMapper<T> dd = new EmitMapper<T>();
+        //        DbDataReader reader = cmd.ExecuteReader();
+        //        result = dd.ReadCollection(reader).ToList();
+        //        reader.Close();
+        //    }
+        //    return result;
+        //}
+        //TODO: Mapper will change
+        //public static List<T> List<T>(DbConnection connection, string commandText, int pageNumber, int rowsPage, params object[] args)
+        //{
+        //    if (!commandText.ToUpper(System.Globalization.CultureInfo.CurrentCulture).Contains("ORDER BY")) throw new Exception("commandText must contains ORDER BY expression!");
 
-            commandText = string.Format(@"             
-                                        {0}
-                                        OFFSET (({1} - 1) * {2} ROWS
-                                        FETCH NEXT {2} ROWS ONLY                                         
-                                        ", commandText, pageNumber, rowsPage);
-            return List<T>(connection, commandText, null);
-        }
+        //    commandText = string.Format(@"             
+        //                                {0}
+        //                                OFFSET (({1} - 1) * {2} ROWS
+        //                                FETCH NEXT {2} ROWS ONLY                                         
+        //                                ", commandText, pageNumber, rowsPage);
+        //    return List<T>(connection, commandText, null);
+        //}
         #endregion
 
         #region extended methods
@@ -206,296 +208,296 @@ namespace RoboUtil.utils
         #endregion
     }
 
-    public class EmitMapper<T> : ObjectsMapper<DbDataReader, T>
-    {
-        class DbReaderMappingConfig : IMappingConfigurator
-        {
-            class ReaderValuesExtrator<Ty>
-            {
-                public Func<int, DbDataReader, Ty> valueExtractor;
-                public int fieldNum;
-                public string fieldName;
+    //public class EmitMapper<T> : ObjectsMapper<DbDataReader, T>
+    //{
+    //    class DbReaderMappingConfig : IMappingConfigurator
+    //    {
+    //        class ReaderValuesExtrator<Ty>
+    //        {
+    //            public Func<int, DbDataReader, Ty> valueExtractor;
+    //            public int fieldNum;
+    //            public string fieldName;
 
-                public ReaderValuesExtrator(string fieldName, Func<int, DbDataReader, Ty> valueExtractor)
-                {
-                    fieldNum = -1;
-                    this.fieldName = fieldName;
-                    this.valueExtractor = valueExtractor;
-                }
+    //            public ReaderValuesExtrator(string fieldName, Func<int, DbDataReader, Ty> valueExtractor)
+    //            {
+    //                fieldNum = -1;
+    //                this.fieldName = fieldName;
+    //                this.valueExtractor = valueExtractor;
+    //            }
 
-                public Delegate ExtrationDelegate
-                {
-                    get
-                    {
-                        return (ValueGetter<Ty>)
-                            (
-                                (value, state) =>
-                                {
-                                    return ValueToWrite<Ty>.ReturnValue(GetValue((DbDataReader)state));
-                                }
-                            );
-                    }
-                }
+    //            public Delegate ExtrationDelegate
+    //            {
+    //                get
+    //                {
+    //                    return (ValueGetter<Ty>)
+    //                        (
+    //                            (value, state) =>
+    //                            {
+    //                                return ValueToWrite<Ty>.ReturnValue(GetValue((DbDataReader)state));
+    //                            }
+    //                        );
+    //                }
+    //            }
 
-                private Ty GetValue(DbDataReader reader)
-                {
-                    if (fieldNum == -1)
-                    {
-                        fieldNum = reader.GetOrdinal(fieldName);
-                    }
-                    return reader.IsDBNull(fieldNum) ? default(Ty) : valueExtractor(fieldNum, reader);
-                }
-            }
+    //            private Ty GetValue(DbDataReader reader)
+    //            {
+    //                if (fieldNum == -1)
+    //                {
+    //                    fieldNum = reader.GetOrdinal(fieldName);
+    //                }
+    //                return reader.IsDBNull(fieldNum) ? default(Ty) : valueExtractor(fieldNum, reader);
+    //            }
+    //        }
 
-            IEnumerable<string> _skipFields;
-            string _mappingKey;
+    //        IEnumerable<string> _skipFields;
+    //        string _mappingKey;
 
-            public DbReaderMappingConfig(IEnumerable<string> skipFields, string mappingKey)
-            {
-                _skipFields = skipFields == null ? new List<string>() : skipFields;
-                _mappingKey = mappingKey;
-            }
+    //        public DbReaderMappingConfig(IEnumerable<string> skipFields, string mappingKey)
+    //        {
+    //            _skipFields = skipFields == null ? new List<string>() : skipFields;
+    //            _mappingKey = mappingKey;
+    //        }
 
-            public IRootMappingOperation GetRootMappingOperation(Type from, Type to)
-            {
-                return null;
-            }
+    //        public IRootMappingOperation GetRootMappingOperation(Type from, Type to)
+    //        {
+    //            return null;
+    //        }
 
-            private Delegate GetValuesGetter(int ind, MemberInfo m)
-            {
-                var memberType = ReflectionUtils.GetMemberType(m);
+    //        private Delegate GetValuesGetter(int ind, MemberInfo m)
+    //        {
+    //            var memberType = ReflectionUtils.GetMemberType(m);
 
-                if (_mappingKey != null)
-                {
-                    if (memberType == typeof(string))
-                    {
-                        return new ReaderValuesExtrator<string>(m.Name, (idx, reader) => reader.IsDBNull(idx) ? null : reader.GetString(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(bool))
-                    {
-                        return new ReaderValuesExtrator<bool>(m.Name, (idx, reader) => reader.GetBoolean(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(bool?))
-                    {
-                        return new ReaderValuesExtrator<bool?>(m.Name, (idx, reader) => reader.GetBoolean(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(Int16))
-                    {
-                        return new ReaderValuesExtrator<Int16>(m.Name, (idx, reader) => reader.GetInt16(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(Int16?))
-                    {
-                        return new ReaderValuesExtrator<Int16?>(m.Name, (idx, reader) => reader.GetInt16(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(Int32))
-                    {
-                        return new ReaderValuesExtrator<Int32>(m.Name, (idx, reader) => reader.GetInt32(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(Int32?))
-                    {
-                        return new ReaderValuesExtrator<Int32?>(m.Name, (idx, reader) => reader.GetInt32(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(Int64))
-                    {
-                        return new ReaderValuesExtrator<Int64>(m.Name, (idx, reader) => reader.GetInt64(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(Int64?))
-                    {
-                        return new ReaderValuesExtrator<Int64?>(m.Name, (idx, reader) => reader.GetInt64(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(byte))
-                    {
-                        return new ReaderValuesExtrator<byte>(m.Name, (idx, reader) => reader.GetByte(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(byte?))
-                    {
-                        return new ReaderValuesExtrator<byte?>(m.Name, (idx, reader) => reader.GetByte(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(char))
-                    {
-                        return new ReaderValuesExtrator<char>(m.Name, (idx, reader) => reader.GetChar(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(char?))
-                    {
-                        return new ReaderValuesExtrator<char?>(m.Name, (idx, reader) => reader.GetChar(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(DateTime))
-                    {
-                        return new ReaderValuesExtrator<DateTime>(m.Name, (idx, reader) => reader.GetDateTime(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(DateTime?))
-                    {
-                        return new ReaderValuesExtrator<DateTime?>(m.Name, (idx, reader) => reader.GetDateTime(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(decimal))
-                    {
-                        return new ReaderValuesExtrator<decimal>(m.Name, (idx, reader) => reader.GetDecimal(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(decimal?))
-                    {
-                        return new ReaderValuesExtrator<decimal?>(m.Name, (idx, reader) => reader.GetDecimal(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(double))
-                    {
-                        return new ReaderValuesExtrator<double>(m.Name, (idx, reader) => reader.GetDouble(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(double?))
-                    {
-                        return new ReaderValuesExtrator<double?>(m.Name, (idx, reader) => reader.GetDouble(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(float))
-                    {
-                        return new ReaderValuesExtrator<float>(m.Name, (idx, reader) => reader.GetFloat(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(float?))
-                    {
-                        return new ReaderValuesExtrator<float?>(m.Name, (idx, reader) => reader.GetFloat(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(Guid))
-                    {
-                        return new ReaderValuesExtrator<Guid>(m.Name, (idx, reader) => reader.GetGuid(idx)).ExtrationDelegate;
-                    }
-                    else if (memberType == typeof(Guid?))
-                    {
-                        return new ReaderValuesExtrator<Guid?>(m.Name, (idx, reader) => reader.GetGuid(idx)).ExtrationDelegate;
-                    }
-                }
+    //            if (_mappingKey != null)
+    //            {
+    //                if (memberType == typeof(string))
+    //                {
+    //                    return new ReaderValuesExtrator<string>(m.Name, (idx, reader) => reader.IsDBNull(idx) ? null : reader.GetString(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(bool))
+    //                {
+    //                    return new ReaderValuesExtrator<bool>(m.Name, (idx, reader) => reader.GetBoolean(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(bool?))
+    //                {
+    //                    return new ReaderValuesExtrator<bool?>(m.Name, (idx, reader) => reader.GetBoolean(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(Int16))
+    //                {
+    //                    return new ReaderValuesExtrator<Int16>(m.Name, (idx, reader) => reader.GetInt16(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(Int16?))
+    //                {
+    //                    return new ReaderValuesExtrator<Int16?>(m.Name, (idx, reader) => reader.GetInt16(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(Int32))
+    //                {
+    //                    return new ReaderValuesExtrator<Int32>(m.Name, (idx, reader) => reader.GetInt32(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(Int32?))
+    //                {
+    //                    return new ReaderValuesExtrator<Int32?>(m.Name, (idx, reader) => reader.GetInt32(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(Int64))
+    //                {
+    //                    return new ReaderValuesExtrator<Int64>(m.Name, (idx, reader) => reader.GetInt64(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(Int64?))
+    //                {
+    //                    return new ReaderValuesExtrator<Int64?>(m.Name, (idx, reader) => reader.GetInt64(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(byte))
+    //                {
+    //                    return new ReaderValuesExtrator<byte>(m.Name, (idx, reader) => reader.GetByte(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(byte?))
+    //                {
+    //                    return new ReaderValuesExtrator<byte?>(m.Name, (idx, reader) => reader.GetByte(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(char))
+    //                {
+    //                    return new ReaderValuesExtrator<char>(m.Name, (idx, reader) => reader.GetChar(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(char?))
+    //                {
+    //                    return new ReaderValuesExtrator<char?>(m.Name, (idx, reader) => reader.GetChar(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(DateTime))
+    //                {
+    //                    return new ReaderValuesExtrator<DateTime>(m.Name, (idx, reader) => reader.GetDateTime(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(DateTime?))
+    //                {
+    //                    return new ReaderValuesExtrator<DateTime?>(m.Name, (idx, reader) => reader.GetDateTime(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(decimal))
+    //                {
+    //                    return new ReaderValuesExtrator<decimal>(m.Name, (idx, reader) => reader.GetDecimal(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(decimal?))
+    //                {
+    //                    return new ReaderValuesExtrator<decimal?>(m.Name, (idx, reader) => reader.GetDecimal(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(double))
+    //                {
+    //                    return new ReaderValuesExtrator<double>(m.Name, (idx, reader) => reader.GetDouble(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(double?))
+    //                {
+    //                    return new ReaderValuesExtrator<double?>(m.Name, (idx, reader) => reader.GetDouble(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(float))
+    //                {
+    //                    return new ReaderValuesExtrator<float>(m.Name, (idx, reader) => reader.GetFloat(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(float?))
+    //                {
+    //                    return new ReaderValuesExtrator<float?>(m.Name, (idx, reader) => reader.GetFloat(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(Guid))
+    //                {
+    //                    return new ReaderValuesExtrator<Guid>(m.Name, (idx, reader) => reader.GetGuid(idx)).ExtrationDelegate;
+    //                }
+    //                else if (memberType == typeof(Guid?))
+    //                {
+    //                    return new ReaderValuesExtrator<Guid?>(m.Name, (idx, reader) => reader.GetGuid(idx)).ExtrationDelegate;
+    //                }
+    //            }
 
-                Func<object, object> converter = StaticConvertersManager.DefaultInstance.GetStaticConverterFunc(typeof(object), memberType);
-                if (converter == null)
-                {
-                    throw new EmitMapperException("Could not convert an object to " + memberType.ToString());
-                }
-                int fieldNum = -1;
-                string fieldName = m.Name;
-                return
-                    (ValueGetter<object>)
-                    (
-                        (value, state) =>
-                        {
-                            var reader = ((DbDataReader)state);
-                            object result = null;
-                            if (_mappingKey != null)
-                            {
-                                if (fieldNum == -1)
-                                {
-                                    fieldNum = reader.GetOrdinal(fieldName);
-                                }
-                                result = reader[fieldNum];
-                            }
-                            else
-                            {
-                                result = reader[fieldName];
-                            }
+    //            Func<object, object> converter = StaticConvertersManager.DefaultInstance.GetStaticConverterFunc(typeof(object), memberType);
+    //            if (converter == null)
+    //            {
+    //                throw new EmitMapperException("Could not convert an object to " + memberType.ToString());
+    //            }
+    //            int fieldNum = -1;
+    //            string fieldName = m.Name;
+    //            return
+    //                (ValueGetter<object>)
+    //                (
+    //                    (value, state) =>
+    //                    {
+    //                        var reader = ((DbDataReader)state);
+    //                        object result = null;
+    //                        if (_mappingKey != null)
+    //                        {
+    //                            if (fieldNum == -1)
+    //                            {
+    //                                fieldNum = reader.GetOrdinal(fieldName);
+    //                            }
+    //                            result = reader[fieldNum];
+    //                        }
+    //                        else
+    //                        {
+    //                            result = reader[fieldName];
+    //                        }
 
-                            if (result is DBNull)
-                            {
-                                return ValueToWrite<object>.ReturnValue(null);
-                            }
-                            return ValueToWrite<object>.ReturnValue(converter(result));
-                        }
-                    )
-                    ;
-            }
+    //                        if (result is DBNull)
+    //                        {
+    //                            return ValueToWrite<object>.ReturnValue(null);
+    //                        }
+    //                        return ValueToWrite<object>.ReturnValue(converter(result));
+    //                    }
+    //                )
+    //                ;
+    //        }
 
-            public IMappingOperation[] GetMappingOperations(Type from, Type to)
-            {
-                return ReflectionUtils
-                    .GetPublicFieldsAndProperties(to)
-                    .Where(
-                        m => m.MemberType == MemberTypes.Field ||
-                            m.MemberType == MemberTypes.Property && ((PropertyInfo)m).GetSetMethod() != null
-                    )
-                    .Where(m => !_skipFields.Select(sf => sf.ToUpper()).Contains(m.Name.ToUpper()))
-                    .Select(
-                        (m, ind) =>
-                            new DestWriteOperation()
-                            {
-                                Destination = new MemberDescriptor(new[] { m }),
-                                Getter = GetValuesGetter(ind, m)
-                            }
-                    )
-                    .ToArray();
-            }
+    //        public IMappingOperation[] GetMappingOperations(Type from, Type to)
+    //        {
+    //            return ReflectionUtils
+    //                .GetPublicFieldsAndProperties(to)
+    //                .Where(
+    //                    m => m.MemberType == MemberTypes.Field ||
+    //                        m.MemberType == MemberTypes.Property && ((PropertyInfo)m).GetSetMethod() != null
+    //                )
+    //                .Where(m => !_skipFields.Select(sf => sf.ToUpper()).Contains(m.Name.ToUpper()))
+    //                .Select(
+    //                    (m, ind) =>
+    //                        new DestWriteOperation()
+    //                        {
+    //                            Destination = new MemberDescriptor(new[] { m }),
+    //                            Getter = GetValuesGetter(ind, m)
+    //                        }
+    //                )
+    //                .ToArray();
+    //        }
 
-            public string GetConfigurationName()
-            {
-                if (_mappingKey != null)
-                {
-                    return "dbreader_" + _mappingKey;
-                }
-                else
-                {
-                    return "dbreader_";
-                }
-            }
+    //        public string GetConfigurationName()
+    //        {
+    //            if (_mappingKey != null)
+    //            {
+    //                return "dbreader_" + _mappingKey;
+    //            }
+    //            else
+    //            {
+    //                return "dbreader_";
+    //            }
+    //        }
 
-            public StaticConvertersManager GetStaticConvertersManager()
-            {
-                return null;
-            }
-        }
+    //        public StaticConvertersManager GetStaticConvertersManager()
+    //        {
+    //            return null;
+    //        }
+    //    }
 
-        public EmitMapper(
-            string mappingKey,
-            ObjectMapperManager mapperManager,
-            IEnumerable<string> skipFields)
-            : base(GetMapperImpl(mappingKey, mapperManager, skipFields))
-        {
-        }
+    //    public EmitMapper(
+    //        string mappingKey,
+    //        ObjectMapperManager mapperManager,
+    //        IEnumerable<string> skipFields)
+    //        : base(GetMapperImpl(mappingKey, mapperManager, skipFields))
+    //    {
+    //    }
 
-        public EmitMapper(ObjectMapperManager mapperManager)
-            : this(null, mapperManager, null)
-        {
-        }
+    //    public EmitMapper(ObjectMapperManager mapperManager)
+    //        : this(null, mapperManager, null)
+    //    {
+    //    }
 
-        public EmitMapper()
-            : this(null, null, null)
-        {
-        }
+    //    public EmitMapper()
+    //        : this(null, null, null)
+    //    {
+    //    }
 
-        public EmitMapper(IEnumerable<string> skipFields)
-            : this(null, null, skipFields)
-        {
-        }
+    //    public EmitMapper(IEnumerable<string> skipFields)
+    //        : this(null, null, skipFields)
+    //    {
+    //    }
 
-        public T ReadSingle(DbDataReader reader)
-        {
-            T result = reader.Read() ? MapUsingState(reader, reader) : default(T);
-            return result;
-        }
+    //    public T ReadSingle(DbDataReader reader)
+    //    {
+    //        T result = reader.Read() ? MapUsingState(reader, reader) : default(T);
+    //        return result;
+    //    }
 
-        public IEnumerable<T> ReadCollection(DbDataReader reader)
-        {
-            while (reader.Read())
-            {
-                T result = MapUsingState(reader, reader);
-                yield return result;
-            }
-            reader.Close();
-        }
+    //    public IEnumerable<T> ReadCollection(DbDataReader reader)
+    //    {
+    //        while (reader.Read())
+    //        {
+    //            T result = MapUsingState(reader, reader);
+    //            yield return result;
+    //        }
+    //        reader.Close();
+    //    }
 
-        private static ObjectsMapperBaseImpl GetMapperImpl(
-            string mappingKey,
-            ObjectMapperManager mapperManager,
-            IEnumerable<string> skipFields)
-        {
-            IMappingConfigurator config = new DbReaderMappingConfig(skipFields, mappingKey);
+    //    private static ObjectsMapperBaseImpl GetMapperImpl(
+    //        string mappingKey,
+    //        ObjectMapperManager mapperManager,
+    //        IEnumerable<string> skipFields)
+    //    {
+    //        IMappingConfigurator config = new DbReaderMappingConfig(skipFields, mappingKey);
 
-            if (mapperManager != null)
-            {
-                return mapperManager.GetMapperImpl(
-                    typeof(DbDataReader),
-                    typeof(T),
-                    config);
-            }
-            else
-            {
-                return ObjectMapperManager.DefaultInstance.GetMapperImpl(
-                    typeof(DbDataReader),
-                    typeof(T),
-                    config);
-            }
-        }
-    }
+    //        if (mapperManager != null)
+    //        {
+    //            return mapperManager.GetMapperImpl(
+    //                typeof(DbDataReader),
+    //                typeof(T),
+    //                config);
+    //        }
+    //        else
+    //        {
+    //            return ObjectMapperManager.DefaultInstance.GetMapperImpl(
+    //                typeof(DbDataReader),
+    //                typeof(T),
+    //                config);
+    //        }
+    //    }
+    //}
 }

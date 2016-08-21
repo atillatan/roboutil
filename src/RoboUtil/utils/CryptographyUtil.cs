@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+//using System.Configuration;//net core1.0
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 
 namespace RoboUtil.utils
@@ -28,7 +25,7 @@ namespace RoboUtil.utils
         /// <summary>
         /// Encrypts any string using the Rijndael algorithm.
         /// </summary>
-        /// <param name="inputText">The string to encrypt.</param>
+        /// <param name="inputText">The string to encrypt.</param>C:\Users\Atilla\WS\RoboUtil\src\RoboUtil\utils\CryptographyUtil.cs
         /// <returns>A Base64 encrypted string.</returns>
         public static string Encrypt(string inputText)
         {
@@ -310,16 +307,16 @@ namespace RoboUtil.utils
             //return Encoding.ASCII.GetString(System.Security.Cryptography.ProtectedData.Unprotect(Convert.FromBase64String((string)rootKey.GetValue("MetaData")), Encoding.ASCII.GetBytes(_secretEntropy), DataProtectionScope.LocalMachine));
         }
 
-        public static string GetConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["UsisConnectionString"].ConnectionString;
+        //public static string GetConnectionString()
+        //{
+        //    return ConfigurationManager.ConnectionStrings["UsisConnectionString"].ConnectionString;
  
-        }
+        //}
 
-        public static string GetLogConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["UsisLogConnectionString"].ConnectionString;
+        //public static string GetLogConnectionString()
+        //{
+        //    return ConfigurationManager.ConnectionStrings["UsisLogConnectionString"].ConnectionString;
  
-        }
+        //}
     }
 }

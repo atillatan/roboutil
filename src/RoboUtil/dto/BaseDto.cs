@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using RoboUtil.dto;
-using RoboUtil.utils;
-using log4net.Repository.Hierarchy;
 
 namespace RoboUtil.dto
 {
     [Serializable]
     [DataContract]
-    public abstract class BaseDto : ICloneable, IDeserializationCallback, IComparable
+    public abstract class BaseDto :   IComparable
     {
         public BaseDto()
         {

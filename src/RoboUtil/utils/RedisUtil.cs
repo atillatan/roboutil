@@ -1,115 +1,115 @@
-﻿using System;
-using System.IO;
- 
-using BookSleeve;
-using RoboUtil.managers;
-using RoboUtil.managers.cache;
-using ProtoBuf;
+﻿//using System;
+//using System.IO;
 
-namespace RoboUtil.utils
-{
-    /// <summary>
-    /// Takes RedisConf class from constructor, or
-    /// takes xml  configuration filepath
-    /// RedisUtil alwasy connectin to redis server
-    /// RedisUtil handle all operation with redis
-    /// </summary>
-    public static class RedisUtil
-    {
-        private static object _redisLock = new object();
+//using BookSleeve;
+//using RoboUtil.managers;
+//using RoboUtil.managers.cache;
+//using ProtoBuf;
 
-        private static RedisConnection _redisConnection;
+//namespace RoboUtil.utils
+//{
+//    /// <summary>
+//    /// Takes RedisConf class from constructor, or
+//    /// takes xml  configuration filepath
+//    /// RedisUtil alwasy connectin to redis server
+//    /// RedisUtil handle all operation with redis
+//    /// </summary>
+//    public static class RedisUtil
+//    {
+//        private static object _redisLock = new object();
 
-        public static RedisConnection Connection
-        {
-            get
-            {
-                if (_redisConnection != null) return _redisConnection;
+//        private static RedisConnection _redisConnection;
 
-                lock (_redisLock)
-                {
-                    if (_redisConnection != null) return _redisConnection;
+//        public static RedisConnection Connection
+//        {
+//            get
+//            {
+//                if (_redisConnection != null) return _redisConnection;
 
-                    var server = ConfigManager.Current.GetConfig<string>("redis.server.address1", "localhost:6379");
+//                lock (_redisLock)
+//                {
+//                    if (_redisConnection != null) return _redisConnection;
 
-                    if (server == null) return null;
+//                    var server = ConfigManager.Current.GetConfig<string>("redis.server.address1", "localhost:6379");
 
-                    int i = server.IndexOf(':');
-                    if (i == -1) throw new Exception("Misconfigured RedisServerAddress, expected [host]:[port]");
+//                    if (server == null) return null;
 
-                    var host = server.Substring(0, i);
+//                    int i = server.IndexOf(':');
+//                    if (i == -1) throw new Exception("Misconfigured RedisServerAddress, expected [host]:[port]");
 
-                    var portStr = server.Substring(i + 1);
+//                    var host = server.Substring(0, i);
 
-                    //var connectionOptions = "";
+//                    var portStr = server.Substring(i + 1);
 
-                    //if (portStr.Contains(","))
-                    //{
-                    //int j = portStr.IndexOf(',');
-                    //connectionOptions = portStr.Substring(j);
-                    //portStr = portStr.Substring(0, j);
-                    //}
+//                    //var connectionOptions = "";
 
-                    var port = Int32.Parse(portStr);
+//                    //if (portStr.Contains(","))
+//                    //{
+//                    //int j = portStr.IndexOf(',');
+//                    //connectionOptions = portStr.Substring(j);
+//                    //portStr = portStr.Substring(0, j);
+//                    //}
 
-                    _redisConnection = new RedisConnection(host, port);
-                    _redisConnection.Open();
-                }
+//                    var port = Int32.Parse(portStr);
 
-                _redisConnection.Closed += delegate { _redisConnection = null; };
-                _redisConnection.Error +=
-                    delegate
-                    {
-                        try
-                        {
-                            // Suspect connection, bail and re-establish
-                            _redisConnection.Close(false);
-                        }
-                        catch { }
-                    };
+//                    _redisConnection = new RedisConnection(host, port);
+//                    _redisConnection.Open();
+//                }
 
-                return _redisConnection;
-            }
-        }
+//                _redisConnection.Closed += delegate { _redisConnection = null; };
+//                _redisConnection.Error +=
+//                    delegate
+//                    {
+//                        try
+//                        {
+//                            // Suspect connection, bail and re-establish
+//                            _redisConnection.Close(false);
+//                        }
+//                        catch { }
+//                    };
 
-        public static void Add<T>(int redisDBNo, string name, T o) where T : class
-        {
-            byte[] bytes;
-            using (var stream = new MemoryStream())
-            {
-                Serializer.Serialize<T>(stream, o);
-                bytes = stream.ToArray();
-            }
+//                return _redisConnection;
+//            }
+//        }
 
-            var task = Connection.Strings.Set(redisDBNo, name, bytes, true);
-            Connection.Wait(task);
-        }
+//        public static void Add<T>(int redisDBNo, string name, T o) where T : class
+//        {
+//            byte[] bytes;
+//            using (var stream = new MemoryStream())
+//            {
+//                Serializer.Serialize<T>(stream, o);
+//                bytes = stream.ToArray();
+//            }
 
-        public static void AddWithExpiry<T>(int redisDBNo, string name, T o, TimeSpan expiresIn) where T : class
-        {
-            byte[] bytes;
-            using (var stream = new MemoryStream())
-            {
-                Serializer.Serialize<T>(stream, o);
-                bytes = stream.ToArray();
-            }
+//            var task = Connection.Strings.Set(redisDBNo, name, bytes, true);
+//            Connection.Wait(task);
+//        }
 
-            var task = Connection.Strings.Set(redisDBNo, name, (int)expiresIn.TotalSeconds, bytes, true);
-            Connection.Wait(task);
-        }
+//        public static void AddWithExpiry<T>(int redisDBNo, string name, T o, TimeSpan expiresIn) where T : class
+//        {
+//            byte[] bytes;
+//            using (var stream = new MemoryStream())
+//            {
+//                Serializer.Serialize<T>(stream, o);
+//                bytes = stream.ToArray();
+//            }
 
-        public static T GetValue<T>(string name, int redisDBNo) where T : class
-        {
-            var reps = Connection.Strings.Get(redisDBNo, name, false);
-            var bytes = reps.Result;
+//            var task = Connection.Strings.Set(redisDBNo, name, (int)expiresIn.TotalSeconds, bytes, true);
+//            Connection.Wait(task);
+//        }
 
-            if (bytes == null) return null;
+//        public static T GetValue<T>(string name, int redisDBNo) where T : class
+//        {
+//            var reps = Connection.Strings.Get(redisDBNo, name, false);
+//            var bytes = reps.Result;
 
-            using (var stream = new MemoryStream(bytes))
-            {
-                return Serializer.Deserialize<T>(stream);
-            }
+//            if (bytes == null) return null;
 
-        }
-    }
-}
+//            using (var stream = new MemoryStream(bytes))
+//            {
+//                return Serializer.Deserialize<T>(stream);
+//            }
+
+//        }
+//    }
+//}

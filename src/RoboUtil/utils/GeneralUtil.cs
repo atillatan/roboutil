@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+//using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 using System.Xml;
 using System.Xml.Serialization;
@@ -251,35 +250,38 @@ namespace RoboUtil.utils
             return exceptionBuilder.ToString();
         }
 
-        public static T Clone<T>(T obj) where T : ICloneable
-        {
-            return (T)obj.Clone();
-        }
-        public static IList<T> Clone<T>(IList<T> listToClone) where T : ICloneable
-        {
-            return listToClone.Select(item => (T)item.Clone()).ToList();
-        }
-        public static T DeepCopy<T>(object objectToCopy) where T : class
-        {
-            if (!typeof(T).IsSerializable)
-            {
-                throw new ArgumentException("The type must be serializable.", "source");
-            }
+        //public static T Clone<T>(T obj) where T : ICloneable
+        //{
+        //    return (T)obj.Clone();
+        //}
+        //public static IList<T> Clone<T>(IList<T> listToClone) where T : ICloneable
+        //{
+        //    return listToClone.Select(item => (T)item.Clone()).ToList();
+        //}
 
-            // Don't serialize a null object, simply return the default for that object
-            if (Object.ReferenceEquals(objectToCopy, null))
-            {
-                return default(T);
-            }
 
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(memoryStream, objectToCopy);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                return (T)binaryFormatter.Deserialize(memoryStream);
-            }
-        }
+            //netstatndart library
+        //public static T DeepCopy<T>(object objectToCopy) where T : class
+        //{
+        //    if (!typeof(T).IsSerializable)
+        //    {
+        //        throw new ArgumentException("The type must be serializable.", "source");
+        //    }
+
+        //    // Don't serialize a null object, simply return the default for that object
+        //    if (Object.ReferenceEquals(objectToCopy, null))
+        //    {
+        //        return default(T);
+        //    }
+
+        //    using (MemoryStream memoryStream = new MemoryStream())
+        //    {
+        //        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        //        binaryFormatter.Serialize(memoryStream, objectToCopy);
+        //        memoryStream.Seek(0, SeekOrigin.Begin);
+        //        return (T)binaryFormatter.Deserialize(memoryStream);
+        //    }
+        //}
 
         private static void Loop<T>(T item, Action<T> action, int iterations = 1000000)
         {

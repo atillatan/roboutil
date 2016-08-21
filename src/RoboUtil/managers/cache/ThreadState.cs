@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace RoboUtil.managers.cache
+﻿namespace RoboUtil.managers.cache
 {
     public class ThreadState
     {

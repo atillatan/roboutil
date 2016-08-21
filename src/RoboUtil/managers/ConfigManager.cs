@@ -2,10 +2,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Configuration;
+//using System.Configuration;//converting netstandart1.6
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
+ 
 using System.Text;
 using RoboUtil.utils;
 
@@ -82,11 +82,12 @@ namespace RoboUtil.managers
             NameValueCollection nvc = XmlUtil.ReadNameValueXml("configuration", configFileInfo.FullName);
             LoadConfiguration(nvc);
         }
-        public void LoadConfiguration(string sectionNameInAppConfigurationFile)
-        {
-            NameValueCollection nv = (NameValueCollection)ConfigurationManager.GetSection(sectionNameInAppConfigurationFile);
-            LoadConfiguration(nv);
-        }
+        //converting netstandart1.6
+        //public void LoadConfiguration(string sectionNameInAppConfigurationFile)
+        //{
+        //    NameValueCollection nv = (NameValueCollection)ConfigurationManager.GetSection(sectionNameInAppConfigurationFile);
+        //    LoadConfiguration(nv);
+        //}
         #endregion
 
         #region Get generic config

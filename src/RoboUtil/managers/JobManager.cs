@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-//using log4net.Repository.Hierarchy;
+﻿//using log4net.Repository.Hierarchy;
 //using Quartz;
 //using Quartz.Impl;
 //using Quartz.Impl.Calendar;

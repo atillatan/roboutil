@@ -6,6 +6,7 @@ Click here to learn more. http://go.microsoft.com/fwlink/?LinkId=518007
 
 var gulp = require('gulp');
 
+/*
 gulp.task('copy2dist', function () {
     gulp.src([
         'bin/Debug/dnx46/**'
@@ -17,6 +18,7 @@ gulp.task('copy2usis', function () {
         '../../artifacts/bin/RoboUtil/Debug/dnx46/**'
     ]).pipe(gulp.dest('../../../USIS/Usis/Main/packages/lib'));
 });
+*/
 
 
  
