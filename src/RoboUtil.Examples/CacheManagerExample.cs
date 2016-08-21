@@ -7,7 +7,7 @@ using System.Linq;
 
 using System.Collections;
  
-using RoboUtil.dto;
+using RoboUtil.Common;
 using RoboUtil.managers;
 using RoboUtil.managers.cache;
 using RoboUtil.managers.thread;
@@ -350,9 +350,9 @@ namespace com.robonom.example
                 ActivationCode = "SKJDHFA4359324L2K3J4LKJHRSD",
                 UpdatedBy = 3,
                 DtLastLogin = DateTime.Now,
-                DtUpdated = DateTime.Now,
+                UpdateDate = DateTime.Now,
                 IsActive = true,
-                DtCreated = DateTime.Now,
+                CreateDate = DateTime.Now,
                 IsUserActive = true,
                 OldPassword = "testpassword",
                 CreatedBy = 3,

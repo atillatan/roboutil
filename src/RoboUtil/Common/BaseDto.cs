@@ -1,50 +1,35 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace RoboUtil.dto
+namespace RoboUtil.Common
 {
     [Serializable]
     [DataContract]
-    public abstract class BaseDto :   IComparable
+    public abstract class BaseDto :  IComparable
     {
         public BaseDto()
         {
             IsActive = true;
         }
+
         [DataMember]
         public int Id { get; set; }
         [DataMember]
-        public DateTime? DtCreated { get; set; }
+        public DateTime CreateDate { get; set; }
         [DataMember]
         public int CreatedBy { get; set; }
         [DataMember]
-        public DateTime? DtUpdated { get; set; }
+        public DateTime? UpdateDate { get; set; }
         [DataMember]
         public int? UpdatedBy { get; set; }
         [DataMember]
-        public bool? IsActive { get; set; }
-       
-        public abstract string ToDescription();
-        public void OnDeserialization(Object o)
-        {
-        }
+        public bool IsActive { get; set; }
+
+        public void OnDeserialization(Object o) { }
         public object Clone()
         {
             return this.MemberwiseClone();
         }
-        public abstract T Copy<T>() where T : class;
-
-        protected T BaseCopy<T>(BaseDto dto) where T : class
-        {
-            dto.Id = this.Id;
-            dto.DtCreated = this.DtCreated;
-            dto.CreatedBy = this.CreatedBy;
-            dto.DtUpdated = this.DtUpdated;
-            dto.UpdatedBy = this.UpdatedBy;
-            dto.IsActive = this.IsActive;
-            return dto as T;
-        }
-      
         public virtual int CompareTo(object obj)
         {
             if (obj == null) return 1;
@@ -55,7 +40,6 @@ namespace RoboUtil.dto
             else
                 throw new ArgumentException("Object is not a BaseDto");
         }
-
         public override bool Equals(Object obj)
         {
             BaseDto baseDto = obj as BaseDto;
@@ -68,11 +52,23 @@ namespace RoboUtil.dto
         {
             return this.Id.GetHashCode();
         }
-
-        public  T CreateInstance<T>()
+        public T CreateInstance<T>()
         {
             return (T)Activator.CreateInstance(this.GetType());
         }
+
+        //public abstract T Copy<T>() where T : class;
+
+        //protected T BaseCopy<T>(BaseDto dto) where T : class
+        //{
+        //    dto.Id = this.Id;
+        //    dto.CreateDate = this.CreateDate;
+        //    dto.CreatedBy = this.CreatedBy;
+        //    dto.UpdateDate = this.UpdateDate;
+        //    dto.UpdatedBy = this.UpdatedBy;
+        //    dto.IsActive = this.IsActive;
+        //    return dto as T;
+        //}
 
     }
 }

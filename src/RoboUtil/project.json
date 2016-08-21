@@ -7,35 +7,56 @@
   "title": "RoboUtil",
   "language": "en-US",
 
-  "dependencies": {     
+  "dependencies": {
+
     "System.Runtime.Serialization.Primitives": "4.1.1",
     "System.Runtime.Serialization.Json": "4.0.0",
-    "System.Runtime.Serialization.Xml": "4.1.1",  
+    "System.Runtime.Serialization.Xml": "4.1.1",
+    "System.Runtime.Serialization.Formatters": "4.0.0-rc3-24212-01",
     "System.Runtime.InteropServices.Analyzers": "1.1.0",
 
     "Microsoft.AspNetCore.Mvc": "1.0.0",
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
     "Microsoft.AspNetCore.Http": "1.0.0",
+    "Microsoft.AspNetCore.StaticFiles": "1.0.0",
+    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+    "Microsoft.Extensions.Logging": "1.0.0",
+    "Microsoft.Extensions.Logging.Console": "1.0.0",
+    "Microsoft.Extensions.Logging.Debug": "1.0.0", 
+    "Microsoft.AspNetCore.Server.WebListener": "0.1.0",
+    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
     "Microsoft.Extensions.Caching.Memory": "1.0.0",
+    "Microsoft.Extensions.Configuration": "1.0.0",
     "Newtonsoft.Json": "9.0.1"
+
   },
 
   "frameworks": {
     "net46": {
       "dependencies": {
-        
+        "Dapper": "1.50.2"
       },
       "frameworkAssemblies": {
         "System.Runtime.Caching": "4.0.0.0",
         "System.Data": "4.0.0.0",
         "System.Linq": "4.0.0.0",
-        "System.Xml": "4.0.0.0"
+        "System.Xml": "4.0.0.0",
+        "System.Transactions": "4.0.0.0",
+        "System.ServiceModel": "4.0.0.0"
 
       }
     },
     "netstandard1.6": {
       "buildOptions": {
         "compile": {
-         
+
           "exclude": [
             "managers/ThreadPoolManager.cs",
             "managers/thread/*.cs",
@@ -52,7 +73,11 @@
             "utils/ExpressionUtil.cs",
             "utils/DatabaseUtil.cs",
             "managers/ConfigManager.cs",
-            "managers/JobManager.cs"
+            "managers/JobManager.cs",
+            "Common/ExampleSqlRepository.cs",
+            "Common/ExampleDapperRepository.cs",
+            "Common/RepositoryManager.cs",
+            "Common/Service/WCF/*.cs"
 
           ]
         },
@@ -92,8 +117,9 @@
         "System.Threading.Timer": "4.0.1",
         "System.Xml.ReaderWriter": "4.0.11",
         "System.Xml.XmlDocument": "4.0.1",
-        "System.Collections.Specialized": "4.0.1",
-        "System.Runtime.Serialization.Formatters": "4.0.0-rc3-24212-01"
+        "System.Collections.Specialized": "4.0.1"
+  
+         
 
       },
       "imports": [
