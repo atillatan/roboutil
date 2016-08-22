@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Runtime.Caching;
+//using System.Runtime.Caching;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace RoboUtil.managers.cache
 {

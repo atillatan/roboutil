@@ -212,10 +212,10 @@ namespace com.robonom.example
 
             ICache ch1 = CacheManager.Instance.CreateCache("MyCacheM23", new CacheProperties(CacheCollectionType.MemoryCache), myDictionary);
 
-            string cacheJsonValue = ch1.MemoryCache.Get("username_101").ToString();
-            UserDto user = GeneralUtil.FromJson<UserDto>(cacheJsonValue);
+            //string cacheJsonValue = ch1.MemoryCache.Get("username_101").ToString();
+            //UserDto user = GeneralUtil.FromJson<UserDto>(cacheJsonValue);
 
-            Console.WriteLine("val:" + user.UserName + " retrieved from cache");
+            //Console.WriteLine("val:" + user.UserName + " retrieved from cache");
 
 
         }

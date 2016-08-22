@@ -74,7 +74,7 @@ namespace RoboUtil.managers
             else
                 cache = new MemoryCacheHandler(cacheName, cacheProperties);
 
-            if (!cacheItems.IsNull())
+            if (cacheItems!=null)
             {
                 foreach (string key in cacheItems.Keys)
                     cache.Add(key, cacheItems[key]);

@@ -3,10 +3,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Caching;
-using System.Runtime.Serialization.Formatters.Binary;
+//using System.Runtime.Caching;
+using Microsoft.Extensions.Caching.Memory;
+//using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using Newtonsoft.Json;
 using RoboUtil.utils;
+
 
 namespace RoboUtil.managers.cache
 {
@@ -87,10 +90,10 @@ namespace RoboUtil.managers.cache
         #region CRUD operations
         private void PutCacheItem(CacheItem cacheItem)
         {
-            if (GeneralUtil.IsCollection(cacheItem.Value))
-            {
-                throw new Exception("You cannot add any collection for preventing Thread lock");
-            }
+            //if (cacheItem.Value.GetType().GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>)))
+            //{
+            //    throw new Exception("You cannot add any collection for preventing Thread lock");
+            //}
 
             CacheItem oldCacheItem = null;
             CacheItem item = cacheItem;
@@ -153,7 +156,7 @@ namespace RoboUtil.managers.cache
             {
                 Console.WriteLine("DictionaryCacheHandler.GetValue({0}.{1}), Total cache size:{2}", _name, key, _cacheItems.Count());
                 if ((bool)_cacheProperties.IsSlidingExpiration) cacheItem.LastUsedTime = DateTime.Now;
-                return GeneralUtil.FromJson<T>(cacheItem.Value as string);
+                return JsonConvert.DeserializeObject<T>(cacheItem.Value as string);
                 //return GeneralUtil.Clone<T>(cacheItem.Value as T);
             }
             return null;
@@ -172,7 +175,7 @@ namespace RoboUtil.managers.cache
                 }
 
                 //T realObj = GeneralUtil.Clone<T>(ci.Value as T);
-                T realObj = GeneralUtil.FromJson<T>(ci.Value as string);
+                T realObj = JsonConvert.DeserializeObject<T>(ci.Value as string);
                 result.Add(realObj);
             }
 
@@ -194,7 +197,7 @@ namespace RoboUtil.managers.cache
                     item.LastUsedTime = DateTime.Now;
                 }
 
-                T realObj = GeneralUtil.FromJson<T>(item.Value as string);
+                T realObj = JsonConvert.DeserializeObject<T>(item.Value as string);
                 result.Add(realObj);
             }
             return result;
@@ -228,30 +231,30 @@ namespace RoboUtil.managers.cache
             get
             {
                 long cacheSize = 0;
-                foreach (var v in _cacheItems)
-                {
-                    using (Stream s = new MemoryStream())
-                    {
+                //foreach (var v in _cacheItems)
+                //{
+                //    using (Stream s = new MemoryStream())
+                //    {
 
-                        if (v.Value is IQueryable)
-                        {
-                            long listSize = 0;
+                //        if (v.Value is IQueryable)
+                //        {
+                //            long listSize = 0;
 
-                            foreach (var q in (IQueryable)v.Value)
-                            {
-                                BinaryFormatter bf = new BinaryFormatter();
-                                bf.Serialize(s, q);
-                                listSize += s.Length;
-                            }
-                            cacheSize += listSize;
-                            continue;
-                        }
+                //            foreach (var q in (IQueryable)v.Value)
+                //            {
+                //                BinaryFormatter bf = new BinaryFormatter();
+                //                bf.Serialize(s, q);
+                //                listSize += s.Length;
+                //            }
+                //            cacheSize += listSize;
+                //            continue;
+                //        }
 
-                        BinaryFormatter formatter = new BinaryFormatter();
-                        formatter.Serialize(s, v.Value);
-                        cacheSize += s.Length;
-                    }
-                }
+                //        BinaryFormatter formatter = new BinaryFormatter();
+                //        formatter.Serialize(s, v.Value);
+                //        cacheSize += s.Length;
+                //    }
+                //}
                 return cacheSize;
             }
         }
@@ -285,10 +288,10 @@ namespace RoboUtil.managers.cache
                     System.Threading.Thread.Sleep(5000);//check Timer is canceled
                 }
             }
-            catch (ThreadAbortException thEx)
-            {
-                Console.WriteLine(thEx.Message, thEx);
-            }
+            //catch (ThreadAbortException thEx)
+            //{
+            //    Console.WriteLine(thEx.Message, thEx);
+            //}
             catch (Exception ex1)
             {
                 Console.WriteLine(ex1.Message, ex1);
@@ -312,7 +315,7 @@ namespace RoboUtil.managers.cache
                     if (remainingTime >= _cacheProperties.CacheExpireDuration)
                     {
                         this.Clear();
-                        if (_cacheProperties.CacheExpireFunction != null) _cacheProperties.CacheExpireFunction.Method.Invoke(null, new object[] { this });
+                        //if (_cacheProperties.CacheExpireFunction != null) _cacheProperties.CacheExpireFunction.Method.Invoke(null, new object[] { this });
                         return;
                     }
                 }
@@ -362,11 +365,8 @@ namespace RoboUtil.managers.cache
 
                         if (_cacheItems.TryRemove(elem.Key, out val))
                             Console.WriteLine("Remove expired cache item [{0}].[{1}], Total cacheHandler size:{2}", _name, elem.Key, _cacheItems.Count.ToString());
-                        else
-
-
-
-                        if (_cacheProperties.CacheItemExpireFunction != null) _cacheProperties.CacheItemExpireFunction.Method.Invoke(null, new object[] { elem });
+                        //else
+                        //if (_cacheProperties.CacheItemExpireFunction != null) _cacheProperties.CacheItemExpireFunction.Method.Invoke(null, new object[] { elem });
                     }
                 }
 

@@ -28,13 +28,14 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0", 
+    "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.AspNetCore.Server.WebListener": "0.1.0",
     "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
     "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
     "Microsoft.Extensions.Caching.Memory": "1.0.0",
     "Microsoft.Extensions.Configuration": "1.0.0",
     "Newtonsoft.Json": "9.0.1"
+    
 
   },
 
@@ -42,6 +43,7 @@
     "net46": {
       "dependencies": {
         "Dapper": "1.50.2"
+        
       },
       "frameworkAssemblies": {
         "System.Runtime.Caching": "4.0.0.0",
@@ -50,6 +52,7 @@
         "System.Xml": "4.0.0.0",
         "System.Transactions": "4.0.0.0",
         "System.ServiceModel": "4.0.0.0"
+        
 
       }
     },
@@ -60,8 +63,7 @@
           "exclude": [
             "managers/ThreadPoolManager.cs",
             "managers/thread/*.cs",
-            "managers/CacheManager.cs",
-            "managers/cache/*.cs",
+       
             "utils/CryptographyUtil.cs",
             "utils/XmlUtil.cs",
             "utils/FileUtil.cs",
@@ -117,9 +119,8 @@
         "System.Threading.Timer": "4.0.1",
         "System.Xml.ReaderWriter": "4.0.11",
         "System.Xml.XmlDocument": "4.0.1",
-        "System.Collections.Specialized": "4.0.1"
-  
-         
+        "System.Collections.Specialized": "4.0.1",
+        "BinaryFormatter": "1.0.2"
 
       },
       "imports": [
