@@ -1,16 +1,16 @@
 ﻿using System;
- 
+
 //using log4net;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
- 
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.PlatformAbstractions;
 using RoboUtil.Common;
-
-
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace RoboUtil.Common.Service.API
 {
@@ -45,9 +45,13 @@ namespace RoboUtil.Common.Service.API
             if (actionContext.HttpContext.Request != null && actionContext.HttpContext.Request.Path != null)
             {
                 ctx.URL = actionContext.HttpContext.Request.GetDisplayUrl();
-                ctx.ServerIP = actionContext.HttpContext.Request.Host.Value;
+                ctx.ServerIP = actionContext.HttpContext.Request.Host.Value;      
+
                 ctx.RequestID = Guid.NewGuid().ToString();
-                ctx.UserSession = new UserSession() { SessionID = "" };
+                //ctx.UserInfo = new UserInfo() { Claims = User.Claims };
+                Dictionary<object, object> _items = new Dictionary<object, object>();
+                _items.Add("Application", "RoboUtil");
+                ctx.Items = _items;
             }
         }
 

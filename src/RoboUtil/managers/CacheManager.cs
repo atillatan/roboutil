@@ -61,7 +61,7 @@ namespace RoboUtil.managers
         private ICache _create(string cacheName, CacheProperties cacheProperties, IDictionary<string, object> cacheItems)
         {
 
-            CacheCollectionType? cacheCollectionType = CacheCollectionType.MemoryCache;//default
+            CacheCollectionType? cacheCollectionType = CacheCollectionType.DictionaryCache;//default
             if (cacheProperties != null && cacheProperties.CacheCollectionType!=null) cacheCollectionType = cacheProperties.CacheCollectionType;          
 
             //return existed cache, when cache is already exist

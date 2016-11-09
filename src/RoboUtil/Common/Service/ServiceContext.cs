@@ -13,11 +13,11 @@ namespace RoboUtil.Common.Service
 {
     public class ServiceContext:IDisposable
     {
-        public UserSession UserSession { get; set; }
+        public UserInfo UserInfo { get; set; }
         public string RequestID { get; set; }
         public string ServerIP { get; set; }
         public string URL { get; set; }
-        public ConcurrentDictionary<object,object> Items { get; set; }
+        public Dictionary<object,object> Items { get; set; }
 
         #region Disposing
         private bool disposed = false;
