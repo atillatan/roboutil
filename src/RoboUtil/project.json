@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "RoboUtil",
   "version": "1.0.0",
   "description": "RoboUtil Class Library",
@@ -8,20 +8,16 @@
   "language": "en-US",
 
   "dependencies": {
-
     "System.Runtime.Serialization.Primitives": "4.1.1",
     "System.Runtime.Serialization.Json": "4.0.2",
     "System.Runtime.Serialization.Xml": "4.1.1",
     "System.Runtime.Serialization.Formatters": "4.0.0-rc3-24212-01",
     "System.Runtime.InteropServices.Analyzers": "1.1.0",
-
-    
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
     "Microsoft.AspNetCore.Http": "1.0.0",
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
     "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
-
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
     "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
@@ -34,9 +30,7 @@
     "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
     "Microsoft.Extensions.Caching.Memory": "1.0.0",
     "Microsoft.Extensions.Configuration": "1.0.0",
-    "Newtonsoft.Json": "9.0.1"
-    
-
+    "Newtonsoft.Json": "9.0.1" 
   },
 
   "frameworks": {
