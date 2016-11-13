@@ -9,6 +9,10 @@ namespace RoboUtil.Common
         public IEnumerable<Claim> Claims { get; set; }
         public ConcurrentDictionary<object, object> Items { get; set; }
 
+        public IList<string> Roles { get; set; }
+        public string Username { get; set; }
+        public string OrganizationUnit { get; set; }
+
 
     }
 }
