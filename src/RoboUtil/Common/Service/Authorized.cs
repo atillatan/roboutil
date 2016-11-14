@@ -1,19 +1,25 @@
 ﻿namespace RoboUtil.Common.Service
 
 {
-   
-    public class Authorized:System.Attribute
+
+    public class Authorized : System.Attribute
     {
-        public bool IsEnabled { get; set; }
-        public Authorized()
+        private string[] authorizations;
+
+        public Authorized(params string[] authorizations)
         {
-            IsEnabled = true;
+            this.authorizations = authorizations;
         }
-        public Authorized(bool isEnabled)
+
+        public string[] Authorizations
         {
-            IsEnabled = isEnabled;
+            get
+            {
+                return this.authorizations;
+            }
         }
+
     }
 
-  
+
 }
