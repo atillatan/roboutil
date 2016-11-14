@@ -5,23 +5,24 @@ namespace RoboUtil.Common.Service
 {
     public interface IExampleService
     {
-        [Authorized(false)]
+        [Authorized("")]
+        [Transactional(false)]
         ServiceResponse<ExampleDto> Get(int id);
 
-        [Authorized]
+        [Authorized("")]        
         [Transactional(false)]
         ServiceResponse<IEnumerable<ExampleDto>> List();
 
-        [Authorized]
-        [Transactional]
+        [Authorized("")]
+        [Transactional(true)]
         ServiceResponse<int> Insert(ExampleDto exampleDto);
 
-        [Authorized]
-        [Transactional]
+        [Authorized("")]
+        [Transactional(true)]
         ServiceResponse<int> Update(ExampleDto exampleDto);
 
-        [Authorized]
-        [Transactional]
+        [Authorized("")]
+        [Transactional(true)]
         ServiceResponse<int> Delete(int id);
 
     }
