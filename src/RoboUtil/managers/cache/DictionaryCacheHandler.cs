@@ -156,8 +156,9 @@ namespace RoboUtil.managers.cache
             {
                 Console.WriteLine("DictionaryCacheHandler.GetValue({0}.{1}), Total cache size:{2}", _name, key, _cacheItems.Count());
                 if ((bool)_cacheProperties.IsSlidingExpiration) cacheItem.LastUsedTime = DateTime.Now;
-                return JsonConvert.DeserializeObject<T>(cacheItem.Value as string);
+                //return JsonConvert.DeserializeObject<T>(cacheItem.Value as string);
                 //return GeneralUtil.Clone<T>(cacheItem.Value as T);
+                return cacheItem.Value as T;
             }
             return null;
         }
@@ -169,19 +170,19 @@ namespace RoboUtil.managers.cache
             {
                 CacheItem ci = _cacheItems[key];
 
-                if ((bool)_cacheProperties.IsSlidingExpiration)
+                if (_cacheProperties.IsSlidingExpiration != null && (bool)_cacheProperties.IsSlidingExpiration)
                 {
                     ci.LastUsedTime = DateTime.Now;
                 }
 
                 //T realObj = GeneralUtil.Clone<T>(ci.Value as T);
-                T realObj = JsonConvert.DeserializeObject<T>(ci.Value as string);
-                result.Add(realObj);
+                //T realObj = JsonConvert.DeserializeObject<T>(ci.Value as string);
+                result.Add(ci.Value as T);
             }
 
             return result;
         }
-        public IList<T> GetValues<T>(IList<string> keys)
+        public IList<T> GetValues<T>(IList<string> keys) where T : class
         {
             var res = from a in _cacheItems
                       where keys.Contains(a.Key)
@@ -192,13 +193,13 @@ namespace RoboUtil.managers.cache
 
             foreach (CacheItem item in temp)
             {
-                if ((bool)_cacheProperties.IsSlidingExpiration)
+                if (_cacheProperties.IsSlidingExpiration != null && (bool)_cacheProperties.IsSlidingExpiration)
                 {
                     item.LastUsedTime = DateTime.Now;
                 }
 
-                T realObj = JsonConvert.DeserializeObject<T>(item.Value as string);
-                result.Add(realObj);
+                //T realObj = JsonConvert.DeserializeObject<T>(item.Value as string);
+                result.Add(item.Value as T);
             }
             return result;
         }

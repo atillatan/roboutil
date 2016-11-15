@@ -25,8 +25,8 @@ namespace RoboUtil.managers.cache
         //Get       
         T GetValue<T>(string key) where T : class;
         IList<T> GetValues<T>() where T : class;
-        IList<T> GetValues<T>(IList<string> keys);
-        
+        IList<T> GetValues<T>(IList<string> keys) where T : class;
+
         //Remove
         bool Remove(string key);
         void RemoveKeys(List<string> list);

@@ -231,7 +231,7 @@ namespace RoboUtil.managers.cache
 
             return resultList;
         }
-        public IList<T> GetValues<T>(IList<string> keys)
+        public IList<T> GetValues<T>(IList<string> keys) where T : class
         {
             //var res = from a in _cacheItems
             //          where keys.Contains(a.Key)
