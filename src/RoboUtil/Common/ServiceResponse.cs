@@ -1,7 +1,10 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace RoboUtil.Common
 {
+   
+    [Serializable]
     [DataContract]
     public class ServiceResponse<T> 
     {
