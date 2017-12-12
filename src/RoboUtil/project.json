@@ -1,6 +1,6 @@
 {
   "name": "RoboUtil",
-  "version": "1.0.0",
+  "version": "1.0.5-rc15",
   "description": "RoboUtil Class Library",
   "copyright": "Atilla Tanrikulu",
   "authors": [ "Atilla Tanrikulu" ],
@@ -8,37 +8,32 @@
   "language": "en-US",
 
   "dependencies": {
-    "System.Runtime.Serialization.Primitives": "4.1.1",
-    "System.Runtime.Serialization.Json": "4.0.2",
-    "System.Runtime.Serialization.Xml": "4.1.1",
-    "System.Runtime.Serialization.Formatters": "4.0.0-rc3-24212-01",
-    "System.Runtime.InteropServices.Analyzers": "1.1.0",
-    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
-    "Microsoft.AspNetCore.Http": "1.0.0",
-    "Microsoft.AspNetCore.StaticFiles": "1.0.0",
-    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
-    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
-    "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0",
-    "Microsoft.AspNetCore.Server.WebListener": "0.1.0",
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
-    "Microsoft.Extensions.Caching.Memory": "1.0.0",
-    "Microsoft.Extensions.Configuration": "1.0.0",
-    "Newtonsoft.Json": "9.0.1" 
+    "Dapper": "1.50.2",
+    "Dapper.Contrib": "1.50.0"
   },
 
   "frameworks": {
     "net46": {
       "dependencies": {
-        "Microsoft.AspNetCore.Mvc": "1.0.0",
-        "Dapper": "1.50.2"
+        "System.Data.SqlClient": "4.1.0",
 
+        "Microsoft.AspNetCore.Mvc": "1.0.0",
+        "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+        "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
+        "Microsoft.AspNetCore.Http": "1.0.0",
+        "Microsoft.AspNetCore.StaticFiles": "1.0.0",
+        "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+        "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+        "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+        "Microsoft.Extensions.Configuration.Json": "1.0.0",
+        "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+        "Microsoft.AspNetCore.Server.WebListener": "0.1.0",
+        "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+        "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
+        "Microsoft.Extensions.Caching.Memory": "1.0.0",
+        "Microsoft.Extensions.Configuration": "1.0.0",
+        "System.Security.Cryptography.Algorithms": "4.2.0",
+        "Newtonsoft.Json": "9.0.1"
       },
       "frameworkAssemblies": {
         "System.Runtime.Caching": "4.0.0.0",
@@ -46,28 +41,27 @@
         "System.Linq": "4.0.0.0",
         "System.Xml": "4.0.0.0",
         "System.Transactions": "4.0.0.0",
-        "System.ServiceModel": "4.0.0.0"
-
-
+        "System.Runtime.Serialization": "4.0.0.0",
+        "System.Runtime.Serialization.Json": "4.0.0.0",
+        "System.Runtime.Serialization.Xml": "4.0.10.0",
+        "System.ServiceModel": "4.0.0.0",
+        "System.Runtime.Serialization.Primitives": "4.0.10.0",
+        "System.Runtime.Serialization.Formatters.Soap": "4.0.0.0"
       }
     },
     "netstandard1.6": {
       "buildOptions": {
         "compile": {
-
           "exclude": [
             "managers/ThreadPoolManager.cs",
             "managers/thread/*.cs",
-
-            "utils/CryptographyUtil.cs",
-            "utils/XmlUtil.cs",
-            "utils/FileUtil.cs",
-            "utils/GeneralUtil.cs",
-            "utils/ExtensionUtil.cs",
-            "utils/ExpressionUtil.cs",
+            "Utils.XmlUtil.cs",
+            "Utils.FileUtil.cs",
             "utils/ExpandoObjectMapperUtil.cs",
+            "Utils.DynamicMapper.cs",
             "utils/DynamicDbUtil.cs",
-            "utils/ExpressionUtil.cs",
+            "Utils.DynamicDb.cs",
+
             "utils/DatabaseUtil.cs",
             "managers/ConfigManager.cs",
             "managers/JobManager.cs",
@@ -78,17 +72,22 @@
 
           ]
         },
-        "define": [ "HAS_READERWRITERLOCKSLIM" ]
+        "define": [ "ASYNC", "COREFX" ]
       },
       "dependencies": {
         "NETStandard.Library": {
           "version": "1.6.0",
           "type": "platform"
         },
+        "System.Data.SqlClient": "4.1.0",
+        "System.Runtime.Serialization.Json": "4.0.2",
+        "System.Runtime.Serialization.Primitives": "4.1.1",
+        "System.Runtime.Serialization.Xml": "4.0.10",
+        "System.Runtime.Serialization.Formatters": "4.0.0-rc3-24212-01",
+        "System.Runtime.InteropServices.Analyzers": "1.1.0",
         "Microsoft.AspNetCore.Mvc": "1.0.0",
         "System.Runtime": "4.1.0",
         "System.Data.Common": "4.1.0",
-        "system.data.sqlclient": "4.1.0",
         "System.Runtime.Handles": "4.0.1",
         "System.Threading": "4.0.11",
         "System.AppContext": "4.1.0",
@@ -115,9 +114,24 @@
         "System.Threading.Timer": "4.0.1",
         "System.Xml.ReaderWriter": "4.0.11",
         "System.Xml.XmlDocument": "4.0.1",
-        "System.Collections.Specialized": "4.0.1"
+        "System.Collections.Specialized": "4.0.1",
+        "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+        "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
+        "Microsoft.AspNetCore.Http": "1.0.0",
+        "Microsoft.AspNetCore.StaticFiles": "1.0.0",
+        "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+        "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+        "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+        "Microsoft.Extensions.Configuration.Json": "1.0.0",
+        "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
 
-
+        "Microsoft.AspNetCore.Server.WebListener": "0.1.0",
+        "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+        "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
+        "Microsoft.Extensions.Caching.Memory": "1.0.0",
+        "Microsoft.Extensions.Configuration": "1.0.0",
+        "System.Security.Cryptography.Algorithms": "4.2.0",
+        "Newtonsoft.Json": "9.0.1"
       },
       "imports": [
         "dnxcore50"
@@ -127,20 +141,18 @@
     "netstandard1.3": {
       "buildOptions": {
         "compile": {
-
           "exclude": [
             "managers/ThreadPoolManager.cs",
             "managers/thread/*.cs",
 
-            "utils/CryptographyUtil.cs",
-            "utils/XmlUtil.cs",
-            "utils/FileUtil.cs",
-            "utils/GeneralUtil.cs",
-            "utils/ExtensionUtil.cs",
-            "utils/ExpressionUtil.cs",
+            "Utils.XmlUtil.cs",
+            "Utils.FileUtil.cs",
+
             "utils/ExpandoObjectMapperUtil.cs",
+            "Utils.DynamicMapper.cs",
+            "Utils.DynamicDb.cs",
             "utils/DynamicDbUtil.cs",
-            "utils/ExpressionUtil.cs",
+
             "utils/DatabaseUtil.cs",
             "managers/ConfigManager.cs",
             "managers/JobManager.cs",
@@ -151,17 +163,18 @@
 
           ]
         },
-        "define": [ "HAS_READERWRITERLOCKSLIM" ]
+        "define": [ "ASYNC", "COREFX" ]
       },
       "dependencies": {
-        "NETStandard.Library": {
-          "version": "1.3.0",
-          "type": "platform"
-        },
+        "System.Data.SqlClient": "4.1.0",
+        "System.Runtime.Serialization.Json": "4.0.2",
+        "System.Runtime.Serialization.Primitives": "4.1.1",
+        "System.Runtime.Serialization.Xml": "4.0.10",
+        "System.Runtime.Serialization.Formatters": "4.0.0-rc3-24212-01",
+        "System.Runtime.InteropServices.Analyzers": "1.1.0",
         "Microsoft.AspNetCore.Mvc": "1.0.0-rc2-final",
         "System.Runtime": "4.1.0",
         "System.Data.Common": "4.1.0",
-        "system.data.sqlclient": "4.1.0",
         "System.Runtime.Handles": "4.0.1",
         "System.Threading": "4.0.11",
         "System.AppContext": "4.1.0",
@@ -188,9 +201,24 @@
         "System.Threading.Timer": "4.0.1",
         "System.Xml.ReaderWriter": "4.0.11",
         "System.Xml.XmlDocument": "4.0.1",
-        "System.Collections.Specialized": "4.0.1"
+        "System.Collections.Specialized": "4.0.1",
+        "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+        "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
+        "Microsoft.AspNetCore.Http": "1.0.0",
+        "Microsoft.AspNetCore.StaticFiles": "1.0.0",
+        "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+        "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+        "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+        "Microsoft.Extensions.Configuration.Json": "1.0.0",
+        "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
 
-
+        "Microsoft.AspNetCore.Server.WebListener": "0.1.0",
+        "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+        "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
+        "Microsoft.Extensions.Caching.Memory": "1.0.0",
+        "Microsoft.Extensions.Configuration": "1.0.0",
+        "System.Security.Cryptography.Algorithms": "4.2.0",
+        "Newtonsoft.Json": "9.0.1"
       },
       "imports": [
         "dnxcore50"
@@ -204,5 +232,5 @@
     "warningsAsErrors": true,
     "platform": "anycpu",
     "exclude": "node_modules"
-  } 
+  }
 }

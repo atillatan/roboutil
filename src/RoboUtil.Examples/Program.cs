@@ -42,9 +42,9 @@ namespace RoboUtil.Examples
                 dynamic x = DynamicDbUtil.List(readConnection, "select Id,StringVar,IntVar,DateTimeVar from Example");
                 dynamic x21 = DynamicDbUtil.List(readConnection, "select Id,StringVar,IntVar,DateTimeVar from Example where Id={0}",1);
 
-                UserDto y = ExpandoObjectMapperUtil.Map<UserDto>(x);
+                ExampleDto y = ExpandoObjectMapperUtil.Map<ExampleDto>(x);
 
-                UserDto xy = DynamicDbUtil.Get<UserDto>(readConnection, @"
+                ExampleDto xy = DynamicDbUtil.Get<ExampleDto>(readConnection, @"
                 SELECT 
                        Ad [Adi]
                       ,Soyad [Soyadi]
@@ -71,7 +71,7 @@ namespace RoboUtil.Examples
                 //", 124);
 
 
-                UserDto y1 = ExpandoObjectMapperUtil.Map<UserDto>(x);
+                ExampleDto y1 = ExpandoObjectMapperUtil.Map<ExampleDto>(x);
 
                 //TODO: Mapper will change
                 //UserDto x2 = DatabaseUtil.Get<UserDto>(readConnection, @"

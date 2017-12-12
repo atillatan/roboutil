@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace RoboUtil.Common.Service
 {
-    public class IService
+    public interface IService<TBaseRepositoryManager>
     {
+        BaseRepositoryManager BaseRepositoryManager { set; }
+        ServiceContext ServiceContext { get; }
+
+        TBaseRepositoryManager RepositoryManager { get; }
+
+        TBaseRepositoryManager Rm { get; }
     }
 }

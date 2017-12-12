@@ -156,13 +156,13 @@ namespace com.robonom.example
 
 
             ICache ch1 = CacheManager.Instance.CreateCache("MyCacheM1", null, myDictionary);
-            Console.WriteLine("val:" + ch1.GetValue<UserDto>("username_100").UserName + " retrieved from cache");
+            Console.WriteLine("val:" + ch1.GetValue<ExampleDto>("username_100").UserName + " retrieved from cache");
 
 
         }
         public static void ExampleModelUsage2()
         {
-            IList<UserDto> yourList = new List<UserDto>();
+            IList<ExampleDto> yourList = new List<ExampleDto>();
             for (int i = 0; i < 10000; i++)
             {
                 yourList.Add(CreateUser("UserName_" + i));
@@ -170,18 +170,18 @@ namespace com.robonom.example
 
             ICache ch1 = CacheManager.Instance.CreateCache("MyCacheM2", null, yourList.ToDictionary(x => x.UserName, x => (object)x));
 
-            UserDto user1 = ch1.GetValue<UserDto>("UserName_100");
+            ExampleDto user1 = ch1.GetValue<ExampleDto>("UserName_100");
             Console.WriteLine("val:" + user1.UserName + " retrieved from cache");
 
-            UserDto user2 = ch1.GetValues<UserDto>().Where(a => a.UserName == "UserName_101").FirstOrDefault();
+            ExampleDto user2 = ch1.GetValues<ExampleDto>().Where(a => a.UserName == "UserName_101").FirstOrDefault();
             Console.WriteLine("val:" + user2.UserName + " retrieved from cache");
 
             ICache ch2 = CacheManager.Instance.CreateCache("MyCacheM3", new CacheProperties() { CacheCollectionType = CacheCollectionType.DictionaryCache }, yourList.ToDictionary(x => x.UserName, x => (object)x));
 
-            UserDto user3 = ch1.GetValue<UserDto>("UserName_100");
+            ExampleDto user3 = ch1.GetValue<ExampleDto>("UserName_100");
             Console.WriteLine("val:" + user3.UserName + " retrieved from cache");
 
-            UserDto user4 = ch1.GetValues<UserDto>().Where(a => a.UserName == "UserName_101").FirstOrDefault();
+            ExampleDto user4 = ch1.GetValues<ExampleDto>().Where(a => a.UserName == "UserName_101").FirstOrDefault();
             Console.WriteLine("val:" + user4.UserName + " retrieved from cache");
 
         }
@@ -197,7 +197,7 @@ namespace com.robonom.example
 
             string cacheJsonValue = ch1.DictionaryCache["username_101"].Value.ToString();
 
-            UserDto user = GeneralUtil.FromJson<UserDto>(cacheJsonValue);
+            ExampleDto user = GeneralUtil.FromJson<ExampleDto>(cacheJsonValue);
 
             Console.WriteLine("val:" + user.UserName + " retrieved from cache");
 
@@ -229,7 +229,7 @@ namespace com.robonom.example
             ICache ch1 = CacheManager.Instance.CreateCache("MyCacheM21", new CacheProperties(CacheCollectionType.MemoryCache), myDictionary);
             System.Runtime.Caching.MemoryCache ch = ch1.CacheItems<System.Runtime.Caching.MemoryCache>();
 
-            UserDto user = GeneralUtil.FromJson<UserDto>(ch.Get("username_101").ToString());
+            ExampleDto user = GeneralUtil.FromJson<ExampleDto>(ch.Get("username_101").ToString());
             Console.WriteLine("val:" + user.UserName + " retrieved from cache");
 
         }
@@ -242,7 +242,7 @@ namespace com.robonom.example
             ICache ch1 = CacheManager.Instance.CreateCache("MyCache123", new CacheProperties(CacheCollectionType.DictionaryCache), myDictionary);
             ConcurrentDictionary<string, CacheItem> ch = ch1.CacheItems<ConcurrentDictionary<string, CacheItem>>();
 
-            UserDto user = GeneralUtil.FromJson<UserDto>(ch["username_100"].Value.ToString());
+            ExampleDto user = GeneralUtil.FromJson<ExampleDto>(ch["username_100"].Value.ToString());
             Console.WriteLine("val:" + user.UserName + " retrieved from cache");
         }
 
@@ -294,7 +294,7 @@ namespace com.robonom.example
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
-            UserDto user = jobData.Job as UserDto;
+            ExampleDto user = jobData.Job as ExampleDto;
             ch1.Add(user.UserName, jobData);
 
             watch.Stop();
@@ -315,7 +315,7 @@ namespace com.robonom.example
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
-            UserDto user = jobData.Job as UserDto;
+            ExampleDto user = jobData.Job as ExampleDto;
             JobData res = null;
             if (ch1.ContainsKey(user.UserName))
             {
@@ -342,9 +342,9 @@ namespace com.robonom.example
             return true;
         }
 
-        private static UserDto CreateUser(string username)
+        private static ExampleDto CreateUser(string username)
         {
-            return new UserDto()
+            return new ExampleDto()
             {
                 UserName = username,
                 ActivationCode = "SKJDHFA4359324L2K3J4LKJHRSD",

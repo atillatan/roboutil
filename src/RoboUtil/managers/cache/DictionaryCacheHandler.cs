@@ -1,28 +1,28 @@
-﻿using System;
+﻿//using System.Runtime.Caching;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-//using System.Runtime.Caching;
-using Microsoft.Extensions.Caching.Memory;
+
 //using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
-using Newtonsoft.Json;
-using RoboUtil.utils;
-
 
 namespace RoboUtil.managers.cache
 {
     /// <summary>
-    /// System.Collections.Concurrent.ConcurrentDictionary is threadsafe. Multiple concurrent threads can read and write a ConcurrentDictionary instance. 
+    /// System.Collections.Concurrent.ConcurrentDictionary is threadsafe. Multiple concurrent threads can read and write a ConcurrentDictionary instance.
     /// Internally thread-safety is automatically handled to ensure the cache is updated in a consistent manner.
     /// What this might be referring to is that data stored within the cache may itself not be threadsafe.
-    /// For example if a List is placed in the cache, and two separate threads both get a reference to the cached List, 
+    /// For example if a List is placed in the cache, and two separate threads both get a reference to the cached List,
     /// the two threads will end up stepping on each other if they both attempt to update the list simultaneously.
     /// </summary>
     public class DictionaryCacheHandler : ICache
     {
         #region Properties
+
         private string _name;
         public string Name { get { return _name; } }
         public DateTime StartTimeForExpiration { get; set; }
@@ -31,7 +31,12 @@ namespace RoboUtil.managers.cache
         public long Count { get { return (long)_cacheItems.Count; } }
 
         private ConcurrentDictionary<string, CacheItem> _cacheItems;
-        public T CacheItems<T>() where T : class { return _cacheItems as T; }
+
+        public T CacheItems<T>() where T : class
+        {
+            return _cacheItems as T;
+        }
+
         public ConcurrentDictionary<string, CacheItem> DictionaryCache { get { return _cacheItems; } }
         public MemoryCache MemoryCache { get { throw new Exception("CacheCollectionType isn't a CacheCollectionType.MemoryCache"); } }
         private CacheProperties _cacheProperties { get; set; }
@@ -40,6 +45,7 @@ namespace RoboUtil.managers.cache
         #endregion Properties
 
         #region Constructors
+
         private void Initialize(string cacheName, CacheProperties cacheProperties)
         {
             _cacheProperties = cacheProperties;
@@ -76,10 +82,12 @@ namespace RoboUtil.managers.cache
             StartTimeForExpiration = DateTime.Now;
             Console.WriteLine("DictionaryCacheHandler:{0}  initialized!", _name);
         }
+
         public DictionaryCacheHandler(string cacheName)
         {
             Initialize(cacheName, null);
         }
+
         public DictionaryCacheHandler(string cacheName, CacheProperties cacheProperties)
         {
             Initialize(cacheName, cacheProperties);
@@ -88,6 +96,7 @@ namespace RoboUtil.managers.cache
         #endregion Constructors
 
         #region CRUD operations
+
         private void PutCacheItem(CacheItem cacheItem)
         {
             //if (cacheItem.Value.GetType().GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>)))
@@ -114,11 +123,13 @@ namespace RoboUtil.managers.cache
             item.Updated = DateTime.Now;
             _cacheItems[item.Key] = item;
         }
+
         public void Add(string key, object value)
         {
             CacheItem cacheItem = new CacheItem(key, value);
             PutCacheItem(cacheItem);
         }
+
         /// <summary>
         /// Insert value into the cacheHandler using
         /// appropriate name/value pairs
@@ -131,6 +142,7 @@ namespace RoboUtil.managers.cache
             CacheItem cacheItem = new CacheItem(key, value);
             PutCacheItem(cacheItem);
         }
+
         public void AddAll(IDictionary<string, object> dictionary)
         {
             if (dictionary != null && dictionary.Count > 0)
@@ -162,6 +174,7 @@ namespace RoboUtil.managers.cache
             }
             return null;
         }
+
         public IList<T> GetValues<T>() where T : class
         {
             IList<T> result = new List<T>();
@@ -182,6 +195,7 @@ namespace RoboUtil.managers.cache
 
             return result;
         }
+
         public IList<T> GetValues<T>(IList<string> keys) where T : class
         {
             var res = from a in _cacheItems
@@ -209,6 +223,7 @@ namespace RoboUtil.managers.cache
             CacheItem val = null;
             return _cacheItems.TryRemove(key, out val);
         }
+
         public void RemoveKeys(List<string> list)
         {
             foreach (string key in list)
@@ -216,17 +231,21 @@ namespace RoboUtil.managers.cache
                 Remove(key);
             }
         }
+
         public bool ContainsKey(string key)
         {
             return _cacheItems.ContainsKey(key);
         }
-        #endregion
+
+        #endregion CRUD operations
 
         #region Extended operations
+
         public ICollection<string> Keys
         {
             get { return _cacheItems.Keys; }
         }
+
         public long Size
         {
             get
@@ -236,7 +255,6 @@ namespace RoboUtil.managers.cache
                 //{
                 //    using (Stream s = new MemoryStream())
                 //    {
-
                 //        if (v.Value is IQueryable)
                 //        {
                 //            long listSize = 0;
@@ -259,12 +277,14 @@ namespace RoboUtil.managers.cache
                 return cacheSize;
             }
         }
+
         public void Clear()
         {
             Console.WriteLine("Cache cleared: [" + _name + "] DictionaryCacheHandler Count:" + _cacheItems.Count + " expire duration:" + _cacheProperties.CacheExpireDuration + " minutes");
             StartTimeForExpiration = DateTime.Now;
             _cacheItems.Clear();
         }
+
         public void Dispose()
         {
             _cacheItems.Clear();
@@ -275,6 +295,7 @@ namespace RoboUtil.managers.cache
             _cacheItems = null;
             //GC.SuppressFinalize(this);
         }
+
         public void RunTimer()
         {
             try
@@ -299,6 +320,7 @@ namespace RoboUtil.managers.cache
                 throw;
             }
         }
+
         private void TimerTask(object stateObj)
         {
             Thread.CurrentThread.Name = "DictionaryCacheHandler TimerTaskThread";
@@ -307,7 +329,6 @@ namespace RoboUtil.managers.cache
 
             try
             {
-
                 if (_cacheProperties.CacheExpireDuration != null && _cacheProperties.CacheExpireDuration > 0)
                 {
                     Console.WriteLine("Checking expiration for cache [" + _name + "] DictionaryCacheHandler Count:" + _cacheItems.Count + " Cache expire duration:" + _cacheProperties.CacheExpireDuration + " minutes");
@@ -381,13 +402,16 @@ namespace RoboUtil.managers.cache
                 Console.WriteLine(exc.Message, exc);
             }
         }
+
         public void StopTimer()
         {
             _timerCanceled = true;
         }
-        #endregion
 
-        #region disabled 
+        #endregion Extended operations
+
+        #region disabled
+
         //public T GetValue<T>(string key) where T : class
         //{
         //    try
@@ -403,6 +427,7 @@ namespace RoboUtil.managers.cache
         //{
         //    get { return GetValue(key); }
         //}
-        #endregion
+
+        #endregion disabled
     }
 }

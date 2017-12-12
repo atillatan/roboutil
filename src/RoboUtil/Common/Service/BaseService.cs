@@ -1,29 +1,48 @@
 ﻿using RoboUtil.Common;
+using RoboUtil.Common.Service;
 
 namespace RoboUtil.Common.Service
 {
-    public class BaseService : IService
+    public class BaseService<TBaseRepositoryManager> : IService<TBaseRepositoryManager>
+        where TBaseRepositoryManager : class
     {
-        private BaseRepositoryManager _baseRepositoryManager;
-        public BaseRepositoryManager baseRepositoryManager
+        private ServiceContext serviceContext;
+
+        public ServiceContext ServiceContext
         {
-            get { return _baseRepositoryManager; }
+            get { return serviceContext; }
+        }
+
+        public BaseService(ServiceContext serviceContext)
+        {
+            this.serviceContext = serviceContext;
+        }
+
+        private BaseRepositoryManager _baseRepositoryManager;
+
+        public BaseRepositoryManager BaseRepositoryManager
+        {
             set { _baseRepositoryManager = value; }
         }
 
-        public T GetRepository<T>() where T : class
+        public TBaseRepositoryManager Rm
         {
-            return _baseRepositoryManager as T;
+            get { return _baseRepositoryManager as TBaseRepositoryManager; }
         }
 
-        private ServiceContext _serviceContext;
-        public ServiceContext ServiceContext
+        public TBaseRepositoryManager RepositoryManager
         {
-            get { return _serviceContext; }
+            get { return _baseRepositoryManager as TBaseRepositoryManager; }
         }
-        public BaseService(ServiceContext serviceContext)
-        {
-            this._serviceContext = serviceContext;
-        }
+
+        //public T GetRepository<T>()
+        //{
+        //    return _baseRepositoryManager as T;
+        //}
+
+        //public TBaseRepositoryManager GetRepository<TBaseRepositoryManager>() where TBaseRepositoryManager : class
+        //{
+        //    return _baseRepositoryManager as TBaseRepositoryManager;
+        //}
     }
 }

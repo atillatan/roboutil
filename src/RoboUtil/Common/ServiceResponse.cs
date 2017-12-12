@@ -3,12 +3,10 @@ using System.Runtime.Serialization;
 
 namespace RoboUtil.Common
 {
-   
     [Serializable]
     [DataContract]
-    public class ServiceResponse<T> 
+    public class ServiceResponse<T>
     {
-
         [DataMember]
         public bool IsSuccess { get; set; }
 
@@ -52,6 +50,7 @@ namespace RoboUtil.Common
     {
         Information = 1,
         Validation = 2,
+        Success = 3,
         Warning = 4,
         Error = 5
     };

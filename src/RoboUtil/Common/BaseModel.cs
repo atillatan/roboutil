@@ -1,33 +1,39 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
+using System;
 using System.Runtime.Serialization;
 
-namespace Core.Common.Model
+namespace RoboUtil.Common
 {
     [Serializable]
-    public abstract class BaseModel :   IComparable
+    public abstract class BaseModel : IComparable
     {
         public BaseModel()
         {
             IsActive = true;
         }
-       
+
+        [Key]
         public int Id { get; set; }
-        
+
         public DateTime CreateDate { get; set; }
-        
+
         public int CreatedBy { get; set; }
-        
+
         public DateTime? UpdateDate { get; set; }
-       
+
         public int? UpdatedBy { get; set; }
-        
+
         public bool IsActive { get; set; }
 
-        public void OnDeserialization(Object o) { }
+        public void OnDeserialization(Object o)
+        {
+        }
+
         public object Clone()
         {
             return this.MemberwiseClone();
         }
+
         public virtual int CompareTo(object obj)
         {
             if (obj == null) return 1;
@@ -38,6 +44,7 @@ namespace Core.Common.Model
             else
                 throw new ArgumentException("Object is not a BaseModel");
         }
+
         public override bool Equals(Object obj)
         {
             BaseModel baseModel = obj as BaseModel;
@@ -46,15 +53,15 @@ namespace Core.Common.Model
             else
                 return Id.Equals(baseModel.Id);
         }
+
         public override int GetHashCode()
         {
             return this.Id.GetHashCode();
         }
+
         public T CreateInstance<T>()
         {
             return (T)Activator.CreateInstance(this.GetType());
         }
-
     }
-
 }

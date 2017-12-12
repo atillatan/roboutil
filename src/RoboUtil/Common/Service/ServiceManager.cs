@@ -1,21 +1,21 @@
-﻿using System;
+﻿using RoboUtil.Common.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RoboUtil.Common.Service;
 
 namespace RoboUtil.Common.Service
 {
-    public class ServiceManager: BaseServiceManager<ServiceManager>  
+    public class ServiceManager : BaseServiceManager<ServiceManager>
     {
-        public ServiceManager(ServiceContext serviceContext) : base(serviceContext){}
+        public ServiceManager(ServiceContext serviceContext) : base(serviceContext)
+        {
+        }
 
         #region ExampleService
 
         //private ExampleService _exampleService;
-
- 
 
         //public ExampleService ExampleService
         //{
@@ -27,8 +27,6 @@ namespace RoboUtil.Common.Service
         //    }
         //}
 
-        #endregion
-
-     
+        #endregion ExampleService
     }
 }

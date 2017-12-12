@@ -1,31 +1,30 @@
-﻿using System;
+﻿//using System.Runtime.Caching;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-//using System.Runtime.Caching;
-using Microsoft.Extensions.Caching.Memory;
+
 //using Microsoft.Extensions.Caching.Distributed;
 //using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 
-using RoboUtil.utils;
-
-
 namespace RoboUtil.managers.cache
 {
     /// <summary>
-    /// System.Runtime.Caching.MemoryCache is threadsafe. Multiple concurrent threads can read and write a MemoryCache instance. 
+    /// System.Runtime.Caching.MemoryCache is threadsafe. Multiple concurrent threads can read and write a MemoryCache instance.
     /// Internally thread-safety is automatically handled to ensure the cache is updated in a consistent manner.
     /// What this might be referring to is that data stored within the cache may itself not be threadsafe.
-    /// For example if a List is placed in the cache, and two separate threads both get a reference to the cached List, 
+    /// For example if a List is placed in the cache, and two separate threads both get a reference to the cached List,
     /// the two threads will end up stepping on each other if they both attempt to update the list simultaneously.
     /// </summary>
     public class MemoryCacheHandler : ICache
     {
         #region Properties
+
         private string _name;
         public string Name { get { return _name; } }
         public DateTime StartTimeForExpiration { get; set; }
@@ -34,19 +33,27 @@ namespace RoboUtil.managers.cache
 
         //private System.Runtime.Caching.CacheItemPolicy _cacheItemPolicy = null;
         private MemoryCacheEntryOptions _cacheItemPolicy = null;
+
         public long Count { get { return _cacheItems.Count; } }
 
         private MemoryCache _cacheItems;
         public ConcurrentDictionary<string, CacheItem> DictionaryCache { get { throw new Exception("CacheCollectionType isn't a CacheCollectionType.MemoryCache"); } }
+
         //public System.Runtime.Caching.MemoryCache MemoryCache { get { return _cacheItems; } }
         public MemoryCache MemoryCache { get { return _cacheItems; } }
-        public T CacheItems<T>() where T : class { return _cacheItems as T; }
+
+        public T CacheItems<T>() where T : class
+        {
+            return _cacheItems as T;
+        }
+
         private CacheProperties _cacheProperties { get; set; }
         public CacheProperties CacheProperties { get { return _cacheProperties; } }
 
         #endregion Properties
 
         #region Constructors
+
         private void Initialize(string cacheName, CacheProperties cacheProperties)
         {
             _cacheProperties = cacheProperties;
@@ -85,7 +92,6 @@ namespace RoboUtil.managers.cache
                                                                     //_cacheProperties.CacheItemExpireFunction.Invoke(key);
                                                                 }
                                                             ));
-
                 }
             }
 
@@ -103,7 +109,6 @@ namespace RoboUtil.managers.cache
                                                                     //_cacheProperties.CacheItemExpireFunction.Invoke(this, new object[] {this});
                                                                 }
                                                             ));
-
                 }
             }
 
@@ -134,10 +139,12 @@ namespace RoboUtil.managers.cache
             StartTimeForExpiration = DateTime.Now;
             Console.WriteLine("MemoryCacheHandler:{0}  initialized!", _name);
         }
+
         public MemoryCacheHandler(string cacheName)
         {
             Initialize(cacheName, null);
         }
+
         public MemoryCacheHandler(string cacheName, CacheProperties cacheProperties)
         {
             Initialize(cacheName, cacheProperties);
@@ -146,6 +153,7 @@ namespace RoboUtil.managers.cache
         #endregion Constructors
 
         #region CRUD operations
+
         private void PutCacheItem(CacheItem cacheItem)
         {
             //if (cacheItem.Value.GetType().GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>)))
@@ -167,11 +175,13 @@ namespace RoboUtil.managers.cache
                 //Console.WriteLine("MemoryCacheHandler:{0}.{1} icine element eklenemedi! Total cacheHandler Count:{2}", _name, _mycacheItem.Key, this._cacheItems.Count().ToString());
             }
         }
+
         public void Add(string key, object value)
         {
             CacheItem ci = new CacheItem(key, value);
             PutCacheItem(ci);
         }
+
         /// <summary>
         /// Insert value into the cacheHandler using
         /// appropriate name/value pairs
@@ -184,6 +194,7 @@ namespace RoboUtil.managers.cache
             CacheItem cacheItem = new CacheItem(key, value);
             PutCacheItem(cacheItem);
         }
+
         public void AddAll(IDictionary<string, object> dictionary)
         {
             if (dictionary != null && dictionary.Count > 0)
@@ -214,12 +225,13 @@ namespace RoboUtil.managers.cache
                 return null;
             }
         }
+
         public IList<T> GetValues<T>() where T : class
         {
             IList<T> resultList = new List<T>();
 
-            //var res = from a in _cacheItems                    
-            //         select a.Value; 
+            //var res = from a in _cacheItems
+            //         select a.Value;
 
             //IList<object> templist = res.ToList<object>();
             //foreach (string ci in templist)
@@ -231,11 +243,12 @@ namespace RoboUtil.managers.cache
 
             return resultList;
         }
+
         public IList<T> GetValues<T>(IList<string> keys) where T : class
         {
             //var res = from a in _cacheItems
             //          where keys.Contains(a.Key)
-            //          select a.Value; 
+            //          select a.Value;
 
             // IList<object> templist = res.ToList<object>();
             IList<T> resultList = new List<T>();
@@ -254,6 +267,7 @@ namespace RoboUtil.managers.cache
             _cacheItems.Remove(key);
             return true;
         }
+
         public void RemoveKeys(List<string> list)
         {
             foreach (string key in list)
@@ -261,13 +275,16 @@ namespace RoboUtil.managers.cache
                 Remove(key);
             }
         }
+
         public bool ContainsKey(string key)
         {
             return _cacheItems.Get(key) != null;
         }
-        #endregion
+
+        #endregion CRUD operations
 
         #region Extended operations
+
         public long Size
         {
             get
@@ -277,7 +294,6 @@ namespace RoboUtil.managers.cache
                 //{
                 //    using (Stream s = new MemoryStream())
                 //    {
-
                 //        if (v.Value is IQueryable)
                 //        {
                 //            long listSize = 0;
@@ -301,6 +317,7 @@ namespace RoboUtil.managers.cache
                 return 0;
             }
         }
+
         public void Clear()
         {
             Console.WriteLine("Cache clearing: [" + _name + "] MemoryCacheHandler Count:" + _cacheItems.Count + " expire duration:" + _cacheProperties.CacheExpireDuration + " minutes");
@@ -312,6 +329,7 @@ namespace RoboUtil.managers.cache
 
             Initialize(_name, _cacheProperties);
         }
+
         public void Dispose()
         {
             if (_cacheItems != null && _cacheItems is IDisposable)
@@ -321,10 +339,12 @@ namespace RoboUtil.managers.cache
             _cacheItems = null;
             //GC.SuppressFinalize(this);
         }
+
         public void StopTimer()
         {
             _timerCanceled = true;
         }
+
         public void RunTimer()
         {
             try
@@ -350,6 +370,7 @@ namespace RoboUtil.managers.cache
                 throw;
             }
         }
+
         private void TimerTask(object stateObj)
         {
             Thread.CurrentThread.Name = "MemoryCacheHandler TimerTaskThread";
@@ -362,6 +383,7 @@ namespace RoboUtil.managers.cache
             }
             Console.WriteLine("[{0}] MemoryCacheHandler item Count:{1} CacheExpireDuration:{2} minutes CacheItemExpireDuration:{3} minutes", _name, Count, _cacheProperties.CacheExpireDuration, _cacheProperties.CacheItemExpireDuration);
         }
+
         public ICollection<string> Keys
         {
             get
@@ -369,8 +391,8 @@ namespace RoboUtil.managers.cache
                 //return _cacheItems.DefaultIfEmpty().Where(a => a.Key != null).Select(x => x.Key).ToList();
                 return null;
             }
-            
         }
+
         //public void RemovedCallback(CacheEntryRemovedArguments arguments)
         //{
         //    if (arguments == null) return;
@@ -399,9 +421,11 @@ namespace RoboUtil.managers.cache
         //        _cacheProperties.CacheItemExpireFunction.Method.Invoke(null, new object[] { ci });
         //    }
         //}
-        #endregion
+
+        #endregion Extended operations
 
         #region disabled
+
         //public object this[string key]
         //{
         //    get { return GetValue(key); }
@@ -411,6 +435,7 @@ namespace RoboUtil.managers.cache
         //    Console.WriteLine("MemoryCacheHandler.GetValue({0}.{1}), Total cache size:{2}", _name, key, _cacheItems.Count());
         //    return GeneralUtil.FromJson(_cacheItems.Get(key) as string);
         //}
-        #endregion
+
+        #endregion disabled
     }
 }
