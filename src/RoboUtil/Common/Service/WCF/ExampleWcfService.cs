@@ -1,7 +1,9 @@
-﻿using RoboUtil.Common;
+﻿//Atilla: I'll redesign WCF service to be compatible with .net core 2.0
+
+/*
+using RoboUtil.Common;
 using System;
 using System.Collections.Generic;
-using System.ServiceModel;
 
 namespace RoboUtil.Common.Service.WCF
 {
@@ -39,3 +41,4 @@ namespace RoboUtil.Common.Service.WCF
         }
     }
 }
+*/

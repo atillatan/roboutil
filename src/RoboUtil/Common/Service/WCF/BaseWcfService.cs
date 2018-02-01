@@ -1,4 +1,6 @@
-﻿//using log4net;
+﻿//Atilla: I'll redesign WCF service to be compatible with .net core 2.0
+//using log4net;
+/*
 using RoboUtil;
 using RoboUtil.Common;
 using RoboUtil.managers;
@@ -36,3 +38,4 @@ namespace RoboUtil.Common.Service.WCF
         //}
     }
 }
+*/

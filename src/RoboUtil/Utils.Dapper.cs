@@ -132,11 +132,11 @@ namespace RoboUtil
 
                 private static AssemblyBuilder GetAsmBuilder(string name)
                 {
-#if COREFX
+//#if COREFX
                 return AssemblyBuilder.DefineDynamicAssembly(new AssemblyName { Name = name }, AssemblyBuilderAccess.Run);
-#else
-                    return Thread.GetDomain().DefineDynamicAssembly(new AssemblyName { Name = name }, AssemblyBuilderAccess.Run);
-#endif
+//#else
+//                   return Thread.GetDomain().DefineDynamicAssembly(new AssemblyName { Name = name }, AssemblyBuilderAccess.Run);
+//#endif
                 }
 
                 public static T GetInterfaceProxy<T>()

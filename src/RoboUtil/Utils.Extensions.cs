@@ -101,14 +101,14 @@ namespace RoboUtil
 
         #region Converting util
 
-        public static T Convert<T>(this IConvertible obj)
+        public static T ConvertTo<T>(this IConvertible obj)
         {
             return (T)System.Convert.ChangeType(obj, typeof(T));
         }
 
         public static T To<T>(this IConvertible obj)
         {
-            return Convert<T>(obj);
+            return ConvertTo<T>(obj);
         }
 
         public static string ToStringValue(this object obj)

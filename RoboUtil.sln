@@ -1,20 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F8F1B58F-B1B3-45A3-9462-8BC50E369C2B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED535817-3373-4180-B60E-0E2E97D22E8F}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "RoboUtil", "src\RoboUtil\RoboUtil.xproj", "{956B0E4B-0115-4008-905A-7A54D0F84336}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoboUtil", "src\RoboUtil\RoboUtil.csproj", "{956B0E4B-0115-4008-905A-7A54D0F84336}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "RoboUtil.Examples", "src\RoboUtil.Examples\RoboUtil.Examples.xproj", "{DF4B36B7-2714-41CA-A0A4-CE442F59E63F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoboUtil.Examples", "src\RoboUtil.Examples\RoboUtil.Examples.csproj", "{DF4B36B7-2714-41CA-A0A4-CE442F59E63F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "RoboUtil.Tests", "src\RoboUtil.Tests\RoboUtil.Tests.xproj", "{3CC70C26-7352-47CC-A1BC-3FD69466A274}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoboUtil.Tests", "src\RoboUtil.Tests\RoboUtil.Tests.csproj", "{3CC70C26-7352-47CC-A1BC-3FD69466A274}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +39,8 @@ Global
 		{956B0E4B-0115-4008-905A-7A54D0F84336} = {F8F1B58F-B1B3-45A3-9462-8BC50E369C2B}
 		{DF4B36B7-2714-41CA-A0A4-CE442F59E63F} = {F8F1B58F-B1B3-45A3-9462-8BC50E369C2B}
 		{3CC70C26-7352-47CC-A1BC-3FD69466A274} = {F8F1B58F-B1B3-45A3-9462-8BC50E369C2B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {56DDA2AA-7349-46A7-BDF3-976553769920}
 	EndGlobalSection
 EndGlobal

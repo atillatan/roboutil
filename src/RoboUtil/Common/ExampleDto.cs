@@ -7,6 +7,10 @@ namespace RoboUtil.Common
     public class ExampleDto : BaseDto
     {
         [DataMember]
+        public string UserName { get; set; }
+
+
+        [DataMember]
         public string StringVar { get; set; }
 
         [DataMember]

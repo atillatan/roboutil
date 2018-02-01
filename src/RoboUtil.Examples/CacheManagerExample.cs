@@ -2,11 +2,11 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
- 
+
 using System.Linq;
 
 using System.Collections;
- 
+
 using RoboUtil.Common;
 using RoboUtil.managers;
 using RoboUtil.managers.cache;
@@ -146,7 +146,7 @@ namespace com.robonom.example
 
             string val3 = CacheManager.Instance.GetCache("MyCache").GetValue<string>("key103");
             Console.WriteLine("val:" + val3 + " retrieved from cache");
-            
+
         }
         public static void ExampleModelUsage()
         {
@@ -193,7 +193,7 @@ namespace com.robonom.example
                 myDictionary.Add("username_" + i, CreateUser("username_" + i));
 
 
-            ICache ch1 = CacheManager.Instance.CreateCache("MyCacheM542", new CacheProperties(CacheCollectionType.DictionaryCache), myDictionary) ;
+            ICache ch1 = CacheManager.Instance.CreateCache("MyCacheM542", new CacheProperties(CacheCollectionType.DictionaryCache), myDictionary);
 
             string cacheJsonValue = ch1.DictionaryCache["username_101"].Value.ToString();
 
@@ -227,9 +227,13 @@ namespace com.robonom.example
 
 
             ICache ch1 = CacheManager.Instance.CreateCache("MyCacheM21", new CacheProperties(CacheCollectionType.MemoryCache), myDictionary);
-            System.Runtime.Caching.MemoryCache ch = ch1.CacheItems<System.Runtime.Caching.MemoryCache>();
 
-            ExampleDto user = GeneralUtil.FromJson<ExampleDto>(ch.Get("username_101").ToString());
+            Microsoft.Extensions.Caching.Memory.IMemoryCache ch = ch1.CacheItems<Microsoft.Extensions.Caching.Memory.MemoryCache>();
+
+            object userObject = null;
+            bool res = ch.TryGetValue("username_101", out userObject);
+            ExampleDto user = userObject as ExampleDto;
+            //ExampleDto user = GeneralUtil.FromJson<ExampleDto>(ch.TryGetValue("username_101").ToString());
             Console.WriteLine("val:" + user.UserName + " retrieved from cache");
 
         }
@@ -272,7 +276,7 @@ namespace com.robonom.example
         public static void Example2Performans()
         {
             ThreadPoolHandler tpHandle1 = ThreadPoolManager.Instance.CreatePool("Pool-1", 100, CacheManagerPutData);
-            for (int i = 0; i < 10000; i++) tpHandle1.addJob(CreateUser("Username_"+ i));
+            for (int i = 0; i < 10000; i++) tpHandle1.addJob(CreateUser("Username_" + i));
 
             ThreadPoolHandler tpHandle2 = ThreadPoolManager.Instance.CreatePool("Pool-2", 100, CacheManagerTakeData);
             for (int i = 0; i < 10000; i++) tpHandle2.addJob(CreateUser("Username_" + i));
@@ -346,21 +350,21 @@ namespace com.robonom.example
         {
             return new ExampleDto()
             {
-                UserName = username,
-                ActivationCode = "SKJDHFA4359324L2K3J4LKJHRSD",
+                //UserName = username,
+                //ActivationCode = "SKJDHFA4359324L2K3J4LKJHRSD",
                 UpdatedBy = 3,
-                DtLastLogin = DateTime.Now,
+                //DtLastLogin = DateTime.Now,
                 UpdateDate = DateTime.Now,
                 IsActive = true,
                 CreateDate = DateTime.Now,
-                IsUserActive = true,
-                OldPassword = "testpassword",
+                //IsUserActive = true,
+                //OldPassword = "testpassword",
                 CreatedBy = 3,
-                Password = "9876SAD98F7ASD98F7A9DS7FA98DS7F98SADF",
-                PasswordTry = 3,
-                Id = 0,
-                Theme = "Silver",
-                TotalLogin = 3
+                //Password = "9876SAD98F7ASD98F7A9DS7FA98DS7F98SADF",
+                //PasswordTry = 3,
+                Id = 0
+                //Theme = "Silver",
+                //TotalLogin = 3
             };
         }
     }

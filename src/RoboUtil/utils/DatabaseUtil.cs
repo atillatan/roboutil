@@ -16,15 +16,15 @@ namespace RoboUtil.utils
     public static class DatabaseUtil
     {
         #region base methods
-        public static DbConnection CreateConnection(string connectionString, string providerName)
-        {
-            var factory = DbProviderFactories.GetFactory(providerName);
-            if (factory == null)
-                return null;
-            var connection = factory.CreateConnection();
-            connection.ConnectionString = connectionString;
-            return connection;
-        }
+        //public static DbConnection CreateConnection(string connectionString, string providerName)
+        //{
+        //    var factory = DbProviderFactories.GetFactory(providerName);
+        //    if (factory == null)
+        //        return null;
+        //    var connection = factory.CreateConnection();
+        //    connection.ConnectionString = connectionString;
+        //    return connection;
+        //}
         //netstandart1.6
         //public static DbConnection CreateConnection(string configurationName)
         //{

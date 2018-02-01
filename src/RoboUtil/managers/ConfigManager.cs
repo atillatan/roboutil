@@ -104,7 +104,7 @@ namespace RoboUtil.managers
             {
                 string result = _configurations[key];
                 result = ReplaceVars(result);
-                return result.Convert<T>();
+                return result.ConvertTo<T>();
             }
             return defaultVal;
         }
@@ -115,7 +115,7 @@ namespace RoboUtil.managers
             {
                 string result = _configurations[key];
                 result = ReplaceVars(result);
-                return result.Convert<T>();
+                return result.ConvertTo<T>();
             }
             return null;
         }
