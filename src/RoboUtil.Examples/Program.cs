@@ -35,26 +35,26 @@ namespace RoboUtil.Examples
 
 
           
-            SqlConnection Connection = new SqlConnection(@"Data Source=.\SQLEXPRESS; Initial Catalog=EXA;Integrated Security=True;Pooling=True");
+            // SqlConnection Connection = new SqlConnection(@"Data Source=.\SQLEXPRESS; Initial Catalog=EXA;Integrated Security=True;Pooling=True");
 
-            using (SqlConnection readConnection = new SqlConnection(@"Data Source=.\SQLEXPRESS; Initial Catalog=EXA;Integrated Security=True;Pooling=True"))
-            {
-                dynamic x = DynamicDbUtil.List(readConnection, "select Id,StringVar,IntVar,DateTimeVar from Example");
-                dynamic x21 = DynamicDbUtil.List(readConnection, "select Id,StringVar,IntVar,DateTimeVar from Example where Id={0}",1);
+            // using (SqlConnection readConnection = new SqlConnection(@"Data Source=.\SQLEXPRESS; Initial Catalog=EXA;Integrated Security=True;Pooling=True"))
+            // {
+            //     dynamic x = DynamicDbUtil.List(readConnection, "select Id,StringVar,IntVar,DateTimeVar from Example");
+            //     dynamic x21 = DynamicDbUtil.List(readConnection, "select Id,StringVar,IntVar,DateTimeVar from Example where Id={0}",1);
 
-                ExampleDto y = ExpandoObjectMapperUtil.Map<ExampleDto>(x);
+            //     ExampleDto y = ExpandoObjectMapperUtil.Map<ExampleDto>(x);
 
-                ExampleDto xy = DynamicDbUtil.Get<ExampleDto>(readConnection, @"
-                SELECT 
-                       Ad [Adi]
-                      ,Soyad [Soyadi]
-                      ,KullaniciAd [UserName]
-                      ,Sifre [Password]
-                      ,kd.AnneAdi [KullaniciDetay.AnneAdi]                   
-                  FROM campus.dbo.Kullanici k
-                  join dbo.KullaniciDetay kd on k.No=kd.No
-                  where k.No={0}
-                ", 124);
+            //     ExampleDto xy = DynamicDbUtil.Get<ExampleDto>(readConnection, @"
+            //     SELECT 
+            //            Ad [Adi]
+            //           ,Soyad [Soyadi]
+            //           ,KullaniciAd [UserName]
+            //           ,Sifre [Password]
+            //           ,kd.AnneAdi [KullaniciDetay.AnneAdi]                   
+            //       FROM campus.dbo.Kullanici k
+            //       join dbo.KullaniciDetay kd on k.No=kd.No
+            //       where k.No={0}
+            //     ", 124);
 
 
                 //TODO: Mapper will change
@@ -71,7 +71,7 @@ namespace RoboUtil.Examples
                 //", 124);
 
 
-                ExampleDto y1 = ExpandoObjectMapperUtil.Map<ExampleDto>(x);
+                // ExampleDto y1 = ExpandoObjectMapperUtil.Map<ExampleDto>(x);
 
                 //TODO: Mapper will change
                 //UserDto x2 = DatabaseUtil.Get<UserDto>(readConnection, @"
@@ -119,14 +119,14 @@ namespace RoboUtil.Examples
                 //  FROM campus.dbo.Kullanici k               
                 //  where k.No<{0}
                 //", 124);
-            }
+            //}
 
 
             //GeneralUtil.Clone<string>("asdfadsf");
 
 
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }

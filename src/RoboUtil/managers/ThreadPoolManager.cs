@@ -124,7 +124,7 @@ namespace RoboUtil.managers
         }
 
         /// <summary>
-        /// it start all threads in yout ThreadPool
+        /// it starts all threads in yout ThreadPool
         /// </summary>
         public void Start()
         {
@@ -143,12 +143,12 @@ namespace RoboUtil.managers
             {
                 if (_jobQueue.Count != 0)
                 {
-                    //Console.WriteLine("JobQueue.Count:{0} Pool:{1} continue MainThread", _jobQueue.Count,PoolName);
+                    Console.WriteLine("JobQueue.Count:{0} Pool:{1} continue MainThread", _jobQueue.Count,PoolName);
                     Thread.Sleep(1000);
                 }
                 else
                 {
-                    //Console.WriteLine("JobQueue.Count:{0} Pool:{1} stoping MainThread", _jobQueue.Count,PoolName);
+                    Console.WriteLine("JobQueue.Count:{0} Pool:{1} stoping MainThread", _jobQueue.Count,PoolName);
                     break;
                 }
             }
@@ -231,13 +231,13 @@ namespace RoboUtil.managers.thread
             ThreadNumber = threadNumber;
         }
         public ThreadInfo()
-        {           
+        {
         }
     }
 }
 namespace RoboUtil.managers.thread
 {
-    [Serializable]    
+    [Serializable]
     public class JobData
     {
         public object Job { get; set; }

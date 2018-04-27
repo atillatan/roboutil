@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,11 +16,11 @@ namespace RoboUtil.Examples
         public static void Example1()
         {
 
-            //1- Create Pool
+            //1- Create Pool       
             ThreadPoolHandler tpHandler= ThreadPoolManager.Instance.CreatePool("testpool1", 10, targetMethod);
 
             //2- Add tasks
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 1000; i++)
                 tpHandler.addJob("http://page=" + i);
 
             //3-Start all thrads, belirtilen kadar Thread canlandirilir hepsi ayni methodu calistirir ve is kuyrugu tuketilir.
@@ -44,7 +45,7 @@ namespace RoboUtil.Examples
         {
             JobData jobData = (JobData)obj;//we receive JobData from each thread
             Console.WriteLine("Poolname:{0}, Thread Number:{1}, job:{2}", jobData.PoolName, jobData.ThreadInfo.ThreadNumber, jobData.Job.ToString());
-            Thread.Sleep(100);//for tracing console, what happens
+            Thread.Sleep(10);//for tracing console, what happens
         }
     }
 }
