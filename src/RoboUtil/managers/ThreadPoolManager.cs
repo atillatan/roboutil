@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 using RoboUtil.managers.thread;
 
@@ -143,15 +144,15 @@ namespace RoboUtil.managers
             {
                 if (_jobQueue.Count != 0)
                 {
-                    Console.WriteLine("JobQueue.Count:{0} Pool:{1} continue MainThread", _jobQueue.Count,PoolName);
+                    Console.WriteLine("JobQueue.Count:{0} Pool:{1} continue MainThread", _jobQueue.Count, PoolName);
                     Thread.Sleep(1000);
                 }
                 else
                 {
-                    Console.WriteLine("JobQueue.Count:{0} Pool:{1} stoping MainThread", _jobQueue.Count,PoolName);
+                    Console.WriteLine("JobQueue.Count:{0} Pool:{1} stoping MainThread", _jobQueue.Count, PoolName);
                     break;
                 }
-            }
+            } 
         }
 
         private void JobConsumer(object threadInfo)
@@ -212,11 +213,25 @@ namespace RoboUtil.managers
         {
             this.JobQueue.Enqueue(new JobData() { Job = job, PoolName = _poolName });
         }
+
+
+        public void WaitAll()
+        {
+            while (true)
+            {
+                if (this.JobQueue.Count != 0)
+                {
+                    //Console.WriteLine("JobQueue.Count:{0} Pool:{1} continue MainThread", _jobQueue.Count, PoolName);
+                    Thread.Sleep(500);
+                }
+                else
+                {
+                    //Console.WriteLine("JobQueue.Count:{0} Pool:{1} stoping MainThread", _jobQueue.Count, PoolName);
+                    break;
+                }
+            }
+        }
     }
-
-
-
-
 
 }
 namespace RoboUtil.managers.thread
@@ -226,13 +241,22 @@ namespace RoboUtil.managers.thread
     {
         public int ThreadNumber;
 
+        public string ThreadName { get; set; }
+
         public ThreadInfo(int threadNumber)
         {
             ThreadNumber = threadNumber;
+            ThreadName = "Thread-" + threadNumber;
         }
         public ThreadInfo()
         {
         }
+
+        public override string ToString()
+        {
+            return ThreadName;
+        }
+
     }
 }
 namespace RoboUtil.managers.thread
