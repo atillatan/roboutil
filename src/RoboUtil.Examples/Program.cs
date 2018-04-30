@@ -16,6 +16,8 @@ namespace RoboUtil.Examples
         {
             ThreadPoolManagerExample.ExampleThreadPool();
 
+            
+
             //ThreadPoolManagerExample.ExampleParallelForeach();
 
             //ThreadPoolManagerExample.ExampleTPL();

@@ -13,11 +13,16 @@ namespace RoboUtil.Examples
     public class ThreadPoolManagerExample
     {
 
+        public static void ExampleSimple()
+        {
+            //ThreadPoolManager.Instance.StartNewTask(()=>PingLocalNetwork());
+        }
+
         public static void ExampleThreadPool()
         {
 
             //1- Create Pool       
-            ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.CreatePool("testpool1", 20, PingLocalNetwork);
+            ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.CreatePool("testpool1", 20, PingLocalNetwork, true);
 
             //2- Add tasks
             for (int i = 0; i < 255; i++)
@@ -26,15 +31,21 @@ namespace RoboUtil.Examples
             //3-Start all thrads, belirtilen kadar Thread canlandirilir hepsi ayni methodu calistirir ve is kuyrugu tuketilir.
             //Not: WaitCallBack olarak belirlenen method isterse kuyruga is te ekleyebilir.
             var stopwatch = new Stopwatch();
-            
             stopwatch.Start();
 
             tpHandler.Start();
+            //tpHandler.WaitAll();
 
-            tpHandler.WaitAll();
+
 
             stopwatch.Stop();
             Console.WriteLine(stopwatch.Elapsed);
+
+            while (true)
+            {
+                Console.WriteLine("sleeping 1 sn");
+                Thread.Sleep(1000);
+            }
             //...
 
 
