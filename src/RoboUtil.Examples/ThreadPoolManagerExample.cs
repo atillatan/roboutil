@@ -65,17 +65,10 @@ namespace RoboUtil.Examples
                 TargetMethod = (jobData) =>
                 {
                     JobData _jobData = (JobData)jobData;
-                    System.Net.NetworkInformation.Ping p = new System.Net.NetworkInformation.Ping();
-                    System.Net.NetworkInformation.PingReply rep = p.Send((string)_jobData.Job);
+                    System.Net.NetworkInformation.PingReply rep = new System.Net.NetworkInformation.Ping().Send((string)_jobData.Job);
+                    if (rep.Status == System.Net.NetworkInformation.IPStatus.Success) Console.WriteLine($"{_jobData.PoolName}-{_jobData.ThreadInfo.ThreadName}, job:{_jobData.Job.ToString()}: Success");
+                    else Console.WriteLine($"{_jobData.PoolName}-{_jobData.ThreadInfo.ThreadName}, job:{_jobData.Job.ToString()}: Fail");
 
-                    if (rep.Status == System.Net.NetworkInformation.IPStatus.Success)
-                    {
-                        Console.WriteLine($"{_jobData.PoolName}-{_jobData.ThreadInfo.ThreadName}, job:{_jobData.Job.ToString()}: Success");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{_jobData.PoolName}-{_jobData.ThreadInfo.ThreadName}, job:{_jobData.Job.ToString()}: Fail");
-                    }
                 }
             })
             .WaitOne();
@@ -153,17 +146,9 @@ namespace RoboUtil.Examples
 
             Parallel.ForEach(jobs, po, job =>
                  {
-                     System.Net.NetworkInformation.Ping p = new System.Net.NetworkInformation.Ping();
-                     System.Net.NetworkInformation.PingReply rep = p.Send(job);
-
-                     if (rep.Status == System.Net.NetworkInformation.IPStatus.Success)
-                     {
-                         Console.WriteLine($"{job}: Success");
-                     }
-                     else
-                     {
-                         Console.WriteLine($"{job}: Fail");
-                     }
+                     System.Net.NetworkInformation.PingReply rep = new System.Net.NetworkInformation.Ping().Send(job);
+                     if (rep.Status == System.Net.NetworkInformation.IPStatus.Success) Console.WriteLine($"{job}: Success");
+                     else Console.WriteLine($"{job}: Fail");
                  }
             );
 
@@ -191,17 +176,9 @@ namespace RoboUtil.Examples
                 var dest = jobs[i]; /* work-around modified closures */
                 tasks[i] = Task.Factory.StartNew(() =>
                 {
-                    System.Net.NetworkInformation.Ping p = new System.Net.NetworkInformation.Ping();
-                    System.Net.NetworkInformation.PingReply rep = p.Send(dest);
-
-                    if (rep.Status == System.Net.NetworkInformation.IPStatus.Success)
-                    {
-                        Console.WriteLine($"{dest}: Success");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{dest}: Fail");
-                    }
+                    System.Net.NetworkInformation.PingReply rep = new System.Net.NetworkInformation.Ping().Send(dest);
+                    if (rep.Status == System.Net.NetworkInformation.IPStatus.Success) Console.WriteLine($"{dest}: Success");
+                    else Console.WriteLine($"{dest}: Fail");
                 });
             }
 
@@ -210,25 +187,27 @@ namespace RoboUtil.Examples
             Console.WriteLine(stopwatch.Elapsed);
         }
 
-        public void coreExample()
+        public static void coreExample()
         {
             int toProcess = 10;
             using (ManualResetEvent resetEvent = new ManualResetEvent(false))
             {
-                var list = new List<int>();
-                for (int i = 0; i < 10; i++) list.Add(i);
+                var list = new List<string>();
+                for (int i = 0; i < 10; i++) list.Add("192.168.0."+i);
 
                 for (int i = 0; i < 10; i++)
                 {
                     ThreadPool.QueueUserWorkItem(
                        new WaitCallback(x =>
                        {
-                           Console.WriteLine(x);
+                           System.Net.NetworkInformation.PingReply rep = new System.Net.NetworkInformation.Ping().Send(x);
+                           if (rep.Status == System.Net.NetworkInformation.IPStatus.Success) Console.WriteLine($"{x}: Success");
+                           else Console.WriteLine($"{x}: Fail");
                            // Safely decrement the counter
                            if (Interlocked.Decrement(ref toProcess) == 0)
                                resetEvent.Set();
 
-                       }), list[i]);
+                       }), list);
                 }
 
                 resetEvent.WaitOne();
