@@ -13,16 +13,87 @@ namespace RoboUtil.Examples
     public class ThreadPoolManagerExample
     {
 
-        public static void ExampleSimple()
+        public static void ExampleSimple1()
         {
-            //ThreadPoolManager.Instance.StartNewTask(()=>PingLocalNetwork());
+            List<object> jobs = new List<object>();
+            for (int i = 0; i < 255; i++)
+                jobs.Add("192.168.0." + i);
+
+            ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
+            {
+                Jobs = jobs,
+                PoolSize = 20,
+                TargetMethod = PingLocalNetwork
+            }).WaitOne();
+
+            Console.WriteLine("completed");
+
+        }
+
+        public static void ExampleSimple2()
+        {
+            List<object> jobs = new List<object>();
+            for (int i = 0; i < 255; i++)
+                jobs.Add("192.168.0." + i);
+
+            ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
+            {
+                Jobs = jobs,
+                PoolSize = 20,
+                TargetMethod = (jobData) =>
+                {
+                    JobData jd = (JobData)jobData;
+                    Console.WriteLine($"PoolName:{jd.PoolName}, ThreadName:{jd.ThreadInfo.ThreadName}, Job:{jd.Job.ToString()}");
+                    Thread.Sleep(1000);
+                }
+            })
+            .WaitOne();
+
+            Console.WriteLine("completed");
+        }
+
+        public static void ExampleSimple3()
+        {
+            List<object> jobs = new List<object>();
+            for (int i = 0; i < 255; i++)
+                jobs.Add("192.168.0." + i);
+
+            ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
+            {
+                Jobs = jobs,
+                PoolSize = 20,
+                TargetMethod = (jobData) =>
+                {
+                    JobData _jobData = (JobData)jobData;
+                    System.Net.NetworkInformation.Ping p = new System.Net.NetworkInformation.Ping();
+                    System.Net.NetworkInformation.PingReply rep = p.Send((string)_jobData.Job);
+
+                    if (rep.Status == System.Net.NetworkInformation.IPStatus.Success)
+                    {
+                        Console.WriteLine($"{_jobData.PoolName}-{_jobData.ThreadInfo.ThreadName}, job:{_jobData.Job.ToString()}: Success");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{_jobData.PoolName}-{_jobData.ThreadInfo.ThreadName}, job:{_jobData.Job.ToString()}: Fail");
+                    }
+                }
+            })
+            .WaitOne();
+
+            Console.WriteLine("completed");
         }
 
         public static void ExampleThreadPool()
         {
 
             //1- Create Pool       
-            ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.CreatePool("testpool1", 20, PingLocalNetwork, true);
+            ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.CreatePool(new ThreadPoolOptions
+            {
+                TargetMethod = PingLocalNetwork,
+                PoolName = "testpool1",
+                PoolSize = 20,
+                ExitOnFinish = false
+            });
 
             //2- Add tasks
             for (int i = 0; i < 255; i++)
@@ -34,27 +105,30 @@ namespace RoboUtil.Examples
             stopwatch.Start();
 
             tpHandler.Start();
-            //tpHandler.WaitAll();
-
-
+            tpHandler.WaitOne();
 
             stopwatch.Stop();
             Console.WriteLine(stopwatch.Elapsed);
 
-            while (true)
-            {
-                Console.WriteLine("sleeping 1 sn");
-                Thread.Sleep(1000);
-            }
+            // while (true)
+            // {
+            //     Console.WriteLine("sleeping 1 sn");
+            //     Thread.Sleep(1000);
+            // }
             //...
-
 
         }
         public static void Example2()
         {
 
             //1- Create Pool
-            ThreadPoolManager.Instance.CreatePool("testpool1", 10, new WaitCallback(targetMethod));
+            ThreadPoolManager.Instance.CreatePool(new ThreadPoolOptions
+            {
+                TargetMethod = targetMethod,
+                PoolName = "testpool1",
+                PoolSize = 10,
+                ExitOnFinish = true
+            });
             //2- Add tasks
             for (int i = 0; i < 10000; i++)
                 ThreadPoolManager.Instance.Pool["testpool1"].JobQueue.Enqueue(new JobData() { Job = "http://page=" + i, PoolName = "testpool1" });
@@ -149,23 +223,17 @@ namespace RoboUtil.Examples
         private static void PingLocalNetwork(object obj)
         {
             JobData jobData = (JobData)obj;//we receive JobData from each thread
+            string ip = (string)jobData.Job;
 
             Console.WriteLine($"{jobData.PoolName}-{jobData.ThreadInfo.ThreadName}, job:{jobData.Job.ToString()}: Started");
 
             System.Net.NetworkInformation.Ping p = new System.Net.NetworkInformation.Ping();
-            System.Net.NetworkInformation.PingReply rep = p.Send((string)jobData.Job);
+            System.Net.NetworkInformation.PingReply rep = p.Send(ip);
 
             if (rep.Status == System.Net.NetworkInformation.IPStatus.Success)
-            {
                 Console.WriteLine($"{jobData.PoolName}-{jobData.ThreadInfo.ThreadName}, job:{jobData.Job.ToString()}: Success");
-            }
             else
-            {
                 Console.WriteLine($"{jobData.PoolName}-{jobData.ThreadInfo.ThreadName}, job:{jobData.Job.ToString()}: Fail");
-            }
-
-            //Console.WriteLine("{0}-{1}, job:{2}", jobData.PoolName, jobData.ThreadInfo.ThreadName, jobData.Job.ToString());
-            //Thread.Sleep(10);//for tracing console, what happens
         }
     }
 }

@@ -16,7 +16,13 @@ namespace RoboUtil.Tests
         {
 
             //1- Create Pool
-            ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.CreatePool("testpool1", 10, targetMethod);
+            ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.CreatePool(new ThreadPoolOptions
+            {
+                TargetMethod = targetMethod,
+                PoolName = "testpool1",
+                PoolSize = 10,
+                ExitOnFinish = true
+            });
 
             //2- Add tasks
             for (int i = 0; i < 10000; i++)
@@ -33,7 +39,13 @@ namespace RoboUtil.Tests
         public void Example2Test()
         {
             //1- Create Pool
-            ThreadPoolManager.Instance.CreatePool("testpool1", 10, new WaitCallback(targetMethod));
+            ThreadPoolManager.Instance.CreatePool(new ThreadPoolOptions
+            {
+                TargetMethod = targetMethod,
+                PoolName = "testpool1",
+                PoolSize = 10,
+                ExitOnFinish = true
+            });
             //2- Add tasks
             for (int i = 0; i < 10000; i++)
                 ThreadPoolManager.Instance.Pool["testpool1"].JobQueue.Enqueue(new JobData() { Job = "http://page=" + i, PoolName = "testpool1" });

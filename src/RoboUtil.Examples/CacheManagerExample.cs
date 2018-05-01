@@ -275,10 +275,22 @@ namespace com.robonom.example
         }
         public static void Example2Performans()
         {
-            ThreadPoolHandler tpHandle1 = ThreadPoolManager.Instance.CreatePool("Pool-1", 100, CacheManagerPutData);
+            ThreadPoolHandler tpHandle1 = ThreadPoolManager.Instance.CreatePool(new ThreadPoolOptions
+            {
+                TargetMethod = CacheManagerPutData,
+                PoolName = "Pool-1",
+                PoolSize = 100,
+                ExitOnFinish = true
+            });
             for (int i = 0; i < 10000; i++) tpHandle1.addJob(CreateUser("Username_" + i));
 
-            ThreadPoolHandler tpHandle2 = ThreadPoolManager.Instance.CreatePool("Pool-2", 100, CacheManagerTakeData);
+            ThreadPoolHandler tpHandle2 = ThreadPoolManager.Instance.CreatePool(new ThreadPoolOptions
+            {
+                TargetMethod = CacheManagerTakeData,
+                PoolName = "Pool-2",
+                PoolSize = 100,
+                ExitOnFinish = true
+            });
             for (int i = 0; i < 10000; i++) tpHandle2.addJob(CreateUser("Username_" + i));
 
             tpHandle1.Start();
