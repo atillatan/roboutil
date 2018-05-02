@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace RoboUtil.Examples
 
         public static void ExampleSimple1()
         {
+
             List<object> jobs = new List<object>();
-            for (int i = 0; i < 255; i++)
-                jobs.Add("192.168.0." + i);
+            for (int i = 1; i <= 255; i++) jobs.Add("192.168.0." + i);
 
             var t = ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
             {
@@ -26,23 +27,14 @@ namespace RoboUtil.Examples
                 TargetMethod = PingLocalNetwork
             });
 
-            ///t.WaitOne();
-
-            while (true)
-            {
-                Thread.Sleep(1000);
-                Console.WriteLine("wait");
-            }
-
-            //Console.WriteLine("completed");
-
+            t.WaitOne();
+            Console.WriteLine("completed");
         }
 
         public static void ExampleSimple2()
         {
             List<object> jobs = new List<object>();
-            for (int i = 0; i < 255; i++)
-                jobs.Add("192.168.0." + i);
+            for (int i = 1; i <= 255; i++) jobs.Add("192.168.0." + i);
 
             ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
             {
@@ -63,8 +55,7 @@ namespace RoboUtil.Examples
         public static void ExampleSimple3()
         {
             List<object> jobs = new List<object>();
-            for (int i = 0; i < 255; i++)
-                jobs.Add("192.168.0." + i);
+            for (int i = 1; i <= 255; i++) jobs.Add("192.168.0." + i);
 
             ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
             {
@@ -84,6 +75,41 @@ namespace RoboUtil.Examples
             Console.WriteLine("completed");
         }
 
+        public static void ExampleDynamicJobQueue()
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            List<object> jobs = new List<object>();
+            for (int i = 1; i <= 255; i++) jobs.Add("192.168.0." + i);
+
+            var t = ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
+            {
+                Jobs = jobs,
+                PoolSize = 255,
+                PoolName = "Pool1",
+                TargetMethod = PingLocalNetwork,
+                ExitOnFinish = false
+            });
+
+            t.WaitOne();
+
+            stopwatch.Stop();
+            Console.WriteLine("Phase-1:" + stopwatch.Elapsed);
+            stopwatch.Restart();
+
+            ////////////
+
+
+            for (int i = 1; i <= 255; i++)
+                ThreadPoolManager.Instance.Pool["Pool1"].JobQueue.Enqueue(new JobData() { Job = "192.168.0." + i, PoolName = "Pool1" });
+
+
+            t.WaitOne();
+            stopwatch.Stop();
+            Console.WriteLine("Phase-2:" + stopwatch.Elapsed);
+        }
+
         public static void ExampleThreadPool()
         {
 
@@ -97,29 +123,14 @@ namespace RoboUtil.Examples
             });
 
             //2- Add tasks
-            for (int i = 0; i < 255; i++)
-                tpHandler.addJob("192.168.0." + i);
+            for (int i = 1; i <= 255; i++) tpHandler.addJob("192.168.0." + i);
 
             //3-Start all thrads, belirtilen kadar Thread canlandirilir hepsi ayni methodu calistirir ve is kuyrugu tuketilir.
             //Not: WaitCallBack olarak belirlenen method isterse kuyruga is te ekleyebilir.
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             tpHandler.Start();
             tpHandler.WaitOne();
-
-            stopwatch.Stop();
-            Console.WriteLine(stopwatch.Elapsed);
-
-            // while (true)
-            // {
-            //     Console.WriteLine("sleeping 1 sn");
-            //     Thread.Sleep(1000);
-            // }
-            //...
-
         }
-        public static void Example2()
+        public static void ExampleAccessingQueue()
         {
 
             //1- Create Pool
@@ -138,7 +149,80 @@ namespace RoboUtil.Examples
             ThreadPoolManager.Instance.Pool["testpool1"].Start();
         }
 
-        public static void ExampleParallelForeach()
+        #region Other Multithreding methods
+        public static void FixedJobListLimitedThreadPool()
+        {
+            //it is limitid 64 thread
+            int threadCount = 20;
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            Queue jobs = Queue.Synchronized(new Queue());
+            for (int i = 0; i < 255; i++) jobs.Enqueue("192.168.0." + i);
+
+            ManualResetEvent[] resetEvent = new ManualResetEvent[threadCount];
+
+            for (int i = 0; i < threadCount; i++)
+            {
+                resetEvent[i] = new ManualResetEvent(false);
+
+                ThreadPool.QueueUserWorkItem((job) =>
+                {
+                    dynamic jobData = job;
+                    List<object> jobList = new List<object>();
+                    for (int a = 0; a < 11; a++) jobList.Add(jobs.Dequeue());
+
+                    foreach (string item in jobList)
+                    {
+                        System.Net.NetworkInformation.PingReply rep = new System.Net.NetworkInformation.Ping().Send(item);
+                        if (rep.Status == System.Net.NetworkInformation.IPStatus.Success) Console.WriteLine($"{item}: Success");
+                        else Console.WriteLine($"{item}: Fail");
+                    }
+
+                    ((ManualResetEvent)jobData.Event).Set();
+                },
+                new { Job = i, Event = resetEvent[i] }//jobData
+                );
+            }
+
+            WaitHandle.WaitAll(resetEvent);
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch.Elapsed);
+        }
+
+
+        public static void FixedJobListThreadPool()
+        {
+            int threadCount = 20;
+            int busyThreadCount = 0;
+            var resetEvent = new ManualResetEvent(false);
+
+            for (int asker = 0; asker < threadCount; asker++)
+            {
+                ThreadPool.QueueUserWorkItem((job) =>
+                {
+                    Interlocked.Increment(ref busyThreadCount);
+
+                    int kursun = 100;
+
+                    for (int j = 0; j < kursun; j++)
+                    {
+                        Thread.Sleep(100);
+                    }
+
+                    Interlocked.Decrement(ref busyThreadCount);
+
+                    if (busyThreadCount == 0) resetEvent.Set();
+
+                }, asker);
+            }
+
+            resetEvent.WaitOne();
+        }
+
+
+        public static void FixedJobListParallelForeach()
         {
             var jobs = new List<string>();
 
@@ -164,9 +248,7 @@ namespace RoboUtil.Examples
             Console.WriteLine(stopwatch.Elapsed);
         }
 
-
-
-        public static void ExampleTPL()
+        public static void FixedJobListTPL()
         {
             var jobs = new List<string>();
 
@@ -226,6 +308,8 @@ namespace RoboUtil.Examples
 
 
         }
+
+        #endregion
         private static void targetMethod(object obj)
         {
             JobData jobData = (JobData)obj;//we receive JobData from each thread

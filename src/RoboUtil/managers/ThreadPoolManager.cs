@@ -142,9 +142,13 @@ namespace RoboUtil.managers
         }
         public ManualResetEvent manualEvent { get; set; }
 
-        public static int poolNumber = 0;
+        public int poolNumber = 0;
 
-        public static int busyThreadCount = 0;
+        public int busyThreadCount = 0;
+
+        public int isEventSetted = 0;
+
+        public Object isEventSettedLock = new Object();
 
         #endregion Properties
         public ThreadPoolHandler(ThreadPoolOptions threadPoolOptions)
@@ -215,33 +219,36 @@ namespace RoboUtil.managers
                 }
                 else
                 {
-                    if (_jobQueue.Count == 0)
+
+                    if (_jobQueue.Count == 0 && busyThreadCount == 0)
                     {
+                        //Console.WriteLine($"Thread pool:{PoolName} Thread Number:{_threadInfo.ThreadNumber} Queue is empty!, ExitOnFinish:{_threadInfo.ExitOnFinish}, waiting busy threads, busy threads:{busyThreadCount}");
+
+                        lock (isEventSettedLock)
+                        {
+                            isEventSetted++;
+
+                            if (isEventSetted == 1)
+                            {
+                                manualEvent.Set();
+                                Console.WriteLine("TERMINATING...");
+                            }
+                        }
+
                         if (_threadInfo.ExitOnFinish == true)
                         {
-                            Console.WriteLine("Thread pool:{0} Thread Number:{1} Queue is empty!, ExitOnFinish:true, waiting busy threads, busy threads:{2}", PoolName, ((ThreadInfo)threadInfo).ThreadNumber, busyThreadCount);
-
-                            if (busyThreadCount == 0)
-                            {
-                                Console.WriteLine("all threads terminating, Queue is empty!");
-                                manualEvent.Set();
-                            }
-
-                            //Wait busy threads
-                            Thread.Sleep(1000);
                             break;
                         }
                         else
                         {
-                            Console.WriteLine("Thread pool:{0} Thread Number:{1} ExitOnFinish:false, thread sleep 1 second, Waiting new jobs! busy thread count:{2}", PoolName, ((ThreadInfo)threadInfo).ThreadNumber, busyThreadCount);
-                            Thread.Sleep(1000);
+                            Thread.Sleep(100);
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Thread pool:{0} Thread Number:{1} jobs in queue:{2} busy thread count:{3}", PoolName, ((ThreadInfo)threadInfo).ThreadNumber, _jobQueue.Count, busyThreadCount);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(100);
                     }
+
                 }
             }
         }
@@ -254,32 +261,42 @@ namespace RoboUtil.managers
         {
             this.JobQueue.Enqueue(new JobData() { Job = job, PoolName = _poolName });
         }
+        private void ResetManualResetEvent()
+        {
+            manualEvent = new ManualResetEvent(false);
+            isEventSetted = 0;
+        }
         public ThreadPoolHandler WaitOne()
         {
+            ResetManualResetEvent();
             manualEvent.WaitOne();
             Console.WriteLine("Job queue is empty! - exiting...");
             return this;
         }
         public ThreadPoolHandler WaitOne(int timeout)
         {
+            ResetManualResetEvent();
             manualEvent.WaitOne(timeout);
             Console.WriteLine("Job queue is empty! - exiting...");
             return this;
         }
         public ThreadPoolHandler WaitOne(int timeout, bool exitContext)
         {
+            ResetManualResetEvent();
             manualEvent.WaitOne(timeout, exitContext);
             Console.WriteLine("Job queue is empty! - exiting...");
             return this;
         }
         public ThreadPoolHandler WaitOne(TimeSpan timeout)
         {
+            ResetManualResetEvent();
             manualEvent.WaitOne(timeout);
             Console.WriteLine("Job queue is empty! - exiting...");
             return this;
         }
         public ThreadPoolHandler WaitOne(TimeSpan timeout, bool exitContext)
         {
+            ResetManualResetEvent();
             manualEvent.WaitOne(timeout, exitContext);
             Console.WriteLine("Job queue is empty! - exiting...");
             return this;
