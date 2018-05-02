@@ -309,6 +309,31 @@ namespace RoboUtil.Examples
 
         }
 
+
+		private static TimeSpan MeasureThreads(IList<string> feedSources)
+		{
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+			var threads = new Thread[feedSources.Count];
+
+			for (var i = 0; i < feedSources.Count; i++)
+			{
+                var source = feedSources[i]; /* work-around modified closures */
+				var feedParser = new FeedParser(source);
+				threads[i] = new Thread(() => feedParser.Parse());
+				threads[i].Start();
+			}
+
+			foreach (var thread in threads)
+			{
+				thread.Join();
+			}
+
+            stopwatch.Stop();
+            return stopwatch.Elapsed;            
+		}
+        
         #endregion
         private static void targetMethod(object obj)
         {
