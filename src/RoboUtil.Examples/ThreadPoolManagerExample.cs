@@ -19,14 +19,22 @@ namespace RoboUtil.Examples
             for (int i = 0; i < 255; i++)
                 jobs.Add("192.168.0." + i);
 
-            ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
+            var t = ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
             {
                 Jobs = jobs,
                 PoolSize = 20,
                 TargetMethod = PingLocalNetwork
-            }).WaitOne();
+            });
 
-            Console.WriteLine("completed");
+            ///t.WaitOne();
+
+            while (true)
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("wait");
+            }
+
+            //Console.WriteLine("completed");
 
         }
 
@@ -192,22 +200,23 @@ namespace RoboUtil.Examples
             int toProcess = 10;
             using (ManualResetEvent resetEvent = new ManualResetEvent(false))
             {
-                var list = new List<string>();
-                for (int i = 0; i < 10; i++) list.Add("192.168.0."+i);
+                string[] ipList = new string[10];
+                for (int i = 0; i < 10; i++) ipList[i] = "192.168.0." + i;
 
                 for (int i = 0; i < 10; i++)
                 {
                     ThreadPool.QueueUserWorkItem(
                        new WaitCallback(x =>
                        {
-                           System.Net.NetworkInformation.PingReply rep = new System.Net.NetworkInformation.Ping().Send(x);
+                           string ip = (string)x;
+                           System.Net.NetworkInformation.PingReply rep = new System.Net.NetworkInformation.Ping().Send(ip);
                            if (rep.Status == System.Net.NetworkInformation.IPStatus.Success) Console.WriteLine($"{x}: Success");
-                           else Console.WriteLine($"{x}: Fail");
+                           else Console.WriteLine($"{ip}: Fail");
                            // Safely decrement the counter
                            if (Interlocked.Decrement(ref toProcess) == 0)
                                resetEvent.Set();
 
-                       }), list);
+                       }), ipList[i]);
                 }
 
                 resetEvent.WaitOne();

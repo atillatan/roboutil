@@ -229,6 +229,7 @@ namespace RoboUtil.managers
 
                             //Wait busy threads
                             Thread.Sleep(1000);
+                            break;
                         }
                         else
                         {
