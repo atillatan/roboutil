@@ -4,6 +4,7 @@ using RoboUtil.utils;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +15,14 @@ namespace RoboUtil.Examples
     {
         static void Main(string[] args)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-            ThreadPoolManagerExample.ExampleDynamicJobQueue();
-
+            ThreadPoolManagerExample.ExampleSimple1();
+            
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch.Elapsed);
+            Console.ReadLine();
 
             //ThreadPoolManagerExample.ExampleSimple1();
 

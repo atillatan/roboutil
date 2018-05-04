@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using RoboUtil.managers;
 using RoboUtil.managers.thread;
-
+using System.Net.NetworkInformation;
 namespace RoboUtil.Examples
 {
     public class ThreadPoolManagerExample
@@ -18,17 +18,17 @@ namespace RoboUtil.Examples
         {
 
             List<object> jobs = new List<object>();
-            for (int i = 1; i <= 255; i++) jobs.Add("192.168.0." + i);
+            for (int i = 1; i <= 255; i++) jobs.Add("192.168.0." + (i + 1));
 
             var t = ThreadPoolManager.Instance.StartPool(new ThreadPoolOptions
             {
                 Jobs = jobs,
-                PoolSize = 20,
-                TargetMethod = PingLocalNetwork
+                PoolSize = 12,
+                TargetMethod = Ping
             });
 
             t.WaitOne();
-            Console.WriteLine("completed");
+
         }
 
         public static void ExampleSimple2()
@@ -88,7 +88,7 @@ namespace RoboUtil.Examples
                 Jobs = jobs,
                 PoolSize = 255,
                 PoolName = "Pool1",
-                TargetMethod = PingLocalNetwork,
+                TargetMethod = Ping,
                 ExitOnFinish = false
             });
 
@@ -116,7 +116,7 @@ namespace RoboUtil.Examples
             //1- Create Pool       
             ThreadPoolHandler tpHandler = ThreadPoolManager.Instance.CreatePool(new ThreadPoolOptions
             {
-                TargetMethod = PingLocalNetwork,
+                TargetMethod = Ping,
                 PoolName = "testpool1",
                 PoolSize = 20,
                 ExitOnFinish = false
@@ -310,30 +310,30 @@ namespace RoboUtil.Examples
         }
 
 
-		private static TimeSpan MeasureThreads(IList<string> feedSources)
-		{
+        private static TimeSpan MeasureThreads(IList<string> feedSources)
+        {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-			var threads = new Thread[feedSources.Count];
+            var threads = new Thread[feedSources.Count];
 
-			for (var i = 0; i < feedSources.Count; i++)
-			{
+            for (var i = 0; i < feedSources.Count; i++)
+            {
                 var source = feedSources[i]; /* work-around modified closures */
-				var feedParser = new FeedParser(source);
-				threads[i] = new Thread(() => feedParser.Parse());
-				threads[i].Start();
-			}
+                var feedParser = new FeedParser(source);
+                threads[i] = new Thread(() => feedParser.Parse());
+                threads[i].Start();
+            }
 
-			foreach (var thread in threads)
-			{
-				thread.Join();
-			}
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
 
             stopwatch.Stop();
-            return stopwatch.Elapsed;            
-		}
-        
+            return stopwatch.Elapsed;
+        }
+
         #endregion
         private static void targetMethod(object obj)
         {
@@ -344,20 +344,35 @@ namespace RoboUtil.Examples
 
 
 
-        private static void PingLocalNetwork(object obj)
+        private static void Ping(object obj)
         {
             JobData jobData = (JobData)obj;//we receive JobData from each thread
             string ip = (string)jobData.Job;
 
-            Console.WriteLine($"{jobData.PoolName}-{jobData.ThreadInfo.ThreadName}, job:{jobData.Job.ToString()}: Started");
+            //Console.WriteLine($"{jobData.PoolName}-{jobData.ThreadInfo.ThreadName}, job:{jobData.Job.ToString()}: Started");
 
-            System.Net.NetworkInformation.Ping p = new System.Net.NetworkInformation.Ping();
-            System.Net.NetworkInformation.PingReply rep = p.Send(ip);
+            System.Net.NetworkInformation.Ping p = new Ping();
+            PingReply rep = p.Send(ip);
 
-            if (rep.Status == System.Net.NetworkInformation.IPStatus.Success)
-                Console.WriteLine($"{jobData.PoolName}-{jobData.ThreadInfo.ThreadName}, job:{jobData.Job.ToString()}: Success");
-            else
-                Console.WriteLine($"{jobData.PoolName}-{jobData.ThreadInfo.ThreadName}, job:{jobData.Job.ToString()}: Fail");
+            //if (rep.Status == System.Net.NetworkInformation.IPStatus.Success)
+            // Console.WriteLine($"{jobData.PoolName}-{jobData.ThreadInfo.ThreadName}, job:{jobData.Job.ToString()}: Success");
+            // else
+            // Console.WriteLine($"{jobData.PoolName}-{jobData.ThreadInfo.ThreadName}, job:{jobData.Job.ToString()}: Fail");
+        }
+
+        static Task<PingReply> PingAsync(object obj)
+        {
+            JobData jobData = (JobData)obj;//we receive JobData from each thread
+            string ip = (string)jobData.Job;
+
+            var tcs = new TaskCompletionSource<PingReply>();
+            Ping ping = new Ping();
+            ping.PingCompleted += (obje, sender) =>
+                {
+                    tcs.SetResult(sender.Reply);
+                };
+            ping.SendAsync(ip, new object());
+            return tcs.Task;
         }
     }
 }
